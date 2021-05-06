@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{base/base :: baseHead}">
+  <title></title>
+</head>
+<body>
+<header th:replace="~{base/base :: navbar}"></header>
+
+<main class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <h1 th:text="${title}"></h1>
+    </div>
+  </div>
+
+  <div class="row">
+    <form action="#" th:action="@{/admin/users/insert}" th:object="${user}"
+          id="insertUser" method="post" class="row g-3">
+
+      <div class="col-md-6">
+        <label for="firstName" class="form-label">Nome:</label>
+        <input type="text" class="form-control" id="firstName" placeholder="Nome" th:field="*{firstName}" required>
+        <span th:errors="*{firstName}" class="error"></span>
+      </div>
+
+      <div class="col-md-6">
+        <label for="lastName" class="form-label">Sobrenome:</label>
+        <input type="text" class="form-control" id="lastName" placeholder="Sobrenome" th:field="*{lastName}">
+        <span th:errors="*{lastName}" class="error"></span>
+      </div>
+
+      <div class="col-md-6">
+        <label for="username" class="form-label">Login:</label>
+        <input type="text" class="form-control" id="username" placeholder="Login" th:field="*{username}" required>
+        <span th:errors="*{username}" class="error"></span>
+      </div>
+
+      <div class="col-md-6">
+        <label for="password" class="form-label">Senha:</label>
+        <input type="password" class="form-control" id="password" placeholder="Senha" th:field="*{password}"
+               required>
+        <span th:errors="*{password}" class="error"></span>
+      </div>
+
+      <div class="col-md-12">
+        <label class="form-label">O usuário é veterinário?</label>
+        <ul class="mb-1">
+          <li class="form-check form-switch" th:each="role : ${roles}">
+            <input class="form-check-input"
+                   type="radio"
+                   th:id="${role.type}"
+                   th:field="*{roles}"
+                   th:value="${role.id}"
+                   th:if="${role.type} != 'ADMIN'">
+            <label class="form-check-label"
+                   th:for="${role.type}"
+                   th:text="${role.type} == 'VET' ? 'Sim' : 'Não'"
+                   th:if="${role.type} != 'ADMIN'"></label>
+          </li>
+        </ul>
+      </div>
+
+      <div class="col-sm-4 form-vet form-hidden" style="display: none">
+        <label for="specialty" class="form-label">Especialidade:</label>
+        <input type="text" class="form-control" id="specialty" placeholder="Especialidade"
+               th:field="*{veterinarian.specialty}">
+        <span th:errors="*{veterinarian.specialty}" class="error"></span>
+      </div>
+
+      <div class="col-sm-4 form-vet form-hidden" style="display: none">
+        <label for="crmvState" class="form-label">Estado do CRMV:</label>
+        <input type="text" class="form-control" id="crmvState" placeholder="Estado CRMV"
+               th:field="*{veterinarian.crmvState}">
+        <span th:errors="*{veterinarian.crmvState}" class="error"></span>
+      </div>
+
+      <div class="col-sm-4 form-vet form-hidden" style="display: none">
+        <label for="crmv" class="form-label">Número do CRMV:</label>
+        <input type="text" class="form-control" id="crmv" placeholder="Número CRMV" th:field="*{veterinarian.crmv}">
+        <span th:errors="*{veterinarian.crmv}" class="error"></span>
+      </div>
+
+      <div class="mb-3">
+        <a th:href="@{/admin/users}" class="btn btn-secondary">Cancelar</a>
+        <button type="submit" class="btn btn-primary">Salvar</button>
+      </div>
+    </form>
+  </div>
+</main>
+
+<footer th:replace="~{base/base :: copyright}"></footer>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        function resetForm($form) {
+            $form.find('input:text').val('');
+        }
+
+        $('#VET').change(function () {
+            if (this.checked) {
+                $('.form-hidden').show('slow');
+            }
+        })
+
+        $('#USER').change(function () {
+            if (this.checked) {
+                $('.form-hidden').hide('slow');
+                resetForm($('.form-vet'));
+            }
+        })
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{base/base :: baseHead}">
+  <title></title>
+</head>
+<body>
+<header th:replace="~{base/base :: navbar}"></header>
+
+<main class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <h1 th:text="${title}"></h1>
+      <form action="#" class="d-flex cold-md-12">
+        <input type="text"
+               class="form-control me-2"
+               id="txt-search"
+               placeholder="Nome do cliente"
+               aria-label="Search">
+        <button class="btn btn-outline-success"
+                id="btn-search"
+                type="submit">Pesquisar
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <table class="table" id="tbl-customers">
+        <thead>
+        <tr>
+          <th scope="col">Nome</th>
+          <th scope="col">Data de Nascimento</th>
+          <th scope="col">Contato</th>
+          <th scope="col">Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="customer : ${customers}">
+          <td>
+            <a th:href="@{/app/customers/{id} (id=${customer.id})}"
+               th:text="${customer.fullName}"></a>
+          </td>
+          <td th:text="${#temporals.format(customer.birthDate, 'dd-MM-yyyy')}"></td>
+          <td th:text="${customer.phoneToString()}"></td>
+          <td>
+            <a th:href="@{/app/customers/{id}/update (id=${customer.id})}"
+               class="btn btn-warning">Editar</a>
+            <a th:href="@{/app/customers/{id}/delete (id=${customer.id})}"
+               class="btn btn-danger"
+               onclick="return confirm('Tem certeza de que deseja excluir o cliente?')">Excluir</a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-sm-12">
+      <a th:href="@{/app/customers/insert}"
+         class="btn btn-primary">Adicionar novo cliente</a>
+    </div>
+  </div>
+
+</main>
+
+<footer th:replace="~{base/base :: copyright}"></footer>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#btn-search').click(function () {
+            const customerName = $('#txt-search').val();
+            $.ajax({
+                method: 'GET',
+                url: '/app/customers/search?name=' + customerName,
+                success: function (data) {
+                    $('#tbl-customers tbody > tr').remove();
+                    $.each(data, function (index, customer) {
+                        $('#tbl-customers tbody').append(
+                            '<tr>' +
+                            '  <td>' +
+                            '    <a href="/app/customers/' + customer.id + '">' + customer.fullName + '</a>' +
+                            '  </td>' +
+                            '  <td>' + customer.birthDate + '</td>' +
+                            '  <td>' + customer.phone + '</td>' +
+                            '  <td>' +
+                            '    <a href="/app/customers/' + customer.id + '/update"' +
+                            '       class="btn btn-warning">Editar</a>' +
+                            '    <a href="/app/customers/' + customer.id + '/delete"' +
+                            '       class="btn btn-danger"' +
+                            '       onclick="return confirm(\'Tem certeza de que deseja excluir o cliente?\')">Excluir</a>' +
+                            '  </td>' +
+                            '</tr>'
+                        );
+                    })
+                },
+                error: function () {
+                    alert("Houve um erro na requisição!");
+                }
+            });
+            return false;
+        });
+    });
+</script>
+
+</body>
+</html>

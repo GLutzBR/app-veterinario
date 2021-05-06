@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{base/base :: baseHead}">
+  <title></title>
+</head>
+<body>
+<header th:replace="~{base/base :: navbar}"></header>
+
+<main class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <h1 th:text="${title}"></h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12 mb-3">
+      <div class="card" th:object="${user}">
+        <div class="card-header" th:text="*{username}"></div>
+        <div class="card-body">
+          <h5 class="card-title" th:text="*{firstName} + ' ' + *{lastName}"></h5>
+          <p class="card-text">
+            <b>Estado:</b> <span th:text="*{active} ? 'Habilitado' : 'Desabilitado'"></span>
+          </p>
+          <p class="card-text"><b>Permissões:</b> <span th:each="role, index : *{roles}"
+                                                        th:text="${index.last} ? ${role.name} : ${role.name} + ', '"></span>
+          </p>
+        </div>
+
+        <div class="card-body" th:if="*{veterinarian != null}">
+          <h6 class="card-title">Dados do veterinário</h6>
+          <p class="card-text">
+            <b>Especialidade:</b> <span th:text="*{veterinarian.specialty}"></span>
+          </p>
+          <p class="card-text">
+            <b>CRMV:</b> <span th:text="*{veterinarian.crmvState} + '-' + *{veterinarian.crmv}"></span>
+          </p>
+        </div>
+
+        <div class="card-body">
+          <a th:href="@{/admin/users/{id}/update (id=*{id})}"
+             class="btn btn-warning">Editar</a>
+          <a class="btn btn-danger"
+             th:href="@{/admin/users/{id}/change-availability (id=*{id})}"
+             th:text="${user.active} ? 'Desabilitar' : 'Desabilitar'"
+             th:onclick="${user.active} ?
+              'return confirm(\'Tem certeza de que deseja desabilitar este usuário?\')' :
+              'return confirm(\'Tem certeza de que deseja habilitar este usuário?\')'"></a>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-1">
+      <a th:href="@{/admin/users}" class="btn btn-secondary">Voltar</a>
+    </div>
+  </div>
+</main>
+
+<footer th:replace="~{base/base :: copyright}"></footer>
+
+</body>
+</html>

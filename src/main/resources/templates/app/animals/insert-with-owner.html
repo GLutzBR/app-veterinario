@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{base/base :: baseHead}">
+  <title></title>
+</head>
+<body>
+<header th:replace="~{base/base :: navbar}"></header>
+
+<main class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <h1 th:text="${title}"></h1>
+    </div>
+  </div>
+
+  <div class="row">
+    <form action="#" th:action="@{/app/animals/insert}" method="post" th:object="${animal}" class="row g-3">
+
+      <div class="col-md-12">
+        <label for="customer" class="form-label">Dono do Pet:</label>
+        <select readonly="readonly"
+                class="form-control"
+                tabindex="-1"
+                aria-disabled="true"
+                id="customer"
+                th:field="*{owner}">
+          <option th:value="${owner.id}"
+                  th:text="${owner.fullName}"
+                  selected>
+          </option>
+        </select>
+      </div>
+
+      <div class="col-md-3">
+        <label for="name" class="form-label">Nome:</label>
+        <input type="text"
+               class="form-control"
+               id="name"
+               placeholder="Digite o nome"
+               th:field="*{name}"
+               required>
+        <span class="error" th:errors="*{name}"></span>
+      </div>
+
+      <div class="col-md-3">
+        <label for="age" class="form-label">Idade:</label>
+        <input type="number"
+               class="form-control"
+               id="age"
+               placeholder="Digite a Idade"
+               th:field="*{age}"
+               required>
+        <span class="error" th:errors="*{age}"></span>
+      </div>
+
+      <div class="col-md-3">
+        <label for="breed" class="form-label">Raça:</label>
+        <input type="text"
+               class="form-control"
+               id="breed"
+               placeholder="Digite o nome"
+               th:field="*{breed}"
+               required>
+        <span class="error" th:errors="*{breed}"></span>
+      </div>
+
+      <div>
+        <a th:href="@{/app/animals}" class="btn btn-secondary">Cancelar</a>
+        <button type="submit" class="btn btn-success" name="action" value="save">Salvar</button>
+        <button type="submit" class="btn btn-primary" name="action" value="saveAndAddPet">Salvar e Adicionar Outro Pet
+        </button>
+      </div>
+
+    </form>
+  </div>
+</main>
+
+<footer th:replace="~{base/base :: copyright}"></footer>
+
+</body>
+</html>

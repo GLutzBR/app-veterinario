@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{base/base :: baseHead}">
+  <title></title>
+</head>
+<body>
+<header th:replace="~{base/base :: navbar}"></header>
+<span sec:authentication="principal.authorities" hidden id="user_role"></span>
+<main class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <h1 th:text="${title}"></h1>
+      <form action="#" class="d-flex cold-md-12">
+        <input type="text"
+               class="form-control me-2"
+               id="txt-search"
+               placeholder="Paciente"
+               aria-label="Search">
+        <button class="btn btn-outline-success"
+                id="btn-search"
+                type="submit">Pesquisar
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="row g-1">
+    <div class="col-sm-12">
+      <table class="table" id="tbl-medicalRecords">
+        <thead>
+        <tr>
+          <th scope="col">Paciente</th>
+          <th scope="col">Médico</th>
+          <th scope="col">Data do Atendimento</th>
+          <th scope="col">Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="medicalRecord : ${medicalRecords}">
+          <td>
+            <a th:href="@{/app/medical-records/{id} (id=${medicalRecord.id})}"
+               th:text="${medicalRecord.animal.name}"></a>
+          </td>
+          <td th:text="${medicalRecord.user.firstName} + ' ' + ${medicalRecord.user.lastName}"></td>
+          <td th:text="${#temporals.format(medicalRecord.serviceDate, 'dd-MM-yyyy')}"></td>
+
+          <td>
+            <a th:classappend="${#authorization.expression('hasRole(''USER'')')} ? 'disabled'"
+               th:attrappend="aria-disabled=${#authorization.expression('hasRole(''USER'')')},tabindex=${#authorization.expression('hasRole(''USER'',)')} ? '-1'"
+               th:href="@{/app/medical-records/{id}/update (id=${medicalRecord.id})}"
+               class="btn btn-warning">Editar</a>
+            <a th:classappend="${#authorization.expression('hasRole(''USER'')')} ? 'disabled'"
+               th:attrappend="aria-disabled=${#authorization.expression('hasRole(''USER'')')},tabindex=${#authorization.expression('hasRole(''USER'',)')} ? '-1'"
+               th:href="@{/app/medical-records/{id}/archive (id=${medicalRecord.id})}"
+               onclick="return confirm('Tem certeza de que deseja arquivar este prontuário?')"
+               class="btn btn-danger">Arquivar</a>
+            <a th:classappend="${#authorization.expression('hasAnyRole(''USER'', ''VET'')')} ? 'disabled'"
+               th:attrappend="aria-disabled=${#authorization.expression('hasAnyRole(''USER'', ''VET'')')},tabindex=${#authorization.expression('hasAnyRole(''USER'', ''VET'')')} ? '-1'"
+               th:href="@{/app/medical-records/{id}/delete (id=${medicalRecord.id})}"
+               onclick="return confirm('Tem certeza de que deseja excluir este prontuário?')"
+               class="btn btn-dark">Excluir</a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col-sm-6">
+      <a th:classappend="${#authorization.expression('hasRole(''USER'')')} ? 'disabled'"
+         th:attrappend="aria-disabled=${#authorization.expression('hasRole(''USER'')')},tabindex=${#authorization.expression('hasRole(''USER'',)')} ? '-1'"
+         th:href="@{/app/medical-records/insert}"
+         class="btn btn-primary">Iniciar novo atendimento</a>
+    </div>
+    <div class="col-sm-6 d-flex container-fluid justify-content-end">
+      <a th:href="@{/app/medical-records/archived}"
+         class="btn btn-outline-info">Atendimentos arquivados</a>
+    </div>
+  </div>
+</main>
+
+<footer th:replace="~{base/base :: copyright}"></footer>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#btn-search').click(function () {
+            const patientName = $('#txt-search').val();
+            const role = $('span#user_role').text();
+            let attrUser = '';
+            let attrVet = '';
+            $.ajax({
+                method: 'GET',
+                url: '/app/medical-records/search?patient=' + patientName,
+                success: function (data) {
+                    if (role.includes("ROLE_USER")) {
+                        attrUser = ' disabled" aria-disabled="true" tabindex="-1';
+                    }
+                    if (role.includes("ROLE_VET")) {
+                        attrVet = ' disabled" aria-disabled="true" tabindex="-1';
+                    }
+                    $('#tbl-medicalRecords tbody > tr').remove();
+                    $.each(data, function (index, medicalRecord) {
+                        $('#tbl-medicalRecords tbody').append(
+                            '<tr>' +
+                            '  <td>' +
+                            '    <a href="/app/medical-records/' + medicalRecord.id + '">' + medicalRecord.animal.name + '</a>' +
+                            '  </td>' +
+                            '  <td>' + medicalRecord.user.fullName + '</td>' +
+                            '  <td>' + medicalRecord.serviceDate + '</td>' +
+                            '  <td>' +
+                            '    <a href="/app/medical-records/' + medicalRecord.id + '/update"' +
+                            '       class="btn btn-warning' + attrUser + '">Editar</a>' +
+                            '    <a href="/app/medical-records/' + medicalRecord.id + '/archive"' +
+                            '       class="btn btn-danger' + attrUser + '"' +
+                            '       onclick="return confirm(\'Tem certeza de que deseja arquivar este prontuário?\')">' +
+                            '       Arquivar</a>' +
+                            '    <a href="/app/medical-records/' + medicalRecord.id + '/delete"' +
+                            '       class="btn btn-dark' + attrUser + attrVet + '"' +
+                            '       onclick="return confirm(\'Tem certeza de que deseja excluir este prontuário?\')">' +
+                            '       Excluir</a>' +
+                            '  </td>' +
+                            '</tr>'
+                        );
+                    })
+                },
+                error: function () {
+                    alert("Houve um erro na requisição!");
+                }
+            });
+            return false;
+        });
+    });
+</script>
+
+</body>
+</html>

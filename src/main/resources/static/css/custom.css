@@ -1,0 +1,16 @@
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+select[readonly] {
+    background: #eee;
+    pointer-events: none;
+    touch-action: none;
+}

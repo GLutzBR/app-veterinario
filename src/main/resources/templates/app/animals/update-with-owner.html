@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{base/base :: baseHead}">
+  <title></title>
+</head>
+<body>
+<header th:replace="~{base/base :: navbar}"></header>
+
+<main class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <h1 th:text="${title}"></h1>
+    </div>
+  </div>
+
+  <div class="row" th:hidden="${form eq null}">
+    <form action="#" th:action="@{/app/animals/update}" method="post" th:object="${form}">
+      <div class="row g-3 mb-2" th:each="animal, itemStat : *{animals}">
+        <input type="hidden" th:field="*{animals[__${itemStat.index}__].id}">
+        <input type="hidden" th:field="*{animals[__${itemStat.index}__].owner}">
+
+        <div class="col-md-4">
+          <label for="name" class="form-label">Nome:</label>
+          <input type="text"
+                 class="form-control"
+                 id="name"
+                 placeholder="Digite o nome"
+                 th:field="*{animals[__${itemStat.index}__].name}"
+                 required>
+          <span class="error" th:errors="*{animals[__${itemStat.index}__].name}"></span>
+        </div>
+
+        <div class="col-md-4">
+          <label for="age" class="form-label">Idade:</label>
+          <input type="number"
+                 class="form-control"
+                 id="age"
+                 placeholder="Digite o nome"
+                 th:field="*{animals[__${itemStat.index}__].age}"
+                 required>
+          <span class="error" th:errors="*{animals[__${itemStat.index}__].age}"></span>
+        </div>
+
+        <div class="col-md-4">
+          <label for="breed" class="form-label">Raça:</label>
+          <input type="text"
+                 class="form-control"
+                 id="breed"
+                 placeholder="Digite o nome"
+                 th:field="*{animals[__${itemStat.index}__].breed}"
+                 required>
+          <span class="error" th:errors="*{animals[__${itemStat.index}__].breed}"></span>
+        </div>
+      </div>
+
+        <div>
+          <a th:href="@{/app/animals}" class="btn btn-secondary">Cancelar</a>
+          <button type="submit" class="btn btn-success" th:value="update">Salvar</button>
+        </div>
+    </form>
+  </div>
+</main>
+
+<footer th:replace="~{base/base :: copyright}"></footer>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#enableDisableOwner').change(function () {
+            if (this.checked) {
+                $('#owner').attr({
+                    readonly: false
+                });
+            } else {
+                $('#owner').attr({
+                    readonly: true
+                });
+            }
+        })
+    });
+</script>
+
+</body>
+</html>

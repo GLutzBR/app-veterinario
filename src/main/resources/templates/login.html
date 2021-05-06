@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{base/base :: baseHead}">
+  <title></title>
+</head>
+<body>
+<header th:replace="~{base/base :: navbar}"></header>
+
+<main class="container">
+  <div class="login-box">
+    <div class="card">
+      <div class="card-header">
+        <i class="fas fa-user"></i> Please Login
+      </div>
+      <div class="card-block login-block">
+        <form name="f" th:action="@{/login}" method="post">
+          <fieldset>
+            <!-- Thymeleaf + Spring Security error display -->
+            <div th:if="${param.error}" class="alert alert-danger">
+              Usuário ou senha inválidos.
+            </div>
+
+            <div th:if="${param.logout}" class="alert alert-success">
+              Você fez logout.
+            </div>
+
+            <!-- Login Controls -->
+            <div class="mb-3">
+              <label for="username">Usuário:</label>
+              <input type="text" class="form-control" id="username" name="username"
+                     placeholder="Usuário">
+            </div>
+
+            <div class="mb-3">
+              <label for="password">Senha:</label>
+              <input type="password" class="form-control" id="password" name="password"
+                     placeholder="Senha">
+            </div>
+
+            <div class="mb-3">
+              <input type="checkbox" class="form-check-input" id="remember-me" name="remember-me">
+              <label class="form-check-label" for="remember-me">Manter-me conectado</label>
+            </div>
+
+            <!-- Login Button -->
+            <div class="form-actions login-actions">
+              <button type="submit" class="btn btn-success">Log in</button>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer th:replace="~{base/base :: copyright}"></footer>
+
+</body>
+</html>

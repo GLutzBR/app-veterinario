@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{base/base :: baseHead}">
+  <title></title>
+</head>
+<body>
+<header th:replace="~{base/base :: navbar}"></header>
+
+<main class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <h1 th:text="${title}"></h1>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12 mb-3">
+      <div class="card" th:object="${animal}">
+        <div class="card-header" th:text="*{name}"></div>
+        <div class="card-body">
+          <p class="card-text">
+            <b>Idade:</b> <span th:text="*{age}"></span>
+          </p>
+          <p class="card-text">
+            <b>Raça:</b> <span th:text="*{breed}"></span>
+          </p>
+          <p class="card-text">
+            <b>Dono:</b> <a th:href="@{/app/customers/{id} (id=*{owner.id})}" th:text="*{owner.fullName}"></a>
+          </p>
+        </div>
+
+        <div class="card-body">
+          <a th:href="@{/app/animals/{id}/update (id=*{id})}"
+             class="btn btn-warning">Editar</a>
+          <a class="btn btn-danger"
+             th:href="@{/app/animals/{id}/delete (id=*{id})}"
+             onclick="return confirm('Tem certeza de que deseja excluir este animal?')">Excluir</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-1">
+      <a th:href="@{/admin/users}" class="btn btn-secondary">Voltar</a>
+    </div>
+  </div>
+</main>
+
+<footer th:replace="~{base/base :: copyright}"></footer>
+
+</body>
+</html>

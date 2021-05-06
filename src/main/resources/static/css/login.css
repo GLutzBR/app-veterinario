@@ -1,0 +1,15 @@
+.login-box {
+    width: 600px !important;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 24px;
+    padding: 24px;
+}
+
+.login-actions {
+    margin-top: 12px;
+}
+
+.login-block {
+    padding: 24px;
+}

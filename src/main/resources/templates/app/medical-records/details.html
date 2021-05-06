@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{base/base :: baseHead}">
+  <title></title>
+</head>
+<body>
+<header th:replace="~{base/base :: navbar}"></header>
+
+<main class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <h1 th:text="${title}"></h1>
+    </div>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-sm-12">
+      <div class="card" th:object="${medicalRecord}">
+        <div class="card-header" th:text="'Paciente - ' + *{animal.name}">Protocolo#</div>
+        <div class="card-body">
+          <h5 class="card-title">Dados do paciente</h5>
+          <p class="card-text">
+            <b>Idade do paciente:</b> <span th:text="*{animal.age}"></span>
+          </p>
+          <p class="card-text">
+            <b>Dono:</b> <span th:text="*{animal.owner.fullName}"></span>
+          </p>
+        </div>
+
+        <div class="card-body">
+          <h5 class="card-title">Dados do atendimento</h5>
+          <p class="card-text">
+            <b>Data do atendimento:</b> <span th:text="*{serviceDate}"></span>
+          </p>
+          <p class="card-text">
+            <b>Médico Veterinário:</b> <span th:text="*{user.firstName} + ' ' + *{user.lastName}"></span>
+          </p>
+          <p class="card-text">
+            <b>Nota:</b> <span th:text="*{comments}"></span>
+          </p>
+        </div>
+
+        <div class="card-body">
+          <a th:classappend="${#authorization.expression('hasRole(''USER'')')} ? 'disabled'"
+             th:attrappend="aria-disabled=${#authorization.expression('hasRole(''USER'')')},tabindex=${#authorization.expression('hasRole(''USER'',)')} ? '-1'"
+             th:href="@{/app/medical-records/{id}/update (id=${medicalRecord.id})}"
+             class="btn btn-warning">Editar</a>
+          <a th:classappend="${#authorization.expression('hasRole(''USER'')')} ? 'disabled'"
+             th:attrappend="aria-disabled=${#authorization.expression('hasRole(''USER'')')},tabindex=${#authorization.expression('hasRole(''USER'',)')} ? '-1'"
+             th:href="@{/app/medical-records/{id}/archive (id=${medicalRecord.id})}"
+             th:text="*{archived} ? 'Desarquivar' : 'Arquivar'"
+             th:onclick="*{archived} ?
+              'return confirm(''Tem certeza de que deseja desarquivar este prontuário?'')' :
+              'return confirm(''Tem certeza de que deseja arquivar este prontuário?'')'"
+             class="btn btn-danger">Arquivar</a>
+          <a th:classappend="${#authorization.expression('hasAnyRole(''USER'', ''VET'')')} ? 'disabled'"
+             th:attrappend="aria-disabled=${#authorization.expression('hasAnyRole(''USER'', ''VET'')')},tabindex=${#authorization.expression('hasAnyRole(''USER'', ''VET'')')} ? '-1'"
+             th:href="@{/app/medical-records/{id}/delete (id=${medicalRecord.id})}"
+             onclick="return confirm('Tem certeza de que deseja excluir este prontuário?')"
+             class="btn btn-dark">Excluir</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-1">
+      <a th:href="@{/app/medical-records}" class="btn btn-secondary mb-2">Voltar</a>
+    </div>
+  </div>
+</main>
+
+<footer th:replace="~{base/base :: copyright}"></footer>
+
+</body>
+</html>

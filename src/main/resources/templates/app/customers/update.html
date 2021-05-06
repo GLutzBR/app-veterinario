@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{base/base :: baseHead}">
+  <title></title>
+</head>
+<body>
+<header th:replace="~{base/base :: navbar}"></header>
+
+<main class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <h1 th:text="${title}"></h1>
+    </div>
+  </div>
+
+  <div class="row">
+    <form action="#" method="post" th:object="${customer}" class="row g-3">
+
+      <input type="hidden" th:field="*{id}">
+      <input type="hidden" th:field="*{pets}">
+      <div class="col-md-12">
+        <label for="fullName" class="form-label">Nome completo:</label>
+        <input type="text"
+               class="form-control"
+               id="fullName"
+               placeholder="Digite o nome"
+               th:field="*{fullName}"
+               required>
+        <span class="error" th:errors="*{fullName}"></span>
+      </div>
+
+      <div class="col-md-6">
+        <label for="birthDate" class="form-label">Data de nascimento:</label>
+        <input type="date"
+               class="form-control"
+               id="birthDate"
+               th:field="*{birthDate}"
+               required>
+        <span class="error" th:errors="*{birthDate}"></span>
+      </div>
+
+      <div class="col-md-6">
+        <label for="phone" class="form-label">Telefone para contato:</label>
+        <input type="text"
+               class="form-control"
+               id="phone"
+               placeholder="Digite o telefone"
+               th:field="*{phone}"
+               required>
+        <span class="error" th:errors="*{phone}"></span>
+      </div>
+
+      <div class="col-md-12">
+        <label for="address" class="form-label">Endereço:</label>
+        <textarea class="form-control"
+                  id="address"
+                  name="address"
+                  rows="2"
+                  placeholder="Digite o endereço"
+                  th:field="*{address}"
+                  required></textarea>
+        <span class="error" th:errors="*{address}"></span>
+      </div>
+
+      <div class="mb-2">
+        <a th:href="@{/app/customers}" class="btn btn-secondary">Cancelar</a>
+        <button type="submit" class="btn btn-success" name="action" value="save">Salvar</button>
+        <button type="submit" class="btn btn-primary" name="action" value="saveAndUpdatePet">Salvar e Atualizar Pets
+        </button>
+      </div>
+
+    </form>
+  </div>
+</main>
+
+<footer th:replace="~{base/base :: copyright}"></footer>
+
+</body>
+</html>

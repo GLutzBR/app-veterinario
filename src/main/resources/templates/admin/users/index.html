@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{base/base :: baseHead}">
+  <title></title>
+</head>
+<body>
+<header th:replace="~{base/base :: navbar}"></header>
+
+<main class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <h1 th:text="${title}"></h1>
+      <form action="#" class="d-flex cold-md-12">
+        <input type="text"
+               class="form-control me-2"
+               id="txt-search"
+               placeholder="Nome do usuário"
+               aria-label="Search">
+        <button class="btn btn-outline-success"
+                id="btn-search"
+                type="submit">Pesquisar
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <table class="table" id="tbl-users">
+        <thead>
+        <tr>
+          <th scope="col">Login</th>
+          <th scope="col">Nome</th>
+          <th scope="col">Estado</th>
+          <th scope="col">Permissões</th>
+          <th scope="col">Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}">
+          <td>
+            <a th:href="@{/admin/users/{id} (id=${user.id})}"
+               th:text="${user.username}"></a>
+          </td>
+          <td th:text="${user.firstName} + ' ' + ${user.lastName}"></td>
+          <td th:text="${user.active} ? 'Habilitado' : 'Desabilitado'"></td>
+          <td th:each="role, index : ${user.roles}">
+            <span th:text="${index.last} ? ${role.name} : ${role.name} + ', '"></span>
+          </td>
+          <td>
+            <a th:href="@{/admin/users/{id}/update (id=${user.id})}"
+               class="btn btn-warning">Editar</a>
+            <a class="btn btn-danger"
+               th:href="@{/admin/users/{id}/change-availability (id=${user.id})}"
+               th:text="${user.active} ? 'Desabilitar' : 'Habilitar'"
+               th:onclick="${user.active} ?
+                'return confirm(\'Tem certeza de que deseja desabilitar o usuário?\')' :
+                 'return confirm(\'Tem certeza de que deseja habilitar o usuário?\')'"></a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-sm-12">
+        <a th:href="@{/admin/users/insert}"
+           class="btn btn-primary">Adicionar novo usuário</a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer th:replace="~{base/base :: copyright}"></footer>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#btn-search').click(function () {
+            const userName = $('#txt-search').val();
+            let active;
+            let action;
+            let message;
+            let roles;
+            $.ajax({
+                method: 'GET',
+                url: '/admin/users/search?name=' + userName,
+                success: function (data) {
+                    $('#tbl-users tbody > tr').remove();
+                    $.each(data, function (index, user) {
+                        if (user.active) {
+                            active = 'Habilitado';
+                            action = 'Habilitar';
+                            message = 'return confirm(\'Tem certeza de que deseja desabilitar o usuário ?\')';
+                        } else {
+                            active = 'Desabilitado';
+                            action = 'Desabilitar';
+                            message = 'return confirm(\'Tem certeza de que deseja habilitar o usuário ?\')';
+                        }
+                        roles = "";
+                        user.roles.forEach(function (role, index, array) {
+                            if (index === array.length - 1) {
+                                roles = roles + role.name;
+                            } else {
+                                roles = roles + role.name + ', ';
+                            }
+                        })
+                        $('#tbl-users tbody').append(
+                            '<tr>' +
+                            '  <td>' +
+                            '    <a href="/admin/users/' + user.id + '">' + user.username + '</a>' +
+                            '  </td>' +
+                            '  <td>' + user.firstName + ' ' + user.lastName + '</td>' +
+                            '  <td>' + active + '</td>' +
+                            '  <td>' + roles + '</td>' +
+                            '  <td>' +
+                            '    <a href="/admin/users/' + user.id + '/update" class="btn btn-warning">Editar</a>' +
+                            '    <a href="/admin/users/' + user.id + '/change-availability"' +
+                            '       class="btn btn-danger"' +
+                            '       onclick="' + message + '">' + action + '</a>' +
+                            '  </td>' +
+                            '</tr>'
+                        );
+                    })
+                },
+                error: function () {
+                    alert("Houve um erro na requisição!");
+                }
+            });
+            return false;
+        });
+    });
+</script>
+
+</body>
+</html>
