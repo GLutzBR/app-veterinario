@@ -43,3 +43,9 @@ docker-compose up -d
 ```
 
 A aplicação estará disponível na porta **8443**.
+
+Usuários _padrão_:
+
+- admin - admin123
+- vet - vet123
+- user - user123

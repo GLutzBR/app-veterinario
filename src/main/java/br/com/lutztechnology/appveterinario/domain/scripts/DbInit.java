@@ -70,7 +70,7 @@ public class DbInit implements CommandLineRunner {
             List<Veterinarian> newVetAttributes = Collections.singletonList(vetAttributes);
 
             User commonUser = new User(
-                    "guest_user",
+                    "user",
                     encoder.encode("user123"),
                     "Usuário",
                     new HashSet<>(Collections.singleton(userRole)),
