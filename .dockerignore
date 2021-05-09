@@ -1,0 +1,10 @@
+# Local Files
+.vscode
+.idea
+app-veterinario.iml
+HELP.md
+README.md
+LICENSE
+.gitignore
+docs
+target

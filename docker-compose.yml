@@ -1,5 +1,17 @@
 version: '3.3'
 services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: app-veterinario:latest
+    depends_on:
+      - db
+    ports:
+    - 8443:8443
+    networks:
+      - app-veterinario
+
   db:
     image: mysql:5.7
     restart: always
@@ -14,5 +26,12 @@ services:
       - '3306'
     volumes:
       - my-db:/var/lib/mysql
+    networks:
+      - app-veterinario
+
 volumes:
   my-db:
+
+networks:
+  app-veterinario:
+    driver: bridge
