@@ -21,7 +21,7 @@ public class CustomerController {
 
     @GetMapping
     public ModelAndView index() {
-        ModelAndView modelAndView = new ModelAndView("/app/customers/index");
+        ModelAndView modelAndView = new ModelAndView("app/customers/index");
         Map<String, Object> newAttributes = new HashMap<>();
         List<Customer> customers = customerRepository.findAll();
 
@@ -38,7 +38,7 @@ public class CustomerController {
     public ModelAndView details(
             @PathVariable(name = "id") Long id,
             @RequestParam(name = "pets", defaultValue = "false", required = false) Boolean pets) {
-        ModelAndView modelAndView = new ModelAndView("/app/customers/details");
+        ModelAndView modelAndView = new ModelAndView("app/customers/details");
         Map<String, Object> newAttributes = new HashMap<>();
         Customer customer = customerRepository.getOne(id);
 
@@ -54,7 +54,7 @@ public class CustomerController {
 
     @GetMapping("/insert")
     public ModelAndView insert() {
-        ModelAndView modelAndView = new ModelAndView("/app/customers/insert");
+        ModelAndView modelAndView = new ModelAndView("app/customers/insert");
         Map<String, Object> newAttributes = new HashMap<>();
 
         newAttributes.put("title", "Adicionar Novo Cliente");
@@ -74,7 +74,7 @@ public class CustomerController {
 
         switch (action) {
             case "save":
-                modelAndView.setViewName("redirect:/app/customers");
+                modelAndView.setViewName("redirect:app/customers");
                 break;
             case "saveAndAddPet":
                 redirectAttributes.addFlashAttribute("customer", newCustomer);
@@ -91,7 +91,7 @@ public class CustomerController {
     public ModelAndView update(
             @PathVariable(name = "id") Long id) {
 
-        ModelAndView modelAndView = new ModelAndView("/app/customers/update");
+        ModelAndView modelAndView = new ModelAndView("app/customers/update");
         Map<String, Object> newAttributes = new HashMap<>();
         Customer customerToUpdate = customerRepository.getOne(id);
 
@@ -114,7 +114,7 @@ public class CustomerController {
 
         switch (action) {
             case "save":
-                modelAndView.setViewName("redirect:/app/customers");
+                modelAndView.setViewName("redirect:app/customers");
                 break;
             case "saveAndUpdatePet":
                 redirectAttributes.addFlashAttribute("customer", customerToUpdate);
@@ -133,7 +133,7 @@ public class CustomerController {
 
     @GetMapping("/{id}/delete")
     public ModelAndView delete(@PathVariable Long id) {
-        ModelAndView modelAndView = new ModelAndView("redirect:/app/customers");
+        ModelAndView modelAndView = new ModelAndView("redirect:app/customers");
 
         customerRepository.deleteById(id);
 

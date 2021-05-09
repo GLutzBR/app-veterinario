@@ -20,7 +20,7 @@ public class RoleController {
 
     @GetMapping
     public ModelAndView index() {
-        ModelAndView modelAndView = new ModelAndView("/admin/roles/index");
+        ModelAndView modelAndView = new ModelAndView("admin/roles/index");
         Map<String, Object> newAttributes = new HashMap<>();
         List<Role> roles = roleRepository.findAll();
 
@@ -35,7 +35,7 @@ public class RoleController {
 
     @GetMapping("/{id}")
     public ModelAndView details(@PathVariable(name = "id") Long id){
-        ModelAndView modelAndView = new ModelAndView("/admin/roles/details");
+        ModelAndView modelAndView = new ModelAndView("admin/roles/details");
         Role role = roleRepository.getOne(id);
         Map<String, Object> newAttributes = new HashMap<>();
 

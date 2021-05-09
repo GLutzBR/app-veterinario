@@ -27,7 +27,7 @@ public class AnimalController {
 
     @GetMapping
     public ModelAndView index() {
-        ModelAndView modelAndView = new ModelAndView("/app/animals/index");
+        ModelAndView modelAndView = new ModelAndView("app/animals/index");
         List<Animal> animals = animalRepository.findAll();
         Map<String, Object> newAttributes = new HashMap<>();
 
@@ -42,7 +42,7 @@ public class AnimalController {
 
     @GetMapping("/{id}")
     public ModelAndView details(@PathVariable(name = "id") Long id) {
-        ModelAndView modelAndView = new ModelAndView("/app/animals/details");
+        ModelAndView modelAndView = new ModelAndView("app/animals/details");
         Map<String, Object> newAttributes = new HashMap<>();
         Animal animal = animalRepository.getOne(id);
 
@@ -57,7 +57,7 @@ public class AnimalController {
 
     @GetMapping("/insert")
     public ModelAndView insert() {
-        ModelAndView modelAndView = new ModelAndView("/app/animals/insert");
+        ModelAndView modelAndView = new ModelAndView("app/animals/insert");
         Map<String, Object> newAttributes = new HashMap<>();
         List<Customer> customers = customerRepository.findAll();
 
@@ -73,7 +73,7 @@ public class AnimalController {
 
     @GetMapping("/insert-with-owner")
     public ModelAndView insert(@ModelAttribute(value = "customer") Customer owner) {
-        ModelAndView modelAndView = new ModelAndView("/app/animals/insert-with-owner");
+        ModelAndView modelAndView = new ModelAndView("app/animals/insert-with-owner");
         Map<String, Object> newAttributes = new HashMap<>();
 
         newAttributes.put("title", "Adicionar novo Pet");
@@ -95,11 +95,11 @@ public class AnimalController {
 
         switch (action) {
             case "save":
-                modelAndView.setViewName("redirect:/app/animals");
+                modelAndView.setViewName("redirect:app/animals");
                 break;
             case "saveAndAddPet":
                 redirectAttributes.addFlashAttribute("customer", newAnimal.getOwner());
-                modelAndView.setViewName("redirect:/app/animals/insert-with-owner");
+                modelAndView.setViewName("redirect:app/animals/insert-with-owner");
                 break;
         }
 
@@ -110,7 +110,7 @@ public class AnimalController {
 
     @GetMapping("/{id}/update")
     public ModelAndView update(@PathVariable(name = "id") Long id) {
-        ModelAndView modelAndView = new ModelAndView("/app/animals/update");
+        ModelAndView modelAndView = new ModelAndView("app/animals/update");
         Map<String, Object> newAttributes = new HashMap<>();
         Animal animalToUpdate = animalRepository.getOne(id);
         List<Customer> customers = customerRepository.findAll();
@@ -127,7 +127,7 @@ public class AnimalController {
 
     @PostMapping("/{id}/update")
     public ModelAndView update(@ModelAttribute("animal") Animal animalToUpdate) {
-        ModelAndView modelAndView = new ModelAndView("redirect:/app/animals");
+        ModelAndView modelAndView = new ModelAndView("redirect:app/animals");
 
         animalRepository.save(animalToUpdate);
 
@@ -136,7 +136,7 @@ public class AnimalController {
 
     @GetMapping("/update-with-owner")
     public ModelAndView update(@ModelAttribute(value = "customer") Customer owner) {
-        ModelAndView modelAndView = new ModelAndView("/app/animals/update-with-owner");
+        ModelAndView modelAndView = new ModelAndView("app/animals/update-with-owner");
         Map<String, Object> newAttributes = new HashMap<>();
         AnimalUpdateDto animalsToUpdate = new AnimalUpdateDto(animalRepository.findByOwnerId(owner.getId()));
         List<Customer> customers = customerRepository.findAll();
@@ -153,7 +153,7 @@ public class AnimalController {
 
     @PostMapping("/update")
     public ModelAndView update(@ModelAttribute(value = "animals") AnimalUpdateDto animalsToUpdate) {
-        ModelAndView modelAndView = new ModelAndView("redirect:/app/animals");
+        ModelAndView modelAndView = new ModelAndView("redirect:app/animals");
 
         animalRepository.saveAll(animalsToUpdate.getAnimals());
 
@@ -162,7 +162,7 @@ public class AnimalController {
 
     @GetMapping("/{id}/delete")
     public ModelAndView delete(@PathVariable(name = "id") Long id) {
-        ModelAndView modelAndView = new ModelAndView("redirect:/app/animals");
+        ModelAndView modelAndView = new ModelAndView("redirect:app/animals");
 
         animalRepository.deleteById(id);
 

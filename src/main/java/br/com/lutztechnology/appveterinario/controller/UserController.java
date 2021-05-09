@@ -32,7 +32,7 @@ public class UserController {
 
     @GetMapping
     public ModelAndView index() {
-        ModelAndView modelAndView = new ModelAndView("/admin/users/index");
+        ModelAndView modelAndView = new ModelAndView("admin/users/index");
         Map<String, Object> newAttributes = new HashMap<>();
         List<User> users = userRepository.findAll();
 
@@ -47,7 +47,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ModelAndView details(@PathVariable(name = "id") Long id) {
-        ModelAndView modelAndView = new ModelAndView("/admin/users/details");
+        ModelAndView modelAndView = new ModelAndView("admin/users/details");
         Map<String, Object> newAttributes = new HashMap<>();
         User user = userRepository.getOne(id);
 
@@ -62,7 +62,7 @@ public class UserController {
 
     @GetMapping("/{id}/change-availability")
     public ModelAndView changeActive(@PathVariable(name = "id") Long id) {
-        ModelAndView modelAndView = new ModelAndView("redirect:/admin/users");
+        ModelAndView modelAndView = new ModelAndView("redirect:admin/users");
         User user = userRepository.getOne(id);
 
         user.setActive(!user.getActive());
@@ -74,7 +74,7 @@ public class UserController {
 
     @GetMapping("/insert")
     public ModelAndView insert() {
-        ModelAndView modelAndView = new ModelAndView("/admin/users/insert");
+        ModelAndView modelAndView = new ModelAndView("admin/users/insert");
         Map<String, Object> newAttributes = new HashMap<>();
         List<Role> roles = roleRepository.findAll();
 
@@ -92,7 +92,7 @@ public class UserController {
     public ModelAndView insert(
             @ModelAttribute(name = "user") User newUser) {
 
-        ModelAndView modelAndView = new ModelAndView("redirect:/admin/users");
+        ModelAndView modelAndView = new ModelAndView("redirect:admin/users");
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         boolean isVet = false;
 
@@ -123,7 +123,7 @@ public class UserController {
 
     @GetMapping("/{id}/update")
     public ModelAndView update(@PathVariable(name = "id") Long id) {
-        ModelAndView modelAndView = new ModelAndView("/admin/users/update");
+        ModelAndView modelAndView = new ModelAndView("admin/users/update");
         Map<String, Object> newAttributes = new HashMap<>();
         List<Role> roles = roleRepository.findAll();
         User userToUpdate = userRepository.getOne(id);
@@ -152,7 +152,7 @@ public class UserController {
             @ModelAttribute(name = "user") User userToUpdate,
             @PathVariable(name = "id") Long id) {
 
-        ModelAndView modelAndView = new ModelAndView("redirect:/admin/users");
+        ModelAndView modelAndView = new ModelAndView("redirect:admin/users");
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         User originalUser = userRepository.getOne(id);
         Set<Role> roles = userToUpdate.getRoles();

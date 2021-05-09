@@ -38,7 +38,7 @@ public class MedicalRecordController {
 
     @GetMapping
     public ModelAndView index() {
-        ModelAndView modelAndView = new ModelAndView("/app/medical-records/index");
+        ModelAndView modelAndView = new ModelAndView("app/medical-records/index");
         Map<String, Object> newAttributes = new HashMap<>();
         List<MedicalRecord> medicalRecords = new ArrayList<>();
 
@@ -59,7 +59,7 @@ public class MedicalRecordController {
 
     @GetMapping("/archived")
     public ModelAndView archived() {
-        ModelAndView modelAndView = new ModelAndView("/app/medical-records/archived");
+        ModelAndView modelAndView = new ModelAndView("app/medical-records/archived");
         Map<String, Object> newAttributes = new HashMap<>();
         List<MedicalRecord> medicalRecords = new ArrayList<>();
 
@@ -80,7 +80,7 @@ public class MedicalRecordController {
 
     @GetMapping("/{id}")
     public ModelAndView details(@PathVariable(name = "id") Long id) {
-        ModelAndView modelAndView = new ModelAndView("/app/medical-records/details");
+        ModelAndView modelAndView = new ModelAndView("app/medical-records/details");
         Map<String, Object> newAttributes = new HashMap<>();
         MedicalRecord medicalRecord = medicalRecordRepository.getOne(id);
 
@@ -95,7 +95,7 @@ public class MedicalRecordController {
 
     @GetMapping("/insert")
     public ModelAndView insert() {
-        ModelAndView modelAndView = new ModelAndView("/app/medical-records/insert");
+        ModelAndView modelAndView = new ModelAndView("app/medical-records/insert");
         Map<String, Object> newAttributes = new HashMap<>();
         List<Customer> customers = customerRepository.findAll();
         List<Animal> animals = animalRepository.findAll();
@@ -115,7 +115,7 @@ public class MedicalRecordController {
     public ModelAndView insert(
             @ModelAttribute(name = "medicalRecord") MedicalRecord medicalRecord,
             @AuthenticationPrincipal AppUserDetailsImpl appUserDetails) {
-        ModelAndView modelAndView = new ModelAndView("redirect:/app/medical-records");
+        ModelAndView modelAndView = new ModelAndView("redirect:app/medical-records");
         User user = userRepository.getOne(appUserDetails.getId());
 
         medicalRecord.setUser(user);
@@ -127,7 +127,7 @@ public class MedicalRecordController {
 
     @GetMapping("/{id}/update")
     public ModelAndView update(@PathVariable(name = "id") Long id) {
-        ModelAndView modelAndView = new ModelAndView("/app/medical-records/update");
+        ModelAndView modelAndView = new ModelAndView("app/medical-records/update");
         Map<String, Object> newAttributes = new HashMap<>();
         MedicalRecord medicalRecord = medicalRecordRepository.getOne(id);
         List<Customer> customers = customerRepository.findAll();
@@ -148,7 +148,7 @@ public class MedicalRecordController {
     public ModelAndView update(
             @ModelAttribute("medicalRecord") MedicalRecord medicalRecord,
             @AuthenticationPrincipal AppUserDetailsImpl appUserDetails) {
-        ModelAndView modelAndView = new ModelAndView("redirect:/app/medical-records");
+        ModelAndView modelAndView = new ModelAndView("redirect:app/medical-records");
         User user = userRepository.getOne(appUserDetails.getId());
 
         medicalRecord.setUser(user);
@@ -160,7 +160,7 @@ public class MedicalRecordController {
 
     @GetMapping("/{id}/archive")
     public ModelAndView archive(@PathVariable Long id) {
-        ModelAndView modelAndView = new ModelAndView("redirect:/app/medical-records");
+        ModelAndView modelAndView = new ModelAndView("redirect:app/medical-records");
         MedicalRecord medicalRecord = medicalRecordRepository.getOne(id);
 
         medicalRecord.setArchived(!medicalRecord.getArchived());
@@ -172,7 +172,7 @@ public class MedicalRecordController {
 
     @GetMapping("/{id}/delete")
     public ModelAndView delete(@PathVariable Long id) {
-        ModelAndView modelAndView = new ModelAndView("redirect:/app/medical-records");
+        ModelAndView modelAndView = new ModelAndView("redirect:app/medical-records");
 
         medicalRecordRepository.deleteById(id);
 
