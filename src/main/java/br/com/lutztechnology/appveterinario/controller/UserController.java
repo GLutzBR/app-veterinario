@@ -62,7 +62,7 @@ public class UserController {
 
     @GetMapping("/{id}/change-availability")
     public ModelAndView changeActive(@PathVariable(name = "id") Long id) {
-        ModelAndView modelAndView = new ModelAndView("redirect:admin/users");
+        ModelAndView modelAndView = new ModelAndView("redirect:/admin/users");
         User user = userRepository.getOne(id);
 
         user.setActive(!user.getActive());
@@ -92,7 +92,7 @@ public class UserController {
     public ModelAndView insert(
             @ModelAttribute(name = "user") User newUser) {
 
-        ModelAndView modelAndView = new ModelAndView("redirect:admin/users");
+        ModelAndView modelAndView = new ModelAndView("redirect:/admin/users");
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         boolean isVet = false;
 
@@ -152,7 +152,7 @@ public class UserController {
             @ModelAttribute(name = "user") User userToUpdate,
             @PathVariable(name = "id") Long id) {
 
-        ModelAndView modelAndView = new ModelAndView("redirect:admin/users");
+        ModelAndView modelAndView = new ModelAndView("redirect:/admin/users");
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         User originalUser = userRepository.getOne(id);
         Set<Role> roles = userToUpdate.getRoles();

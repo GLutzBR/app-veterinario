@@ -95,11 +95,11 @@ public class AnimalController {
 
         switch (action) {
             case "save":
-                modelAndView.setViewName("redirect:app/animals");
+                modelAndView.setViewName("redirect:/app/animals");
                 break;
             case "saveAndAddPet":
                 redirectAttributes.addFlashAttribute("customer", newAnimal.getOwner());
-                modelAndView.setViewName("redirect:app/animals/insert-with-owner");
+                modelAndView.setViewName("redirect:/app/animals/insert-with-owner");
                 break;
         }
 
@@ -127,7 +127,7 @@ public class AnimalController {
 
     @PostMapping("/{id}/update")
     public ModelAndView update(@ModelAttribute("animal") Animal animalToUpdate) {
-        ModelAndView modelAndView = new ModelAndView("redirect:app/animals");
+        ModelAndView modelAndView = new ModelAndView("redirect:/app/animals");
 
         animalRepository.save(animalToUpdate);
 
@@ -153,7 +153,7 @@ public class AnimalController {
 
     @PostMapping("/update")
     public ModelAndView update(@ModelAttribute(value = "animals") AnimalUpdateDto animalsToUpdate) {
-        ModelAndView modelAndView = new ModelAndView("redirect:app/animals");
+        ModelAndView modelAndView = new ModelAndView("redirect:/app/animals");
 
         animalRepository.saveAll(animalsToUpdate.getAnimals());
 
@@ -162,7 +162,7 @@ public class AnimalController {
 
     @GetMapping("/{id}/delete")
     public ModelAndView delete(@PathVariable(name = "id") Long id) {
-        ModelAndView modelAndView = new ModelAndView("redirect:app/animals");
+        ModelAndView modelAndView = new ModelAndView("redirect:/app/animals");
 
         animalRepository.deleteById(id);
 

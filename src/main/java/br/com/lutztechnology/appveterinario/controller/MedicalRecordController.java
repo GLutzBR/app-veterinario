@@ -115,7 +115,7 @@ public class MedicalRecordController {
     public ModelAndView insert(
             @ModelAttribute(name = "medicalRecord") MedicalRecord medicalRecord,
             @AuthenticationPrincipal AppUserDetailsImpl appUserDetails) {
-        ModelAndView modelAndView = new ModelAndView("redirect:app/medical-records");
+        ModelAndView modelAndView = new ModelAndView("redirect:/app/medical-records");
         User user = userRepository.getOne(appUserDetails.getId());
 
         medicalRecord.setUser(user);
@@ -148,7 +148,7 @@ public class MedicalRecordController {
     public ModelAndView update(
             @ModelAttribute("medicalRecord") MedicalRecord medicalRecord,
             @AuthenticationPrincipal AppUserDetailsImpl appUserDetails) {
-        ModelAndView modelAndView = new ModelAndView("redirect:app/medical-records");
+        ModelAndView modelAndView = new ModelAndView("redirect:/app/medical-records");
         User user = userRepository.getOne(appUserDetails.getId());
 
         medicalRecord.setUser(user);
@@ -160,7 +160,7 @@ public class MedicalRecordController {
 
     @GetMapping("/{id}/archive")
     public ModelAndView archive(@PathVariable Long id) {
-        ModelAndView modelAndView = new ModelAndView("redirect:app/medical-records");
+        ModelAndView modelAndView = new ModelAndView("redirect:/app/medical-records");
         MedicalRecord medicalRecord = medicalRecordRepository.getOne(id);
 
         medicalRecord.setArchived(!medicalRecord.getArchived());
@@ -172,7 +172,7 @@ public class MedicalRecordController {
 
     @GetMapping("/{id}/delete")
     public ModelAndView delete(@PathVariable Long id) {
-        ModelAndView modelAndView = new ModelAndView("redirect:app/medical-records");
+        ModelAndView modelAndView = new ModelAndView("redirect:/app/medical-records");
 
         medicalRecordRepository.deleteById(id);
 

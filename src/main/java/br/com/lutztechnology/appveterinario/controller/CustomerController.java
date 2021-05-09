@@ -74,7 +74,7 @@ public class CustomerController {
 
         switch (action) {
             case "save":
-                modelAndView.setViewName("redirect:app/customers");
+                modelAndView.setViewName("redirect:/app/customers");
                 break;
             case "saveAndAddPet":
                 redirectAttributes.addFlashAttribute("customer", newCustomer);
@@ -114,7 +114,7 @@ public class CustomerController {
 
         switch (action) {
             case "save":
-                modelAndView.setViewName("redirect:app/customers");
+                modelAndView.setViewName("redirect:/app/customers");
                 break;
             case "saveAndUpdatePet":
                 redirectAttributes.addFlashAttribute("customer", customerToUpdate);
@@ -133,7 +133,7 @@ public class CustomerController {
 
     @GetMapping("/{id}/delete")
     public ModelAndView delete(@PathVariable Long id) {
-        ModelAndView modelAndView = new ModelAndView("redirect:app/customers");
+        ModelAndView modelAndView = new ModelAndView("redirect:/app/customers");
 
         customerRepository.deleteById(id);
 
