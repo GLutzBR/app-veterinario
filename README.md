@@ -11,7 +11,8 @@ Detalhes do que foi desenvolvido encontra-se na [documentação](docs).
 
 ## Pré Requisitos
 
-- Java JDK 11
+- Docker
+- Docker Compose
 - mkcert
 
 ## Como usar
@@ -27,8 +28,18 @@ Após a instalação gere o certificado raiz com o comando
 mkcert -install
 ```
 
-Rode o seguinte comando na raiz deste projeto clonado
+Depois, rode o seguinte comando na raiz deste projeto clonado
 
 ```shell
 mkcert -pkcs12 -p12-file ./src/main/resources/app-veterinario.p12 "localhost"
 ```
+
+Pronto, o projeto já possui um certificado auto assinado válido quando acessado pelo nome "localhost"
+
+Para subir a aplicação execute o seguinte comando.
+
+```shell
+docker-compose up -d
+```
+
+A aplicação estará disponível na porta **8443**.
