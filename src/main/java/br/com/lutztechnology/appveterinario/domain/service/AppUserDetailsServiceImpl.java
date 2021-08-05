@@ -1,7 +1,7 @@
 package br.com.lutztechnology.appveterinario.domain.service;
 
-import br.com.lutztechnology.appveterinario.domain.model.User;
-import br.com.lutztechnology.appveterinario.domain.repository.UserRepository;
+import br.com.lutztechnology.appveterinario.domain.model.Employee;
+import br.com.lutztechnology.appveterinario.domain.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,16 +12,14 @@ import org.springframework.stereotype.Service;
 public class AppUserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-    private UserRepository userRepository;
+    private EmployeeRepository employeeRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Employee employee = employeeRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found."));
 
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found.");
-        }
 
-        return new AppUserDetailsImpl(user);
+        return new AppUserDetailsImpl(employee);
     }
 }

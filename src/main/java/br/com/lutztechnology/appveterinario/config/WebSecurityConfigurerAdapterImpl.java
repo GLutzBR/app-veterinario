@@ -1,4 +1,4 @@
-package br.com.lutztechnology.appveterinario.security;
+package br.com.lutztechnology.appveterinario.config;
 
 import br.com.lutztechnology.appveterinario.domain.service.AppUserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +22,13 @@ public class WebSecurityConfigurerAdapterImpl extends WebSecurityConfigurerAdapt
     @Autowired
     private AppUserDetailsServiceImpl appUserDetailsService;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(authenticationProvider());
+        auth.userDetailsService(appUserDetailsService)
+                .passwordEncoder(passwordEncoder);
     }
 
     @Override
@@ -55,20 +59,5 @@ public class WebSecurityConfigurerAdapterImpl extends WebSecurityConfigurerAdapt
                 .cors()
                 .and()
                 .csrf().disable();
-    }
-
-    @Bean
-    PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-
-        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
-        daoAuthenticationProvider.setUserDetailsService(this.appUserDetailsService);
-
-        return daoAuthenticationProvider;
     }
 }
