@@ -1,15 +1,13 @@
-package br.com.lutztechnology.appveterinario.domain.model;
+package br.com.lutztechnology.appveterinario.model;
 
-import br.com.lutztechnology.appveterinario.domain.serialization.RoleSerializer;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.*;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Set;
 
-@JsonSerialize(using = RoleSerializer.class)
 @Entity
 @Table(name = "roles")
 @NoArgsConstructor @AllArgsConstructor

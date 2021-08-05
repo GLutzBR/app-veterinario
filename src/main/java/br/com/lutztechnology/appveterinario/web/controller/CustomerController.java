@@ -1,7 +1,7 @@
 package br.com.lutztechnology.appveterinario.web.controller;
 
-import br.com.lutztechnology.appveterinario.domain.dto.AlertDTO;
-import br.com.lutztechnology.appveterinario.domain.model.Customer;
+import br.com.lutztechnology.appveterinario.dto.AlertDTO;
+import br.com.lutztechnology.appveterinario.model.Customer;
 import br.com.lutztechnology.appveterinario.exceptions.CustomerNotFoundException;
 import br.com.lutztechnology.appveterinario.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;

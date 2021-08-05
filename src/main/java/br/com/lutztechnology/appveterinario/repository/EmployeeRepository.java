@@ -1,7 +1,7 @@
-package br.com.lutztechnology.appveterinario.domain.repository;
+package br.com.lutztechnology.appveterinario.repository;
 
-import br.com.lutztechnology.appveterinario.domain.model.Employee;
-import br.com.lutztechnology.appveterinario.domain.model.Role;
+import br.com.lutztechnology.appveterinario.model.Employee;
+import br.com.lutztechnology.appveterinario.model.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

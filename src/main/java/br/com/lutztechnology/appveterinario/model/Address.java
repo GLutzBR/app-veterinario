@@ -1,10 +1,7 @@
-package br.com.lutztechnology.appveterinario.domain.model;
+package br.com.lutztechnology.appveterinario.model;
 
-import br.com.lutztechnology.appveterinario.domain.enums.State;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import br.com.lutztechnology.appveterinario.enums.State;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,6 +12,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Entity
+@Builder
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor

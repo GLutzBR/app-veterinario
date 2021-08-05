@@ -1,4 +1,4 @@
-package br.com.lutztechnology.appveterinario.domain.model;
+package br.com.lutztechnology.appveterinario.model;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

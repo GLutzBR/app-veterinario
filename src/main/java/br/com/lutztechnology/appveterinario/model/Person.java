@@ -1,9 +1,6 @@
-package br.com.lutztechnology.appveterinario.domain.model;
+package br.com.lutztechnology.appveterinario.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -14,7 +11,6 @@ import java.time.LocalDate;
 
 @MappedSuperclass
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter @Setter
 public abstract class Person extends BaseEntity {
 
@@ -54,4 +50,18 @@ public abstract class Person extends BaseEntity {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "address_id_fk", nullable = false)
     private Address address;
+
+    public Person(String email,
+                  String name,
+                  String cpf,
+                  String phone,
+                  LocalDate birthDate,
+                  Address address) {
+        this.email = email;
+        this.name = name;
+        this.cpf = cpf;
+        this.phone = phone;
+        this.birthDate = birthDate;
+        this.address = address;
+    }
 }

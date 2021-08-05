@@ -1,7 +1,6 @@
-package br.com.lutztechnology.appveterinario.domain.model;
+package br.com.lutztechnology.appveterinario.model;
 
-import br.com.lutztechnology.appveterinario.domain.serialization.AnimalSerializer;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -13,7 +12,6 @@ import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.List;
 
-@JsonSerialize(using = AnimalSerializer.class)
 @Entity
 @Table(name = "animals")
 @NoArgsConstructor @AllArgsConstructor
@@ -35,12 +33,14 @@ public class Animal extends BaseEntity {
     @Column(nullable = false, length = 20)
     private String breed;
 
+    @JsonIgnore
     @Valid
     @NotNull
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "owner_id_fk", nullable = false)
     private Customer owner;
 
-    @OneToMany(mappedBy = "animal", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @JsonIgnore
+    @OneToMany(mappedBy = "animal", fetch = FetchType.LAZY)
     private List<MedicalRecord> medicalRecords;
 }

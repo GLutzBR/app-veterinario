@@ -1,7 +1,5 @@
-package br.com.lutztechnology.appveterinario.domain.model;
+package br.com.lutztechnology.appveterinario.model;
 
-import br.com.lutztechnology.appveterinario.domain.serialization.MedicalRecordSerializer;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -11,7 +9,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import java.time.LocalDate;
 
-@JsonSerialize(using = MedicalRecordSerializer.class)
 @Entity
 @Table(name = "medical_records")
 @NoArgsConstructor @AllArgsConstructor

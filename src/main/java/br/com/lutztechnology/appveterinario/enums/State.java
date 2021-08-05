@@ -1,4 +1,4 @@
-package br.com.lutztechnology.appveterinario.domain.enums;
+package br.com.lutztechnology.appveterinario.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

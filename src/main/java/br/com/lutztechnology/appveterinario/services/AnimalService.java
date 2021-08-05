@@ -1,7 +1,7 @@
 package br.com.lutztechnology.appveterinario.services;
 
-import br.com.lutztechnology.appveterinario.domain.model.Animal;
-import br.com.lutztechnology.appveterinario.domain.repository.AnimalRepository;
+import br.com.lutztechnology.appveterinario.model.Animal;
+import br.com.lutztechnology.appveterinario.repository.AnimalRepository;
 import br.com.lutztechnology.appveterinario.exceptions.AnimalHasMedicalRecordsException;
 import br.com.lutztechnology.appveterinario.exceptions.AnimalNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;

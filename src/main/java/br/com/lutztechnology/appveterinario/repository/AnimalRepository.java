@@ -1,6 +1,6 @@
-package br.com.lutztechnology.appveterinario.domain.repository;
+package br.com.lutztechnology.appveterinario.repository;
 
-import br.com.lutztechnology.appveterinario.domain.model.Animal;
+import br.com.lutztechnology.appveterinario.model.Animal;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

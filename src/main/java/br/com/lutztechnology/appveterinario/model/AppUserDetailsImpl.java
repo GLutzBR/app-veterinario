@@ -1,15 +1,12 @@
-package br.com.lutztechnology.appveterinario.domain.service;
+package br.com.lutztechnology.appveterinario.model;
 
-import br.com.lutztechnology.appveterinario.domain.enums.Role;
-import br.com.lutztechnology.appveterinario.domain.model.Employee;
+import br.com.lutztechnology.appveterinario.enums.Role;
+import br.com.lutztechnology.appveterinario.model.Employee;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 public class AppUserDetailsImpl implements UserDetails {
 

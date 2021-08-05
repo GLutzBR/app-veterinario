@@ -1,9 +1,7 @@
-package br.com.lutztechnology.appveterinario.domain.model;
+package br.com.lutztechnology.appveterinario.model;
 
-import br.com.lutztechnology.appveterinario.domain.enums.State;
-import br.com.lutztechnology.appveterinario.domain.serialization.UserSerializer;
+import br.com.lutztechnology.appveterinario.enums.State;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -15,9 +13,8 @@ import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.List;
 
-@JsonSerialize(using = UserSerializer.class)
 @Entity
-@NoArgsConstructor @AllArgsConstructor
+@NoArgsConstructor
 @ToString
 @Getter @Setter
 public class Employee extends Person {
@@ -57,4 +54,30 @@ public class Employee extends Person {
     @OneToMany(mappedBy = "veterinarian")
     private List<MedicalRecord> medicalRecords;
 
+    public Employee(String email,
+                    String name,
+                    String cpf,
+                    String phone,
+                    LocalDate birthDate,
+                    Address address,
+                    String password,
+                    LocalDate admissionDate,
+                    LocalDate resignationDate,
+                    Boolean active,
+                    String specialty,
+                    State crmvState,
+                    String crmv,
+                    Role role,
+                    List<MedicalRecord> medicalRecords) {
+        super(email, name, cpf, phone, birthDate, address);
+        this.password = password;
+        this.admissionDate = admissionDate;
+        this.resignationDate = resignationDate;
+        this.active = active;
+        this.specialty = specialty;
+        this.crmvState = crmvState;
+        this.crmv = crmv;
+        this.role = role;
+        this.medicalRecords = medicalRecords;
+    }
 }

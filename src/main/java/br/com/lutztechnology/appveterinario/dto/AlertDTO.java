@@ -1,4 +1,4 @@
-package br.com.lutztechnology.appveterinario.domain.dto;
+package br.com.lutztechnology.appveterinario.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

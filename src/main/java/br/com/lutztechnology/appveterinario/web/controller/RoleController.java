@@ -1,7 +1,7 @@
 package br.com.lutztechnology.appveterinario.web.controller;
 
-import br.com.lutztechnology.appveterinario.domain.dto.AlertDTO;
-import br.com.lutztechnology.appveterinario.domain.model.Role;
+import br.com.lutztechnology.appveterinario.dto.AlertDTO;
+import br.com.lutztechnology.appveterinario.model.Role;
 import br.com.lutztechnology.appveterinario.exceptions.AppRoleNotFoundException;
 import br.com.lutztechnology.appveterinario.exceptions.RoleHasEmployeesException;
 import br.com.lutztechnology.appveterinario.services.RoleService;

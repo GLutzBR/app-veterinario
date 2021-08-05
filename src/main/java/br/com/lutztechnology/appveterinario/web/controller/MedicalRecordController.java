@@ -1,13 +1,13 @@
 package br.com.lutztechnology.appveterinario.web.controller;
 
-import br.com.lutztechnology.appveterinario.domain.dto.AlertDTO;
-import br.com.lutztechnology.appveterinario.domain.model.Animal;
-import br.com.lutztechnology.appveterinario.domain.model.Customer;
-import br.com.lutztechnology.appveterinario.domain.model.MedicalRecord;
-import br.com.lutztechnology.appveterinario.domain.repository.AnimalRepository;
-import br.com.lutztechnology.appveterinario.domain.repository.CustomerRepository;
-import br.com.lutztechnology.appveterinario.domain.repository.MedicalRecordRepository;
-import br.com.lutztechnology.appveterinario.domain.service.AppUserDetailsImpl;
+import br.com.lutztechnology.appveterinario.dto.AlertDTO;
+import br.com.lutztechnology.appveterinario.model.Animal;
+import br.com.lutztechnology.appveterinario.model.Customer;
+import br.com.lutztechnology.appveterinario.model.MedicalRecord;
+import br.com.lutztechnology.appveterinario.repository.AnimalRepository;
+import br.com.lutztechnology.appveterinario.repository.CustomerRepository;
+import br.com.lutztechnology.appveterinario.repository.MedicalRecordRepository;
+import br.com.lutztechnology.appveterinario.model.AppUserDetailsImpl;
 import br.com.lutztechnology.appveterinario.exceptions.MedicalRecordNotFoundException;
 import br.com.lutztechnology.appveterinario.services.EmployeeService;
 import br.com.lutztechnology.appveterinario.services.MedicalRecordService;
@@ -197,7 +197,7 @@ public class MedicalRecordController {
     public @ResponseBody
     List<MedicalRecord> search(@RequestParam(name = "patient") String patient) {
         List<MedicalRecord> medicalRecords = new ArrayList<>();
-        for (MedicalRecord medicalRecord : medicalRecordRepository.findByPetName(patient)) {
+        for (MedicalRecord medicalRecord : medicalRecordRepository.findByAnimalName(patient)) {
             if (!medicalRecord.getArchived()) {
                 medicalRecords.add(medicalRecord);
             }
@@ -209,7 +209,7 @@ public class MedicalRecordController {
     public @ResponseBody
     List<MedicalRecord> searchArchived(@RequestParam(name = "patient") String patient) {
         List<MedicalRecord> medicalRecords = new ArrayList<>();
-        for (MedicalRecord medicalRecord : medicalRecordRepository.findByPetName(patient)) {
+        for (MedicalRecord medicalRecord : medicalRecordRepository.findByAnimalName(patient)) {
             if (medicalRecord.getArchived()) {
                 medicalRecords.add(medicalRecord);
             }

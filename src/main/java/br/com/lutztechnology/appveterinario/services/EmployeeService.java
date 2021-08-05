@@ -1,7 +1,7 @@
 package br.com.lutztechnology.appveterinario.services;
 
-import br.com.lutztechnology.appveterinario.domain.model.Employee;
-import br.com.lutztechnology.appveterinario.domain.repository.EmployeeRepository;
+import br.com.lutztechnology.appveterinario.model.Employee;
+import br.com.lutztechnology.appveterinario.repository.EmployeeRepository;
 import br.com.lutztechnology.appveterinario.exceptions.EmployeeNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
