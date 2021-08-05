@@ -34,6 +34,12 @@ public class MedicalRecord extends BaseEntity {
 
     @Valid
     @NotNull
+    @ManyToOne
+    @JoinColumn(name = "customer_id_fk", nullable = false)
+    private Customer customer;
+
+    @Valid
+    @NotNull
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "animal_id_fk", nullable = false)
     private Animal animal;

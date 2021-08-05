@@ -18,4 +18,7 @@ public class Customer extends Person {
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY, cascade = CascadeType.MERGE, orphanRemoval = true)
     private List<Animal> pets;
 
+    @OneToMany(mappedBy = "customer")
+    private List<MedicalRecord> medicalRecords;
+
 }

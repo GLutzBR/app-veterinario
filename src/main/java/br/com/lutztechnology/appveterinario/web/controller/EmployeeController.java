@@ -98,7 +98,7 @@ public class EmployeeController {
                     new AlertDTO(
                             "Funcionário cadastrado com sucesso!",
                             "alert-success"));
-        } catch (AppRoleNotFoundException e) {
+        } catch (Exception e) {
             attrs.addFlashAttribute(
                     "alert",
                     new AlertDTO(
