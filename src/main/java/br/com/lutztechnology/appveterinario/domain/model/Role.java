@@ -5,38 +5,20 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Objects;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 @JsonSerialize(using = RoleSerializer.class)
 @Entity
 @Table(name = "roles")
 @NoArgsConstructor @AllArgsConstructor
-@EqualsAndHashCode(exclude = "users")
-@ToString(exclude = "users")
-public class Role {
+@ToString
+@Getter @Setter
+public class Role extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Getter @Setter
-    private Long id;
-
-    @Column(nullable = false, length = 20, unique = true)
-    @Getter @Setter
-    private String type;
-
-    @Column(nullable = false, length = 20)
-    @Getter @Setter
+    @NotNull
+    @Size(min = 3, max = 40)
+    @Column(nullable = false, length = 40, unique = true)
     private String name;
-
-    // TODO: Adicionar campo de descrição do nível de acesso
-
-    @ManyToMany(mappedBy = "roles", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-    @Getter @Setter
-    private Set<User> users;
-
-    public Role(String type, String name) {
-        this.type = type;
-        this.name = name;
-    }
 }

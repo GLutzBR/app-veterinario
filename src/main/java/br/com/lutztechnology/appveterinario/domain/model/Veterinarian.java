@@ -5,8 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Objects;
-
+//TODO: excluir classe
 @JsonSerialize(using = VeterinarianSerializer.class)
 @Entity
 @Table(name = "veterinarians")
@@ -36,7 +35,7 @@ public class Veterinarian {
 
     @OneToOne(mappedBy = "veterinarian")
     @Getter @Setter
-    private User user;
+    private Employee user;
 
     public Veterinarian(String specialty, String crmvState, String crmv) {
         this.specialty = specialty;
