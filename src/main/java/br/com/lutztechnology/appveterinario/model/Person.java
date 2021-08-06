@@ -1,6 +1,9 @@
 package br.com.lutztechnology.appveterinario.model;
 
-import lombok.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -46,6 +49,7 @@ public abstract class Person extends BaseEntity {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate birthDate;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @Valid
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "address_id_fk", nullable = false)

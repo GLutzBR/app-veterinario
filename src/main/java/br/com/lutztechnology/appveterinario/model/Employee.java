@@ -2,7 +2,10 @@ package br.com.lutztechnology.appveterinario.model;
 
 import br.com.lutztechnology.appveterinario.enums.State;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -44,6 +47,7 @@ public class Employee extends Person {
 
     private String crmv;
 
+    @JsonIgnore
     @Valid
     @NotNull
     @ManyToOne

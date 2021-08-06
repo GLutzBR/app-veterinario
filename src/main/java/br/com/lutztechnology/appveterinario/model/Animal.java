@@ -14,7 +14,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "animals")
-@NoArgsConstructor @AllArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 @ToString(exclude = {"owner", "medicalRecords"})
 @Getter @Setter
 public class Animal extends BaseEntity {
@@ -30,6 +31,8 @@ public class Animal extends BaseEntity {
     private LocalDate age;
 
     // TODO: Criar model de raças para organização e padronização das raças que são cadastradas no sistema
+    @NotNull
+    @Size(min = 3, max = 20)
     @Column(nullable = false, length = 20)
     private String breed;
 

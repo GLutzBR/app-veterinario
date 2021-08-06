@@ -1,5 +1,6 @@
 package br.com.lutztechnology.appveterinario.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -11,7 +12,8 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "medical_records")
-@NoArgsConstructor @AllArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 @ToString(exclude = {"animal", "veterinarian"})
 @Getter @Setter
 public class MedicalRecord extends BaseEntity {
@@ -29,21 +31,24 @@ public class MedicalRecord extends BaseEntity {
     @Column(nullable = false)
     private Boolean archived = false;
 
+    @JsonIgnore
     @Valid
     @NotNull
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id_fk", nullable = false)
     private Customer customer;
 
+    @JsonIgnore
     @Valid
     @NotNull
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "animal_id_fk", nullable = false)
     private Animal animal;
 
+    @JsonIgnore
     @Valid
     @NotNull
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "employee_id_fk")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "employee_id_fk", nullable = false)
     private Employee veterinarian;
 }

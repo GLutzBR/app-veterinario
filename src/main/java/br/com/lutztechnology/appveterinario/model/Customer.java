@@ -8,8 +8,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "customers")
-@NoArgsConstructor @AllArgsConstructor
-@ToString(exclude = "pets")
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString(exclude = {"pets", "medicalRecords"})
 @Getter @Setter
 public class Customer extends Person {
 
