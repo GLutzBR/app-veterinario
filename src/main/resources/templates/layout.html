@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="pt-br"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:fragment="layout (title, content, styles, scripts)">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>App Veterinário | <th:block th:include="${title}"> Dashboard </th:block> </title>
+
+  <!-- FontAwesome 5.10.0 -->
+  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
+        crossorigin="anonymous"/>
+
+  <!-- Bootstrap 5.0.1 CSS -->
+  <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.0.1/css/bootstrap.min.css}">
+
+  <!-- Custom CSS -->
+  <link th:rel="stylesheet" th:href="@{/css/custom.css}"/>
+
+  <link th:rel="stylesheet"
+        th:href="@{/css/login.css}"/>
+</head>
+<body>
+
+<!-- Navbar -->
+<header th:replace="~{fragments/_navbar :: nav}"></header>
+
+<!-- Page Header -->
+<div th:replace="~{fragments/_header :: content-header (${title})}"></div>
+
+<!-- Main Content -->
+<section class="container">
+  <!-- Flash Container -->
+  <div class="alert alert-dismissible fade show" role="alert" th:classappend="${alert.cssClass}"
+       th:if="${alert != null}">
+    <span th:text="${alert.message}"></span>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="container-fluid" th:include="${content}"></div>
+</section>
+
+<footer th:replace="~{fragments/_footer :: footer}"></footer>
+
+<!-- Bootstrap 5.0.1 JS -->
+<script th:src="@{/webjars/popper.js/2.9.2/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/5.0.1/js/bootstrap.min.js}"></script>
+
+<th:block th:replace="${scripts}"></th:block>
+
+</body>
+</html>

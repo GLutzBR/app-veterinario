@@ -1,18 +1,15 @@
 <!DOCTYPE html>
 <html lang="pt-br"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="~{base/base :: baseHead}">
-  <title></title>
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{layout :: layout (~{::title}, ~{::main}, _, _)}">
+<head>
+  <title>Home</title>
 </head>
 <body>
-<header th:replace="~{base/base :: navbar}"></header>
 
-<main class="container">
-  <h1 th:text="${title}">Home Page</h1>
+<main>
 </main>
-
-<footer th:replace="~{base/base :: copyright}"></footer>
 
 </body>
 </html>
