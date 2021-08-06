@@ -2,9 +2,12 @@
 <html lang="pt-br"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-      th:replace="~{layout :: layout (~{::title}, ~{::main}, _, _)}">
+      th:replace="~{layout :: layout (~{::title}, ~{::main}, ~{::styles}, _)}">
 <head>
   <title>Login</title>
+  <th:block th:fragment="styles">
+    <link th:rel="stylesheet" th:href="@{/css/login.css}"/>
+  </th:block>
 </head>
 <body>
 
