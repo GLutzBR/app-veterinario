@@ -1,7 +1,6 @@
 package br.com.lutztechnology.appveterinario.model;
 
 import br.com.lutztechnology.appveterinario.enums.Role;
-import br.com.lutztechnology.appveterinario.model.Employee;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,7 +29,7 @@ public class AppUserDetailsImpl implements UserDetails {
                 role = Role.USER;
         }
 
-        return AuthorityUtils.createAuthorityList(role.name());
+        return AuthorityUtils.createAuthorityList("ROLE_" + role);
     }
 
     @Override
