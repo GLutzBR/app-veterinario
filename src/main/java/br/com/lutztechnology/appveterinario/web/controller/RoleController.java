@@ -1,9 +1,9 @@
 package br.com.lutztechnology.appveterinario.web.controller;
 
 import br.com.lutztechnology.appveterinario.dto.AlertDTO;
-import br.com.lutztechnology.appveterinario.model.Role;
 import br.com.lutztechnology.appveterinario.exceptions.AppRoleNotFoundException;
 import br.com.lutztechnology.appveterinario.exceptions.RoleHasEmployeesException;
+import br.com.lutztechnology.appveterinario.model.Role;
 import br.com.lutztechnology.appveterinario.services.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,16 +28,6 @@ public class RoleController {
 
         modelAndView.addObject("isAdmin", true);
         modelAndView.addObject("roles", roleService.searchAll());
-
-        return modelAndView;
-    }
-
-    @GetMapping("/{id}")
-    public ModelAndView details(@PathVariable Long id){
-        ModelAndView modelAndView = new ModelAndView("admin/roles/details");
-
-        modelAndView.addObject("isAdmin", true);
-        modelAndView.addObject("role", roleService.searchById(id));
 
         return modelAndView;
     }
@@ -147,7 +137,7 @@ public class RoleController {
     }
 
     @GetMapping(value = "/search", produces = "application/json")
-    public @ResponseBody List<Role> search(@RequestParam(name = "name", defaultValue = "") String roleName) {
-        return roleService.searchByName(roleName);
+    public @ResponseBody List<Role> search(@RequestParam(name = "name", defaultValue = "") String name) {
+        return roleService.searchByName(name);
     }
 }
