@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<fieldset th:fragment="address-form">
+  <legend>Endereço</legend>
+
+  <input type="hidden" th:field="*{address.id}">
+
+  <div class="row">
+    <div class="col-md-4 col-sm-12">
+      <div class="form-group">
+        <label for="cep" class="form-label">CEP:</label>
+        <input type="text" class="form-control" id="cep" placeholder="22743-080"
+               th:field="*{address.cep}">
+        <ul>
+          <li class="text-danger" th:each="error : ${#fields.errors('address.cep')}"
+              th:text="${error}"></li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-md-4 col-sm-12">
+      <div class="form-group">
+        <label for="state" class="form-label">Estado:</label>
+        <select th:field="*{address.state}" class="form-control" style="width: 100%;" id="state">
+          <option th:each="state : ${states}" th:text="${state}" th:value="${state}"></option>
+        </select>
+        <ul>
+          <li class="text-danger" th:each="error : ${#fields.errors('address.state')}"
+              th:text="${error}"></li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-md-4 col-sm-12">
+      <div class="form-group">
+        <label for="city" class="form-label">Cidade:</label>
+        <input type="text" class="form-control" id="city" placeholder="Rio de Janeiro"
+               th:field="*{address.city}">
+        <ul>
+          <li class="text-danger" th:each="error : ${#fields.errors('address.city')}"
+              th:text="${error}"></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4 col-sm-12">
+      <div class="form-group">
+        <label for="district" class="form-label">Bairro:</label>
+        <input type="text" class="form-control" id="district" placeholder="Pechincha"
+               th:field="*{address.district}">
+        <ul>
+          <li class="text-danger" th:each="error : ${#fields.errors('address.district')}"
+              th:text="${error}"></li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-md-4 col-sm-12">
+      <div class="form-group">
+        <label for="publicPlace" class="form-label">Logradouro</label>
+        <input type="text" class="form-control" id="publicPlace" placeholder="Rua José Silva"
+               th:field="*{address.publicPlace}">
+        <ul>
+          <li class="text-danger" th:each="error : ${#fields.errors('address.publicPlace')}"
+              th:text="${error}"></li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-md-4 col-sm-12">
+      <div class="form-group">
+        <label for="number" class="form-label">Número:</label>
+        <input type="text" class="form-control" id="number" placeholder="" th:field="*{address.number}">
+        <ul>
+          <li class="text-danger" th:each="error : ${#fields.errors('address.number')}"
+              th:text="${error}"></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-sm-12">
+      <div class="form-group">
+        <label for="complement" class="form-label">Complemento</label>
+        <input type="text" class="form-control" id="complement" placeholder="Bloco 8"
+               th:field="*{address.complement}">
+      </div>
+    </div>
+  </div>
+</fieldset>
+
+</html>

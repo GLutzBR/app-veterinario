@@ -1,62 +1,121 @@
 <!DOCTYPE html>
 <html lang="pt-br"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="~{base/base :: baseHead}">
-  <title></title>
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{layout :: layout (~{::title}, ~{::main}, _, ~{::scripts})}">
+<head>
+  <title>Detalhes</title>
 </head>
 <body>
-<header th:replace="~{base/base :: navbar}"></header>
 
-<main class="container">
-  <div class="row">
-    <div class="col-sm-12">
-      <h1 th:text="${title}"></h1>
-    </div>
-  </div>
+<main>
   <div class="row">
     <div class="col-sm-12 mb-3">
-      <div class="card" th:object="${user}">
-        <div class="card-header" th:text="*{username}"></div>
-        <div class="card-body">
-          <h5 class="card-title" th:text="*{firstName} + ' ' + *{lastName}"></h5>
-          <p class="card-text">
-            <b>Estado:</b> <span th:text="*{active} ? 'Habilitado' : 'Desabilitado'"></span>
-          </p>
-          <p class="card-text"><b>Permissões:</b> <span th:each="role, index : *{roles}"
-                                                        th:text="${index.last} ? ${role.name} : ${role.name} + ', '"></span>
-          </p>
+      <div class="row">
+        <div class="col-md-3">
+
+          <!-- Profile Image -->
+          <div class="card card-primary card-outline">
+            <div class="card-body box-profile">
+              <div class="text-center">
+                <img alt="User profile picture" class="profile-user-img img-fluid img-circle" id="profile-user-img">
+              </div>
+
+              <h3 class="profile-username text-center" th:text="${employee.name}"></h3>
+            </div>
+          </div>
+          <div class="card card-primary">
+            <div class="card-header">
+              <h3 class="card-title">Dados Pessoais</h3>
+            </div>
+
+            <div class="card-body">
+              <div sec:authorize="hasRole('ADMIN')">
+                <strong><i class="fas fa-calendar-alt mr-1"></i> Data de nascimento</strong>
+                <p class="text-muted" th:text="${#temporals.format(employee.birthDate)}"></p>
+
+                <strong><i class="fas fa-book mr-1"></i> CPF</strong>
+                <p class="text-muted" th:text="${employee.cpf}"></p>
+              </div>
+
+              <strong><i class="fas fa-mobile mr-1"></i> Telefone</strong>
+              <p class="text-muted" th:text="${employee.phone}"></p>
+
+              <strong><i class="fas fa-envelope mr-1"></i> E-mail</strong>
+              <p class="text-muted" id="email" th:text="${employee.email}"></p>
+
+              <hr>
+
+              <div sec:authorize="hasRole('ADMIN')">
+                <strong><i class="fas fa-map-marker-alt mr-1"></i> Endereço</strong>
+                <p class="text-muted" th:text="${employee.address}"></p>
+              </div>
+            </div>
+          </div>
+          <div class="card card-primary" th:if="${employee.role.name == 'Veterinário'}">
+            <div class="card-header">
+              <h3 class="card-title">Dados Veterinário</h3>
+            </div>
+
+            <div class="card-body">
+              <strong><i class="fas fa-bookmark"></i> Especialidade</strong>
+              <p class="text-muted" th:text="${employee.specialty}"></p>
+
+              <strong><i class="fas fa-check-square"></i> CRMV:</strong>
+              <p class="text-muted" th:text="${employee.crmvState} + '-' + ${employee.crmv}"></p>
+            </div>
+          </div>
         </div>
 
-        <div class="card-body" th:if="*{veterinarian != null}">
-          <h6 class="card-title">Dados do veterinário</h6>
-          <p class="card-text">
-            <b>Especialidade:</b> <span th:text="*{veterinarian.specialty}"></span>
-          </p>
-          <p class="card-text">
-            <b>CRMV:</b> <span th:text="*{veterinarian.crmvState} + '-' + *{veterinarian.crmv}"></span>
-          </p>
-        </div>
+        <div class="col-md-9">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="card-title">Atendimentos</h5>
+            </div>
 
-        <div class="card-body">
-          <a th:href="@{/admin/users/{id}/update (id=*{id})}"
-             class="btn btn-warning">Editar</a>
-          <a class="btn btn-danger"
-             th:href="@{/admin/users/{id}/change-availability (id=*{id})}"
-             th:text="${user.active} ? 'Desabilitar' : 'Desabilitar'"
-             th:onclick="${user.active} ?
-              'return confirm(\'Tem certeza de que deseja desabilitar este usuário?\')' :
-              'return confirm(\'Tem certeza de que deseja habilitar este usuário?\')'"></a>
+            <div class="card-body">
+              <div class="timeline">
+                <div th:each="medicalRecord : ${employee.medicalRecords}">
+                  <i class="fas fa-book-medical bg-primary"></i>
+
+                  <div class="timeline-item">
+                    <span class="time">
+                      <i class="far fa-clock"></i> <span
+                        th:text="${#temporals.format(medicalRecord.serviceDate)}"></span>
+                    </span>
+
+                    <h3 class="timeline-header" th:text="${medicalRecord.animal.name}"></h3>
+
+                    <div class="timeline-body" th:text="${medicalRecord.comments}"></div>
+
+                    <div class="timeline-footer">
+                      <a th:href="@{/app/medical-records/{id} (id=${medicalRecord.id})}"
+                         class="btn btn-primary btn-sm">
+                        Detalhes</a>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="col-sm-1">
-      <a th:href="@{/admin/users}" class="btn btn-secondary">Voltar</a>
+
     </div>
   </div>
 </main>
 
-<footer th:replace="~{base/base :: copyright}"></footer>
+<th:block th:fragment="scripts">
+  <script th:src="@{/js/avatar.min.js}"></script>
+  <script>
+      const email = document.getElementById("email").innerText;
+
+      const avatar = Avatar.from(document.getElementById('profile-user-img'), {
+          'email': email
+      });
+  </script>
+</th:block>
 
 </body>
 </html>
