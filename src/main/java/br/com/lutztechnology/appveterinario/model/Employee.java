@@ -41,16 +41,21 @@ public class Employee extends Person {
     @Column(nullable = false)
     private Boolean active = true;
 
+    @Size(max = 30)
+    @Column(length = 30)
     private String specialty;
 
+    @Column(length = 2)
+    @Enumerated(EnumType.STRING)
     private State crmvState;
 
+    @Size(max = 7)
+    @Column(length = 7)
     private String crmv;
 
-    @JsonIgnore
     @Valid
     @NotNull
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id_fk", nullable = false)
     private Role role;
 
