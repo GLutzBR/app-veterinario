@@ -30,31 +30,34 @@ public class WebSecurityConfigurerAdapterImpl extends WebSecurityConfigurerAdapt
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
+        http.authorizeRequests()
                 .antMatchers("/", "/index").permitAll()
                 .antMatchers("/app/medical-records", "/app/customers/**", "/app/animals/**", "/admin/users/**").authenticated()
                 .regexMatchers("/app/medical-records/archived", "/app/medical-records/search.*", "/app/medical-records/[0-9]{1,10}").authenticated()
                 .antMatchers("/app/medical-records/**").hasAnyRole("VET", "ADMIN")
-                .antMatchers("/admin/roles/**").hasRole("ADMIN")
-                .and()
+                .antMatchers("/admin/roles/**").hasRole("ADMIN");
+
+        http.csrf()
+                .ignoringAntMatchers("/api/v1/**");
+
+        http
                 .formLogin()
-                .loginPage("/login").permitAll()
-                .and()
-                .logout()
+                .loginPage("/login")
+                .defaultSuccessUrl("/")
+                .permitAll();
+
+        http.logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/login")
-                .and()
-                .rememberMe()
-                .userDetailsService(appUserDetailsService)
-                .tokenValiditySeconds(1800)
-                .and()
-                .requiresChannel()
-                .anyRequest()
-                .requiresSecure()
-                .and()
-                .cors()
-                .and()
-                .csrf().disable();
+                .logoutSuccessUrl("/login");
+
+        http.rememberMe();
+//                .userDetailsService(appUserDetailsService)
+//                .tokenValiditySeconds(1800)
+//                .and()
+//                .requiresChannel()
+//                .anyRequest()
+//                .requiresSecure()
+//                .and()
+//                .cors();
     }
 }
