@@ -1,9 +1,9 @@
 package br.com.lutztechnology.appveterinario.web.controller;
 
 import br.com.lutztechnology.appveterinario.dto.AlertDTO;
+import br.com.lutztechnology.appveterinario.exceptions.AnimalNotFoundException;
 import br.com.lutztechnology.appveterinario.model.Animal;
 import br.com.lutztechnology.appveterinario.model.Customer;
-import br.com.lutztechnology.appveterinario.exceptions.AnimalNotFoundException;
 import br.com.lutztechnology.appveterinario.services.AnimalService;
 import br.com.lutztechnology.appveterinario.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;

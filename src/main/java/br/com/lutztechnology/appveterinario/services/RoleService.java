@@ -1,10 +1,10 @@
 package br.com.lutztechnology.appveterinario.services;
 
+import br.com.lutztechnology.appveterinario.exceptions.AppRoleNotFoundException;
+import br.com.lutztechnology.appveterinario.exceptions.RoleHasEmployeesException;
 import br.com.lutztechnology.appveterinario.model.Role;
 import br.com.lutztechnology.appveterinario.repository.EmployeeRepository;
 import br.com.lutztechnology.appveterinario.repository.RoleRepository;
-import br.com.lutztechnology.appveterinario.exceptions.AppRoleNotFoundException;
-import br.com.lutztechnology.appveterinario.exceptions.RoleHasEmployeesException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
