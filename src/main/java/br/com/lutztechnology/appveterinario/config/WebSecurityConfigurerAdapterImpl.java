@@ -50,7 +50,8 @@ public class WebSecurityConfigurerAdapterImpl extends WebSecurityConfigurerAdapt
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/login");
 
-        http.rememberMe();
+        http.rememberMe()
+                .key("chaveUnicaDeTeste");
 //                .userDetailsService(appUserDetailsService)
 //                .tokenValiditySeconds(1800)
 //                .and()
