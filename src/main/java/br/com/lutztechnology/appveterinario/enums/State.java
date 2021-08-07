@@ -35,9 +35,9 @@ public enum State {
     TO("TO", "Tocantins");
 
     @Getter @Setter
-    private String sigla;
+    private String initials;
 
     @Getter @Setter
-    private String descricao;
+    private String description;
 
 }
