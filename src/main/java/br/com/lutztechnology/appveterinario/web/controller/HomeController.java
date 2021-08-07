@@ -17,7 +17,6 @@ public class HomeController {
         ModelAndView modelAndView = new ModelAndView("index");
         Map<String, Object> newAttributes = new HashMap<>();
 
-        newAttributes.put("title", "Página inicial");
         newAttributes.put("isHome", true);
         modelAndView.addAllObjects(newAttributes);
 
