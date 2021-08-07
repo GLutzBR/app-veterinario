@@ -14,3 +14,7 @@ select[readonly] {
     pointer-events: none;
     touch-action: none;
 }
+
+.mt-6 {
+    margin-top: 4rem !important;
+}
