@@ -12,6 +12,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class DbInit implements CommandLineRunner {
@@ -29,9 +31,15 @@ public class DbInit implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
         if (roleRepository.findAll().isEmpty()) {
-            Role role = new Role("Gerente");
-            roleRepository.save(role);
+            // insert default roles
+            Role adminRole = new Role("Gerente");
+            Role veterinarianRole = new Role("Veterinário");
+            List<Role> roles = new ArrayList<>();
+            roles.add(adminRole);
+            roles.add(veterinarianRole);
+            roleRepository.saveAll(roles);
 
+            // insert default user
             Employee admin = new Employee(
                     "glutzm@gmail.com",
                     "Gustavo Matos",
@@ -54,7 +62,7 @@ public class DbInit implements CommandLineRunner {
                     "Cardiologista",
                     State.MS,
                     "123456",
-                    role,
+                    adminRole,
                     null);
 
             employeeRepository.save(admin);
