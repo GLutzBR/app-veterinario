@@ -1,8 +1,8 @@
 package br.com.lutztechnology.appveterinario.services;
 
+import br.com.lutztechnology.appveterinario.exceptions.EmployeeNotFoundException;
 import br.com.lutztechnology.appveterinario.model.Employee;
 import br.com.lutztechnology.appveterinario.repository.EmployeeRepository;
-import br.com.lutztechnology.appveterinario.exceptions.EmployeeNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,6 +31,10 @@ public class EmployeeService {
     public Employee searchById(Long id) {
         return employeeRepository.findById(id)
                 .orElseThrow(() -> new EmployeeNotFoundException(id));
+    }
+
+    public List<Employee> searchByNameOrEmail(String search) {
+        return employeeRepository.findByNameOrEmail(search);
     }
 
     public Employee insert(Employee employee) {

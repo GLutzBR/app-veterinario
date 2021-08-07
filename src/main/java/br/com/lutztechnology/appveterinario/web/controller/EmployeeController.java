@@ -1,9 +1,9 @@
 package br.com.lutztechnology.appveterinario.web.controller;
 
 import br.com.lutztechnology.appveterinario.dto.AlertDTO;
-import br.com.lutztechnology.appveterinario.model.Employee;
-import br.com.lutztechnology.appveterinario.repository.EmployeeRepository;
+import br.com.lutztechnology.appveterinario.enums.State;
 import br.com.lutztechnology.appveterinario.exceptions.AppRoleNotFoundException;
+import br.com.lutztechnology.appveterinario.model.Employee;
 import br.com.lutztechnology.appveterinario.services.EmployeeService;
 import br.com.lutztechnology.appveterinario.services.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +22,6 @@ import java.util.List;
 public class EmployeeController {
 
     @Autowired
-    private EmployeeRepository employeeRepository;
-
-    @Autowired
     private EmployeeService employeeService;
 
     @Autowired
@@ -34,9 +31,8 @@ public class EmployeeController {
     public ModelAndView index() {
         ModelAndView modelAndView = new ModelAndView("admin/users/index");
 
-        modelAndView.addObject("title", "Lista de usuários");
         modelAndView.addObject("isAdmin", true);
-        modelAndView.addObject("users", employeeService.searchAll());
+        modelAndView.addObject("employees", employeeService.searchAll());
 
         return modelAndView;
     }
@@ -44,11 +40,9 @@ public class EmployeeController {
     @GetMapping("/{id}")
     public ModelAndView details(@PathVariable Long id) {
         ModelAndView modelAndView = new ModelAndView("admin/users/details");
-        Employee user = employeeService.searchById(id);
 
-        modelAndView.addObject("title", "Detalhes do usuário");
         modelAndView.addObject("isAdmin", true);
-        modelAndView.addObject("user", user);
+        modelAndView.addObject("employee", employeeService.searchById(id));
 
         return modelAndView;
     }
@@ -64,12 +58,12 @@ public class EmployeeController {
 
     @GetMapping("/insert")
     public ModelAndView insert() {
-        ModelAndView modelAndView = new ModelAndView("admin/users/insert");
+        ModelAndView modelAndView = new ModelAndView("admin/users/form");
 
-        modelAndView.addObject("title", "Adicionar novo usuário");
         modelAndView.addObject("isAdmin", true);
-        modelAndView.addObject("user", new Employee());
+        modelAndView.addObject("employee", new Employee());
         modelAndView.addObject("roles", roleService.searchAll());
+        modelAndView.addObject("states", State.values());
 
         return modelAndView;
     }
@@ -86,7 +80,7 @@ public class EmployeeController {
         if (resultado.hasErrors()) {
             model.addAttribute("roles", roleService.searchAll());
 
-            modelAndView.setViewName("admin/users/insert");
+            modelAndView.setViewName("admin/users/form");
 
             return modelAndView;
         }
@@ -111,13 +105,13 @@ public class EmployeeController {
 
     @GetMapping("/{id}/update")
     public ModelAndView update(@PathVariable(name = "id") Long id) {
-        ModelAndView modelAndView = new ModelAndView("admin/users/update");
+        ModelAndView modelAndView = new ModelAndView("admin/users/form");
 
-        modelAndView.addObject("title", "Editar usuário");
         modelAndView.addObject("isAdmin", true);
-        modelAndView.addObject("user", employeeService.searchById(id));
+        modelAndView.addObject("employee", employeeService.searchById(id));
         modelAndView.addObject("roles", roleService.searchAll());
         modelAndView.addObject("isVet", employeeService.searchById(id).getRole().getName().equals("VET"));
+        modelAndView.addObject("states", State.values());
 
         return modelAndView;
     }
@@ -135,7 +129,7 @@ public class EmployeeController {
         if (resultado.hasErrors()) {
             model.addAttribute("roles", roleService.searchAll());
 
-            modelAndView.setViewName("admin/users/update");
+            modelAndView.setViewName("admin/users/form");
 
             return modelAndView;
         }
@@ -160,7 +154,7 @@ public class EmployeeController {
 
     @GetMapping(value = "/search", produces = "application/json")
     public @ResponseBody
-    List<Employee> search(@RequestParam(name = "search") String search) {
-        return employeeRepository.findByEmailOrName(search, search);
+    List<Employee> search(@RequestParam(name = "name", defaultValue = "") String search) {
+        return employeeService.searchByNameOrEmail(search);
     }
 }
