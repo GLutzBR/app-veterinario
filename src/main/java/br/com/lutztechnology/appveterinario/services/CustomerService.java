@@ -1,9 +1,9 @@
 package br.com.lutztechnology.appveterinario.services;
 
-import br.com.lutztechnology.appveterinario.model.Customer;
-import br.com.lutztechnology.appveterinario.repository.CustomerRepository;
 import br.com.lutztechnology.appveterinario.exceptions.CustomerHasMedicalRecord;
 import br.com.lutztechnology.appveterinario.exceptions.CustomerNotFoundException;
+import br.com.lutztechnology.appveterinario.model.Customer;
+import br.com.lutztechnology.appveterinario.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

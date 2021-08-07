@@ -1,14 +1,14 @@
 package br.com.lutztechnology.appveterinario.web.controller;
 
 import br.com.lutztechnology.appveterinario.dto.AlertDTO;
+import br.com.lutztechnology.appveterinario.exceptions.MedicalRecordNotFoundException;
 import br.com.lutztechnology.appveterinario.model.Animal;
+import br.com.lutztechnology.appveterinario.model.AppUserDetailsImpl;
 import br.com.lutztechnology.appveterinario.model.Customer;
 import br.com.lutztechnology.appveterinario.model.MedicalRecord;
 import br.com.lutztechnology.appveterinario.repository.AnimalRepository;
 import br.com.lutztechnology.appveterinario.repository.CustomerRepository;
 import br.com.lutztechnology.appveterinario.repository.MedicalRecordRepository;
-import br.com.lutztechnology.appveterinario.model.AppUserDetailsImpl;
-import br.com.lutztechnology.appveterinario.exceptions.MedicalRecordNotFoundException;
 import br.com.lutztechnology.appveterinario.services.EmployeeService;
 import br.com.lutztechnology.appveterinario.services.MedicalRecordService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,8 +1,8 @@
 package br.com.lutztechnology.appveterinario.services;
 
+import br.com.lutztechnology.appveterinario.model.AppUserDetailsImpl;
 import br.com.lutztechnology.appveterinario.model.Employee;
 import br.com.lutztechnology.appveterinario.repository.EmployeeRepository;
-import br.com.lutztechnology.appveterinario.model.AppUserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
