@@ -7,7 +7,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: ${env.DB_INIT}
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL57Dialect
