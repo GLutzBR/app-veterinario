@@ -1,41 +1,30 @@
 <!DOCTYPE html>
 <html lang="pt-br"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="~{base/base :: baseHead}">
-  <title></title>
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{layout :: layout (~{::title}, ~{::main}, _, _)}">
+<head>
+  <title>Detalhes</title>
 </head>
 <body>
-<header th:replace="~{base/base :: navbar}"></header>
-
 <main class="container">
-  <div class="row">
-    <div class="col-sm-12">
-      <h1 th:text="${title}"></h1>
-    </div>
-  </div>
 
   <div class="row">
     <div class="col-sm-12">
       <div class="card" th:object="${role}">
         <h5 class="card-header" th:text="*{name}"></h5>
         <div class="card-body">
-          <p>
-            <b>Tipo:</b> <span th:text="*{type}"></span>
-          </p>
           <h6><b>Lista de usuários:</b></h6>
           <ul class="list-group list-group-flush">
             <li class="list-group-item"
-                th:each="user : *{users}"
-                th:text="${user.firstName} + ' ' + ${user.lastName}"></li>
+                th:each="employee : *{employees}"
+                th:text="${employee.name}"></li>
           </ul>
         </div>
       </div>
     </div>
   </div>
 </main>
-
-<footer th:replace="~{base/base :: copyright}"></footer>
-
 </body>
 </html>
+<!--TODO: add botão de edição e exclusão-->

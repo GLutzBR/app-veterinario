@@ -26,7 +26,6 @@ public class RoleController {
     public ModelAndView index() {
         ModelAndView modelAndView = new ModelAndView("admin/roles/index");
 
-        modelAndView.addObject("title", "Níveis de Acesso");
         modelAndView.addObject("isAdmin", true);
         modelAndView.addObject("roles", roleService.searchAll());
 
@@ -37,7 +36,6 @@ public class RoleController {
     public ModelAndView details(@PathVariable Long id){
         ModelAndView modelAndView = new ModelAndView("admin/roles/details");
 
-        modelAndView.addObject("title", "Detalhes do nível de acesso");
         modelAndView.addObject("isAdmin", true);
         modelAndView.addObject("role", roleService.searchById(id));
 
@@ -46,9 +44,8 @@ public class RoleController {
 
     @GetMapping("/insert")
     public ModelAndView insert() {
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView = new ModelAndView("admin/roles/form");
 
-        modelAndView.addObject("title", "Adicionar novo cargo");
         modelAndView.addObject("isAdmin", true);
         modelAndView.addObject("role", new Role());
 
@@ -64,7 +61,7 @@ public class RoleController {
         ModelAndView modelAndView = new ModelAndView("redirect:/admin/roles");
 
         if (result.hasErrors()) {
-            modelAndView.setViewName("admin/roles/insert");
+            modelAndView.setViewName("admin/roles/form");
             return modelAndView;
         }
 
@@ -88,9 +85,8 @@ public class RoleController {
     
     @GetMapping("/{id}/update")
     public ModelAndView update(@PathVariable Long id) {
-        ModelAndView modelAndView = new ModelAndView("admin/roles/update");
+        ModelAndView modelAndView = new ModelAndView("admin/roles/form");
         
-        modelAndView.addObject("title", "Atualizar cargo");
         modelAndView.addObject("isAdmin", true);
         modelAndView.addObject("role", roleService.searchById(id));
         
@@ -107,7 +103,7 @@ public class RoleController {
         ModelAndView modelAndView = new ModelAndView("redirect:/admin/roles");
 
         if (result.hasErrors()) {
-            modelAndView.setViewName("admin/roles/update");
+            modelAndView.setViewName("admin/roles/form");
 
             return modelAndView;
         }
@@ -130,7 +126,7 @@ public class RoleController {
         return modelAndView;
     }
 
-    @PostMapping("/{id}/delete")
+    @GetMapping("/{id}/delete")
     public String delete(@PathVariable Long id, RedirectAttributes attrs) {
         try {
             roleService.deleteById(id);

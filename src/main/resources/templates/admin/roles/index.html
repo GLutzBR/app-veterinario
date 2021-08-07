@@ -1,17 +1,16 @@
 <!DOCTYPE html>
 <html lang="pt-br"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="~{base/base :: baseHead}">
-  <title></title>
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{layout :: layout (~{::title}, ~{::main}, _, ~{::scripts})}">
+<head>
+  <title>Lista de Cargos</title>
 </head>
 <body>
-<header th:replace="~{base/base :: navbar}"></header>
 
 <main class="container">
   <div class="row">
     <div class="col-sm-12">
-      <h1 th:text="${title}"></h1>
       <form action="#" class="d-flex cold-md-12">
         <input type="text"
                class="form-control me-2"
@@ -31,54 +30,74 @@
       <table class="table" id="tbl-roles">
         <thead>
         <tr>
-          <th scope="col">Tipo</th>
-          <th scope="col">Nome</th>
+          <th scope="col">ID</th>
+          <th scope="col">Cargo</th>
+          <th scope="col">Ações</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="role : ${roles}">
+          <td th:text="${role.id}"></td>
           <td>
             <a th:href="@{/admin/roles/{id} (id=${role.id})}"
-               th:text="${role.type}"></a>
+               th:text="${role.name}"></a>
           </td>
-          <td th:text="${role.name}"></td>
+          <td>
+            <a th:href="@{/admin/roles/{id}/update (id=${role.id})}"
+               class="btn btn-warning" type="button">
+              <i class="fas fa-edit"></i>
+            </a>
+            <a th:href="@{/admin/roles/{id}/delete (id=${role.id})}"
+               class="btn btn-danger" type="button"
+               th:onclick="'return confirm(\'Tem certeza de que deseja excluir este cargo?\')'">
+              <i class="fas fa-trash"></i>
+            </a>
+          </td>
         </tr>
         </tbody>
       </table>
     </div>
+
+    <div class="row mb-3">
+      <div class="col-sm-12">
+        <a th:href="@{/admin/roles/insert}"
+           class="btn btn-primary">Adicionar novo cargo</a>
+      </div>
+    </div>
   </div>
 </main>
 
-<footer th:replace="~{base/base :: copyright}"></footer>
-
-<script type="text/javascript">
-  $(document).ready(function () {
-      $("#btn-search").click(function () {
-          const roleName = $("#txt-search").val();
-          $.ajax({
-              method: 'GET',
-              url: '/admin/roles/search?name=' + roleName,
-              success: function (data) {
-                  $('#tbl-roles tbody > tr').remove();
-                  $.each(data, function (index, role) {
-                      $('#tbl-roles tbody').append(
-                          '<tr>' +
-                          '  <td>' +
-                          '    <a href="/admin/roles/' + role.id + '">' + role.type + '</a>' +
-                          '  </td>' +
-                          '  <td>' + role.name + '</td>' +
-                          '</tr>'
-                      );
-                  })
-              },
-              error: function () {
-                  alert("Houve um erro na requisição!")
-              }
-          });
-          return false;
-      });
-  });
-</script>
+<th:block th:fragment="scripts">
+  <!--  <script type="text/javascript">-->
+  <!--      $(document).ready(function () {-->
+  <!--          $("#btn-search").click(function () {-->
+  <!--              const roleName = $("#txt-search").val();-->
+  <!--              $.ajax({-->
+  <!--                  method: 'GET',-->
+  <!--                  url: '/admin/roles/search?name=' + roleName,-->
+  <!--                  success: function (data) {-->
+  <!--                      $('#tbl-roles tbody > tr').remove();-->
+  <!--                      $.each(data, function (index, role) {-->
+  <!--                          $('#tbl-roles tbody').append(-->
+  <!--                              '<tr>' +-->
+  <!--                              '  <td>' +-->
+  <!--                              '    <a href="/admin/roles/' + role.id + '">' + role.type + '</a>' +-->
+  <!--                              '  </td>' +-->
+  <!--                              '  <td>' + role.name + '</td>' +-->
+  <!--                              '</tr>'-->
+  <!--                          );-->
+  <!--                      })-->
+  <!--                  },-->
+  <!--                  error: function () {-->
+  <!--                      alert("Houve um erro na requisição!")-->
+  <!--                  }-->
+  <!--              });-->
+  <!--              return false;-->
+  <!--          });-->
+  <!--      });-->
+  <!--  </script>-->
+</th:block>
 
 </body>
 </html>
+<!--TODO: add botão de edição e exclusão-->
