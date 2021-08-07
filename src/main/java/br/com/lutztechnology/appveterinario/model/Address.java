@@ -13,10 +13,11 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Builder
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Address extends BaseEntity{
+public class Address extends BaseEntity {
 
     @NotNull
     @Column(nullable = false, length = 2)
@@ -36,7 +37,7 @@ public class Address extends BaseEntity{
     @NotNull
     @Size(min = 3, max = 255)
     @Column(nullable = false)
-    public String publicPlace;
+    private String publicPlace;
 
     @NotNull
     @Size(min = 9, max = 9)
@@ -50,4 +51,22 @@ public class Address extends BaseEntity{
     private String number;
 
     private String complement;
+
+    @Override
+    public String toString() {
+
+        return publicPlace +
+                ", nº " +
+                number +
+                ", " +
+                complement +
+                " - " +
+                district +
+                ". " +
+                state.getDescription() +
+                " - " +
+                city +
+                ". CEP: " +
+                cep;
+    }
 }
