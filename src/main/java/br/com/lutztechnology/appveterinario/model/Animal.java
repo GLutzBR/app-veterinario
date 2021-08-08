@@ -39,7 +39,7 @@ public class Animal extends BaseEntity {
     @JsonIgnore
     @Valid
     @NotNull
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id_fk", nullable = false)
     private Customer owner;
 

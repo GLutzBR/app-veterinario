@@ -1,6 +1,7 @@
 package br.com.lutztechnology.appveterinario.web.controller;
 
 import br.com.lutztechnology.appveterinario.dto.AlertDTO;
+import br.com.lutztechnology.appveterinario.enums.State;
 import br.com.lutztechnology.appveterinario.exceptions.CustomerNotFoundException;
 import br.com.lutztechnology.appveterinario.model.Customer;
 import br.com.lutztechnology.appveterinario.services.CustomerService;
@@ -25,7 +26,6 @@ public class CustomerController {
     public ModelAndView index() {
         ModelAndView modelAndView = new ModelAndView("app/customers/index");
 
-        modelAndView.addObject("title", "Listagem de clientes");
         modelAndView.addObject("isCustomer", true);
         modelAndView.addObject("customers", customerService.searchAll());
 
@@ -33,26 +33,22 @@ public class CustomerController {
     }
 
     @GetMapping("/{id}")
-    public ModelAndView details(
-            @PathVariable Long id,
-            @RequestParam(name = "pets", defaultValue = "false", required = false) Boolean pets) {
+    public ModelAndView details(@PathVariable Long id) {
         ModelAndView modelAndView = new ModelAndView("app/customers/details");
 
-        modelAndView.addObject("title", "Detalhes do cliente");
         modelAndView.addObject("isCustomer", true);
         modelAndView.addObject("customer", customerService.searchById(id));
-        modelAndView.addObject("pets", pets);
 
         return modelAndView;
     }
 
     @GetMapping("/insert")
     public ModelAndView insert() {
-        ModelAndView modelAndView = new ModelAndView("app/customers/insert");
+        ModelAndView modelAndView = new ModelAndView("app/customers/form");
 
-        modelAndView.addObject("title", "Adicionar Novo Cliente");
         modelAndView.addObject("isCustomer", true);
         modelAndView.addObject("customer", new Customer());
+        modelAndView.addObject("states", State.values());
 
         return modelAndView;
     }
@@ -66,7 +62,7 @@ public class CustomerController {
         ModelAndView modelAndView = new ModelAndView("redirect:/app/customers");
 
         if (result.hasErrors()) {
-            modelAndView.setViewName("app/customers/insert");
+            modelAndView.setViewName("app/customers/form");
             return modelAndView;
         }
 
@@ -96,11 +92,11 @@ public class CustomerController {
 
     @GetMapping("/{id}/update")
     public ModelAndView update(@PathVariable Long id) {
-        ModelAndView modelAndView = new ModelAndView("app/customers/update");
+        ModelAndView modelAndView = new ModelAndView("app/customers/form");
 
-        modelAndView.addObject("title", "Editar o Cliente");
         modelAndView.addObject("isCustomer", true);
         modelAndView.addObject("customer", customerService.searchById(id));
+        modelAndView.addObject("states", State.values());
 
         return modelAndView;
     }
@@ -116,7 +112,7 @@ public class CustomerController {
         ModelAndView modelAndView = new ModelAndView("redirect:/app/customers");
 
         if (result.hasErrors()) {
-            modelAndView.setViewName("app/customers/update");
+            modelAndView.setViewName("app/customers/form");
             return modelAndView;
         }
 
@@ -135,7 +131,7 @@ public class CustomerController {
                     "alert",
                     new AlertDTO(
                             "Cliente atualizado com sucesso!",
-                            "alert-danger"));
+                            "alert-success"));
         } catch (CustomerNotFoundException e) {
             attrs.addFlashAttribute(
                     "alert",
@@ -149,8 +145,21 @@ public class CustomerController {
     }
 
     @GetMapping("/{id}/delete")
-    public String delete(@PathVariable Long id) {
+    public String delete(@PathVariable Long id, RedirectAttributes attrs) {
+        try {
         customerService.deleteById(id);
+            attrs.addFlashAttribute(
+                    "alert",
+                    new AlertDTO(
+                            "Cliente excluído com sucesso!",
+                            "alert-success"));
+        } catch (CustomerNotFoundException e) {
+            attrs.addFlashAttribute(
+                    "alert",
+                    new AlertDTO(
+                            "Cliente não pode ser excluído!",
+                            "alert-danger"));
+        }
 
         return "redirect:/app/customers";
     }

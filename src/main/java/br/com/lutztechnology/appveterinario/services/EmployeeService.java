@@ -53,20 +53,11 @@ public class EmployeeService {
         return employeeRepository.save(employee);
     }
 
-    public void changeAvailability(Long id) {
+    public Employee changeAvailability(Long id) {
         Employee employee = searchById(id);
 
         employee.setActive(!employee.getActive());
 
-        employeeRepository.save(employee);
+        return employeeRepository.save(employee);
     }
-
-//    public void deleteById(Long id) {
-//        Employee employee = searchById(id);
-//        if (employee.getMedicalRecords().isEmpty()) {
-//            employeeRepository.delete(employee);
-//        } else {
-//            throw new EmployeeHasMedicalRecord(id);
-//        }
-//    }
 }

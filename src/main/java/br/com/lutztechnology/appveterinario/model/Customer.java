@@ -15,7 +15,7 @@ import java.util.List;
 public class Customer extends Person {
 
     @JsonIgnore
-    @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY, cascade = CascadeType.MERGE, orphanRemoval = true)
+    @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
     private List<Animal> pets;
 
     @JsonIgnore

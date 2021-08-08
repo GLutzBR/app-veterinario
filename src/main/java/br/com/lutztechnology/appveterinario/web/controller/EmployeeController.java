@@ -48,10 +48,24 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}/change-availability")
-    public ModelAndView changeActive(@PathVariable Long id) {
+    public ModelAndView changeActive(@PathVariable Long id, RedirectAttributes attrs) {
         ModelAndView modelAndView = new ModelAndView("redirect:/admin/users");
 
-        employeeService.changeAvailability(id);
+        try {
+            Employee employee = employeeService.changeAvailability(id);
+            String message = employee.getActive() ? "Funcionário habilitado com sucesso!" : "Funcionário desabilitado com sucesso!";
+            attrs.addFlashAttribute(
+                    "alert",
+                    new AlertDTO(
+                            message,
+                            "alert-success"));
+        } catch (Exception e) {
+            attrs.addFlashAttribute(
+                    "alert",
+                    new AlertDTO(
+                            "Funcionário não pode ser cadastrado!",
+                            "alert-danger"));
+        }
 
         return modelAndView;
     }

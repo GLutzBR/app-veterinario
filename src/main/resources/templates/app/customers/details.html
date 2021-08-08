@@ -1,89 +1,109 @@
 <!DOCTYPE html>
 <html lang="pt-br"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="~{base/base :: baseHead}">
-  <title></title>
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{layout :: layout (~{::title}, ~{::main}, _, ~{::scripts})}">
+<head>
+  <title>Detalhes</title>
 </head>
 <body>
-<header th:replace="~{base/base :: navbar}"></header>
 
-<main class="container">
-  <div class="row">
-    <div class="col-sm-12">
-      <h1 th:text="${title}"></h1>
-    </div>
-  </div>
-
+<main>
   <div class="row">
     <div class="col-sm-12 mb-3">
-      <div class="card" th:object="${customer}">
-        <div class="card-header">
+      <div class="row">
+        <div class="col-md-3">
 
-          <ul class="nav nav-tabs card-header-tabs">
-            <li class="nav-item">
-              <a class="nav-link"
-                 th:classappend="${!pets} ? 'active'"
-                 th:aria-current="${!pets}"
-                 th:href="@{/app/customers/{id}?pets=false (id=*{id})}">Cliente</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link"
-                 th:classappend="${pets} ? 'active'"
-                 th:aria-current="${pets}"
-                 th:href="@{/app/customers/{id}?pets=true (id=*{id})}">Pets</a>
-            </li>
-          </ul>
+          <!-- Profile Image -->
+          <div class="card card-primary card-outline">
+            <div class="card-body box-profile">
+              <div class="text-center">
+                <img alt="User profile picture" class="profile-user-img img-fluid img-circle" id="profile-user-img">
+              </div>
 
-        </div>
+              <h3 class="profile-username text-center" th:text="${customer.name}"></h3>
+            </div>
+          </div>
+          <div class="card card-primary">
+            <div class="card-header">
+              <h3 class="card-title">Dados Pessoais</h3>
+            </div>
 
-        <div class="card-body" th:if="${!pets}">
-          <h5 class="card-title" th:text="*{fullName}"></h5>
-          <p class="card-text">
-            <b>Data de Nascimento:</b> <span th:text="${#temporals.format(customer.birthDate, 'dd-MM-yyyy')}"></span>
-          </p>
-          <p class="card-text">
-            <b>Contato:</b> <span th:text="*{phoneToString()}"></span>
-          </p>
-          <p class="card-text">
-            <b>Endereço:</b> <span th:text="*{address}"></span>
-          </p>
-        </div>
+            <div class="card-body">
+              <div sec:authorize="hasRole('ADMIN')">
+                <strong><i class="fas fa-calendar-alt mr-1"></i> Data de nascimento</strong>
+                <p class="text-muted" th:text="${#temporals.format(customer.birthDate)}"></p>
 
-        <div class="card-body" th:if="*{pets != null} and ${pets}">
-          <div th:each="pet : *{pets}">
-          <h5 class="card-title">
-            <a th:href="@{/app/animals/{id} (id=${pet.id})}" th:text="${pet.name}"></a>
-          </h5>
-            <p class="card-text">
-              <b>Idade:</b> <span th:text="${pet.age}"></span>
-            </p>
-            <p class="card-text">
-              <b>Raça:</b> <span th:text="${pet.breed}"></span>
-            </p>
+                <strong><i class="fas fa-book mr-1"></i> CPF</strong>
+                <p class="text-muted" th:text="${customer.cpf}"></p>
+              </div>
+
+              <strong><i class="fas fa-mobile mr-1"></i> Telefone</strong>
+              <p class="text-muted" th:text="${customer.phone}"></p>
+
+              <strong><i class="fas fa-envelope mr-1"></i> E-mail</strong>
+              <p class="text-muted" id="email" th:text="${customer.email}"></p>
+
+              <hr>
+
+              <div sec:authorize="hasRole('ADMIN')">
+                <strong><i class="fas fa-map-marker-alt mr-1"></i> Endereço</strong>
+                <p class="text-muted" th:text="${customer.address}"></p>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="card-body" th:if="*{pets == null} and ${pets}">
-          <h5 class="card-title">Este usuário não possui Pets cadastrados.</h5>
+        <div class="col-md-9">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="card-title">Pets</h5>
+            </div>
+
+            <div class="card-body" th:if="${!customer.pets.isEmpty()}">
+              <div th:each="pet : ${customer.pets}">
+                <i class="fas fa-book-medical bg-primary"></i>
+
+                <div class="timeline-item">
+                    <span class="time">
+                      <i class="far fa-calendar-alt mr-1"></i> <span
+                        th:text="${#temporals.format(pet.age)}"></span>
+                    </span>
+
+                  <h3 class="timeline-header" th:text="${pet.name}"></h3>
+
+                  <div class="timeline-body" th:text="${pet.breed}"></div>
+
+                  <div class="timeline-footer">
+                    <a th:href="@{/app/animals/{id} (id=${pet.id})}"
+                       class="btn btn-primary btn-sm">
+                      Detalhes</a>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            <div class="card-body" th:unless="${!customer.pets.isEmpty()}">
+              <h5>Este cliente não possui pets cadastrados.</h5>
+            </div>
+          </div>
+          <!--        </div>-->
         </div>
 
-        <div class="card-body">
-          <a th:href="@{/app/customers/{id}/update (id=${customer.id})}"
-             class="btn btn-warning">Editar</a>
-          <a th:href="@{/app/customers/{id}/delete (id=${customer.id})}"
-             class="btn btn-danger"
-             onclick="return confirm('Tem certeza de que deseja excluir o cliente?')">Excluir</a>
-        </div>
       </div>
     </div>
-    <div class="col-sm-1">
-      <a th:href="@{/app/customers}" class="btn btn-secondary mb-2">Voltar</a>
-    </div>
-  </div>
 </main>
 
-<footer th:replace="~{base/base :: copyright}"></footer>
+<th:block th:fragment="scripts">
+  <script th:src="@{/js/avatar.min.js}"></script>
+  <script>
+      const email = document.getElementById("email").innerText;
+
+      const avatar = Avatar.from(document.getElementById('profile-user-img'), {
+          'email': email
+      });
+  </script>
+</th:block>
 
 </body>
 </html>
