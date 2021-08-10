@@ -44,7 +44,7 @@
             <a th:href="@{/app/customers/{id} (id=${customer.id})}"
                th:text="${customer.name}"></a>
           </td>
-          <td th:text="${#temporals.format(customer.birthDate, 'dd-MM-yyyy')}"></td>
+          <td th:text="${#temporals.format(customer.birthDate, 'dd/MM/yyyy')}"></td>
           <td th:text="${customer.phone}"></td>
           <td>
             <a th:href="@{/app/customers/{id}/update (id=${customer.id})}"
@@ -53,9 +53,9 @@
               <i class="fas fa-edit"></i>
             </a>
             <a th:href="@{/app/customers/{id}/delete (id=${customer.id})}"
-               class="btn btn-danger" type="button"
                onclick="return confirm('Tem certeza de que deseja excluir o cliente?')"
-              data-bs-toggle="tooltip" data-bs-placement="top" title="Excluir">
+               class="btn btn-danger" type="button"
+               data-bs-toggle="tooltip" data-bs-placement="top" title="Excluir">
               <i class="fas fa-trash"></i>
             </a>
           </td>
@@ -87,17 +87,21 @@
                       $.each(data, function (index, customer) {
                           $('#tbl-customers tbody').append(
                               '<tr>' +
+                              '  <td>' + customer.id + '</td>' +
                               '  <td>' +
-                              '    <a href="/app/customers/' + customer.id + '">' + customer.fullName + '</a>' +
+                              '    <a href="/app/customers/' + customer.id + '">' + customer.name + '</a>' +
                               '  </td>' +
                               '  <td>' + customer.birthDate + '</td>' +
                               '  <td>' + customer.phone + '</td>' +
                               '  <td>' +
-                              '    <a href="/app/customers/' + customer.id + '/update"' +
-                              '       class="btn btn-warning">Editar</a>' +
+                              '    <a href="/app/customers/' + customer.id + '/update" class="btn btn-warning"' +
+                              '       type="button" data-bs-toggle="tooltip" data-bs-placement="top"' +
+                              '       title="Editar"><i class="fas fa-edit"></i></a>' +
                               '    <a href="/app/customers/' + customer.id + '/delete"' +
-                              '       class="btn btn-danger"' +
-                              '       onclick="return confirm(\'Tem certeza de que deseja excluir o cliente?\')">Excluir</a>' +
+                              '       class="btn btn-danger" type="button"' +
+                              '       data-bs-toggle="tooltip" data-bs-placement="top" title="Excluir"' +
+                              '       onclick="return confirm(\'Tem certeza de que deseja excluir o cliente?\')">' +
+                              '        <i class="fas fa-trash"></i></a>' +
                               '  </td>' +
                               '</tr>'
                           );
