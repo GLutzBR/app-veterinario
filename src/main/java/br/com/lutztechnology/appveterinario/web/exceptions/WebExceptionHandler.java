@@ -18,6 +18,12 @@ public class WebExceptionHandler implements ErrorViewResolver {
         modelAndView.addObject("status", status.value());
 
         switch (status.value()) {
+            case 400:
+                modelAndView.addObject("causeTitle", "Requisição mal feita.");
+                modelAndView.addObject("message", "O servidor não pôde processar a requisição devido a alguma coisa que foi entendida como um erro do cliente!");
+                modelAndView.addObject("cause", "A url para página '" + model.get("path") + "' não existe.");
+                modelAndView.addObject("cssClass", "text-warning");
+                break;
             case 404:
                 modelAndView.addObject("causeTitle", "Página não encontrada.");
                 modelAndView.addObject("message", "A página que você procura não existe!");
