@@ -4,7 +4,7 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       th:replace="~{layout :: layout (~{::title}, ~{::main}, _, ~{::scripts})}">
 <head>
-  <title>Lista de Clientes</title>
+  <title>Clientes</title>
 </head>
 <body>
 
@@ -40,24 +40,40 @@
         <tbody>
         <tr th:each="customer : ${customers}">
           <td th:text="${customer.id}"></td>
-          <td>
-            <a th:href="@{/app/customers/{id} (id=${customer.id})}"
-               th:text="${customer.name}"></a>
-          </td>
+          <td th:text="${customer.name}"></td>
           <td th:text="${#temporals.format(customer.birthDate, 'dd/MM/yyyy')}"></td>
           <td th:text="${customer.phone}"></td>
           <td>
-            <a th:href="@{/app/customers/{id}/update (id=${customer.id})}"
-               class="btn btn-warning" type="button"
-               data-bs-toggle="tooltip" data-bs-placement="top" title="Editar">
-              <i class="fas fa-edit"></i>
-            </a>
-            <a th:href="@{/app/customers/{id}/delete (id=${customer.id})}"
-               onclick="return confirm('Tem certeza de que deseja excluir o cliente?')"
-               class="btn btn-danger" type="button"
-               data-bs-toggle="tooltip" data-bs-placement="top" title="Excluir">
-              <i class="fas fa-trash"></i>
-            </a>
+            <div class="btn-group">
+              <a th:href="@{/app/customers/{id} (id=${customer.id})}"
+                 class="btn btn-primary" type="button"
+                 data-bs-toggle="tooltip" data-bs-placement="top" title="Visualizar">
+                <i class="fas fa-eye"></i>
+              </a>
+              <a th:href="@{/app/customers/{id}/update (id=${customer.id})}"
+                 class="btn btn-warning" type="button"
+                 data-bs-toggle="tooltip" data-bs-placement="top" title="Editar">
+                <i class="fas fa-edit"></i>
+              </a>
+              <a th:href="@{/app/customers/{id}/delete (id=${customer.id})}"
+                 onclick="return confirm('Tem certeza de que deseja excluir o cliente?')"
+                 class="btn btn-danger" type="button"
+                 data-bs-toggle="tooltip" data-bs-placement="top" title="Excluir">
+                <i class="fas fa-trash"></i>
+              </a>
+            </div>
+            <div class="btn-group">
+              <a th:href="@{/app/customers/{id}/insert-pet (id=${customer.id})}"
+                 class="btn btn-success" type="button"
+                 data-bs-toggle="tooltip" data-bs-placement="top" title="Adicionar Pet">
+                <i class="fas fa-plus-circle"></i>
+              </a>
+              <a th:href="@{/app/customers/{id}/update-pet (id=${customer.id})}"
+                 class="btn btn-warning" type="button"
+                 data-bs-toggle="tooltip" data-bs-placement="top" title="Editar Pets">
+                <i class="fas fa-dog"></i>
+              </a>
+            </div>
           </td>
         </tr>
         </tbody>
@@ -88,12 +104,16 @@
                           $('#tbl-customers tbody').append(
                               '<tr>' +
                               '  <td>' + customer.id + '</td>' +
-                              '  <td>' +
-                              '    <a href="/app/customers/' + customer.id + '">' + customer.name + '</a>' +
-                              '  </td>' +
+                              '  <td>' + customer.name + '</td>' +
                               '  <td>' + customer.birthDate + '</td>' +
                               '  <td>' + customer.phone + '</td>' +
                               '  <td>' +
+                              '    <a href="/app/customers/' + customer.id + '" class="btn btn-primary"' +
+                              '       type="button" data-bs-toggle="tooltip" data-bs-placement="top"' +
+                              '       title="Visualizar"><i class="fas fa-eye"></i></a>' +
+                              '    <a href="/app/customers/' + customer.id + '/update-pet" class="btn btn-success"' +
+                              '       type="button" data-bs-toggle="tooltip" data-bs-placement="top"' +
+                              '       title="Atualizar Pets"><i class="fas fa-dog"></i></a>' +
                               '    <a href="/app/customers/' + customer.id + '/update" class="btn btn-warning"' +
                               '       type="button" data-bs-toggle="tooltip" data-bs-placement="top"' +
                               '       title="Editar"><i class="fas fa-edit"></i></a>' +
