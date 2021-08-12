@@ -5,7 +5,6 @@ import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import java.time.LocalDate;
@@ -14,7 +13,7 @@ import java.time.LocalDate;
 @Table(name = "medical_records")
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"animal", "veterinarian"})
+@ToString(exclude = {"animal", "veterinarian", "customer"})
 @Getter @Setter
 public class MedicalRecord extends BaseEntity {
 
@@ -32,21 +31,18 @@ public class MedicalRecord extends BaseEntity {
     private Boolean archived = false;
 
     @JsonIgnore
-    @Valid
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id_fk", nullable = false)
     private Customer customer;
 
     @JsonIgnore
-    @Valid
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "animal_id_fk", nullable = false)
     private Animal animal;
 
     @JsonIgnore
-    @Valid
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id_fk", nullable = false)

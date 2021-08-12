@@ -1,8 +1,8 @@
 package br.com.lutztechnology.appveterinario.services;
 
 import br.com.lutztechnology.appveterinario.exceptions.MedicalRecordNotFoundException;
-import br.com.lutztechnology.appveterinario.model.Employee;
 import br.com.lutztechnology.appveterinario.model.MedicalRecord;
+import br.com.lutztechnology.appveterinario.repository.EmployeeRepository;
 import br.com.lutztechnology.appveterinario.repository.MedicalRecordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,6 +17,9 @@ public class MedicalRecordService {
 
     @Autowired
     private MedicalRecordRepository medicalRecordRepository;
+
+    @Autowired
+    private EmployeeRepository employeeRepository;
 
     public List<MedicalRecord> searchAll() {
         return medicalRecordRepository
@@ -43,25 +46,19 @@ public class MedicalRecordService {
                 .orElseThrow(() -> new MedicalRecordNotFoundException(id));
     }
 
-    public MedicalRecord insert(MedicalRecord medicalRecord, Employee veterinarian) {
-        medicalRecord.setVeterinarian(veterinarian);
+    public List<MedicalRecord> searchByAnimalName(String patient) {
+        return medicalRecordRepository.findByAnimalName(patient);
+    }
 
+    public MedicalRecord insert(MedicalRecord medicalRecord) {
         return medicalRecordRepository.save(medicalRecord);
     }
 
-    public MedicalRecord update(MedicalRecord medicalRecord, Long id, Employee veterinarian) {
-        searchById(id);
-
-        medicalRecord.setVeterinarian(veterinarian);
-
-        return medicalRecordRepository.save(medicalRecord);
-    }
-
-    public void archive(Long id) {
+    public MedicalRecord archive(Long id) {
         MedicalRecord medicalRecord = searchById(id);
 
         medicalRecord.setArchived(!medicalRecord.getArchived());
 
-        medicalRecordRepository.save(medicalRecord);
+        return medicalRecordRepository.save(medicalRecord);
     }
 }

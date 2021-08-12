@@ -3,16 +3,13 @@ package br.com.lutztechnology.appveterinario.web.controller;
 import br.com.lutztechnology.appveterinario.dto.AlertDTO;
 import br.com.lutztechnology.appveterinario.exceptions.MedicalRecordNotFoundException;
 import br.com.lutztechnology.appveterinario.model.Animal;
-import br.com.lutztechnology.appveterinario.model.AppUserDetailsImpl;
 import br.com.lutztechnology.appveterinario.model.Customer;
 import br.com.lutztechnology.appveterinario.model.MedicalRecord;
-import br.com.lutztechnology.appveterinario.repository.AnimalRepository;
-import br.com.lutztechnology.appveterinario.repository.CustomerRepository;
-import br.com.lutztechnology.appveterinario.repository.MedicalRecordRepository;
+import br.com.lutztechnology.appveterinario.services.AnimalService;
+import br.com.lutztechnology.appveterinario.services.CustomerService;
 import br.com.lutztechnology.appveterinario.services.EmployeeService;
 import br.com.lutztechnology.appveterinario.services.MedicalRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,38 +26,28 @@ import java.util.List;
 public class MedicalRecordController {
 
     @Autowired
-    private MedicalRecordRepository medicalRecordRepository;
-
-    @Autowired
     private MedicalRecordService medicalRecordService;
 
     @Autowired
-    private CustomerRepository customerRepository;
+    private AnimalService animalService;
 
     @Autowired
-    private AnimalRepository animalRepository;
+    private CustomerService customerService;
 
     @Autowired
     private EmployeeService employeeService;
 
     @GetMapping
-    public ModelAndView index() {
+    public ModelAndView index(
+            @RequestParam(required = false, name = "archived", defaultValue = "false") Boolean archived) {
         ModelAndView modelAndView = new ModelAndView("app/medical-records/index");
 
-        modelAndView.addObject("title", "Prontuários");
         modelAndView.addObject("isAtendimento", true);
-        modelAndView.addObject("medicalRecords", medicalRecordService.searchAll());
-
-        return modelAndView;
-    }
-
-    @GetMapping("/archived")
-    public ModelAndView archived() {
-        ModelAndView modelAndView = new ModelAndView("app/medical-records/archived");
-
-        modelAndView.addObject("title", "Prontuários Arquivados");
-        modelAndView.addObject("isAtendimento", true);
-        modelAndView.addObject("medicalRecords", medicalRecordService.searchArchived());
+        if (archived) {
+            modelAndView.addObject("medicalRecords", medicalRecordService.searchArchived());
+        } else {
+            modelAndView.addObject("medicalRecords", medicalRecordService.searchAll());
+        }
 
         return modelAndView;
     }
@@ -68,7 +56,6 @@ public class MedicalRecordController {
     public ModelAndView details(@PathVariable Long id) {
         ModelAndView modelAndView = new ModelAndView("app/medical-records/details");
 
-        modelAndView.addObject("title", "Detalhes do Prontuário");
         modelAndView.addObject("isAtendimento", true);
         modelAndView.addObject("medicalRecord", medicalRecordService.searchById(id));
 
@@ -76,12 +63,12 @@ public class MedicalRecordController {
     }
 
     @GetMapping("/insert")
-    public ModelAndView insert() {
-        ModelAndView modelAndView = new ModelAndView("app/medical-records/insert");
+    public ModelAndView insert(Principal principal) {
+        ModelAndView modelAndView = new ModelAndView("app/medical-records/form");
 
-        modelAndView.addObject("title", "Registro de Prontuário");
         modelAndView.addObject("isAtendimento", true);
         modelAndView.addObject("medicalRecord", new MedicalRecord());
+        modelAndView.addObject("veterinarian", employeeService.searchByEmail(principal.getName()).getId());
         fillForm(modelAndView);
 
         return modelAndView;
@@ -92,16 +79,18 @@ public class MedicalRecordController {
             @Valid MedicalRecord medicalRecord,
             BindingResult result,
             RedirectAttributes attrs,
-            @AuthenticationPrincipal AppUserDetailsImpl appUserDetails) {
+            Principal principal) {
         ModelAndView modelAndView = new ModelAndView("redirect:/app/medical-records");
 
         if (result.hasErrors()) {
-            modelAndView.setViewName("app/medical-records/insert");
+            modelAndView.setViewName("app/medical-records/form");
+            modelAndView.addObject("veterinarian", employeeService.searchByEmail(principal.getName()));
             fillForm(modelAndView);
             return modelAndView;
         }
+
         try {
-            medicalRecordService.insert(medicalRecord, employeeService.searchById(appUserDetails.getId()));
+            medicalRecordService.insert(medicalRecord);
             attrs.addFlashAttribute(
                     "alert",
                     new AlertDTO(
@@ -112,69 +101,29 @@ public class MedicalRecordController {
                     "alert",
                     new AlertDTO(
                             "Prontuário não pode ser cadastrado!",
-                            "alert-success"));
-        }
-
-        return modelAndView;
-    }
-
-    @GetMapping("/{id}/update")
-    public ModelAndView update(@PathVariable Long id) {
-        ModelAndView modelAndView = new ModelAndView("app/medical-records/update");
-
-        modelAndView.addObject("title", "Alteração do Registro de Prontuário");
-        modelAndView.addObject("isAtendimento", true);
-        modelAndView.addObject("medicalRecord", medicalRecordService.searchById(id));
-        fillForm(modelAndView);
-
-        return modelAndView;
-    }
-
-    @PostMapping("/{id}/update")
-    public ModelAndView update(
-            @Valid MedicalRecord medicalRecord,
-            BindingResult result,
-            RedirectAttributes attrs,
-            @PathVariable Long id,
-            @AuthenticationPrincipal AppUserDetailsImpl appUserDetails) {
-
-        ModelAndView modelAndView = new ModelAndView("redirect:/app/medical-records");
-
-        if (result.hasErrors()) {
-            modelAndView.setViewName("app/medical-records/update");
-            fillForm(modelAndView);
-            return modelAndView;
-        }
-
-        try {
-            medicalRecordService.update(medicalRecord, id, employeeService.searchById(appUserDetails.getId()));
-            attrs.addFlashAttribute(
-                    "alert",
-                    new AlertDTO(
-                            "Prontuário atualizado com sucesso!",
-                            "alert-success"));
-        } catch (MedicalRecordNotFoundException e) {
-            attrs.addFlashAttribute(
-                    "alert",
-                    new AlertDTO(
-                            "Prontuário não pode ser atualizado!",
                             "alert-danger"));
         }
 
         return modelAndView;
     }
 
-    // TODO: mudar para POST
     @GetMapping("/{id}/archive")
     public ModelAndView archive(@PathVariable Long id, RedirectAttributes attrs) {
         ModelAndView modelAndView = new ModelAndView("redirect:/app/medical-records");
 
         try {
-            medicalRecordService.archive(id);
+            MedicalRecord medicalRecord = medicalRecordService.archive(id);
+            String message;
+            if (medicalRecord.getArchived()) {
+                message = "Prontuário arquivado com sucesso!";
+            } else {
+                message = "Prontuário desarquivado com sucesso!";
+                modelAndView.setViewName("redirect:/app/medical-records?archived=true");
+            }
             attrs.addFlashAttribute(
                     "alert",
                     new AlertDTO(
-                            "Prontuário arquivado com sucesso!",
+                            message,
                             "alert-success"));
         } catch (MedicalRecordNotFoundException e) {
             attrs.addFlashAttribute(
@@ -188,16 +137,15 @@ public class MedicalRecordController {
     }
 
     private void fillForm(ModelAndView modelAndView) {
-        modelAndView.addObject("customers", customerRepository.findAll());
-        modelAndView.addObject("animals", animalRepository.findAll());
+        modelAndView.addObject("customers", customerService.searchAll());
+        modelAndView.addObject("animals", animalService.searchAll());
     }
 
-    // TODO: mover buscas para seção API
     @GetMapping(value = "/search", produces = "application/json")
     public @ResponseBody
     List<MedicalRecord> search(@RequestParam(name = "patient") String patient) {
         List<MedicalRecord> medicalRecords = new ArrayList<>();
-        for (MedicalRecord medicalRecord : medicalRecordRepository.findByAnimalName(patient)) {
+        for (MedicalRecord medicalRecord : medicalRecordService.searchByAnimalName(patient)) {
             if (!medicalRecord.getArchived()) {
                 medicalRecords.add(medicalRecord);
             }
@@ -209,7 +157,7 @@ public class MedicalRecordController {
     public @ResponseBody
     List<MedicalRecord> searchArchived(@RequestParam(name = "patient") String patient) {
         List<MedicalRecord> medicalRecords = new ArrayList<>();
-        for (MedicalRecord medicalRecord : medicalRecordRepository.findByAnimalName(patient)) {
+        for (MedicalRecord medicalRecord : medicalRecordService.searchByAnimalName(patient)) {
             if (medicalRecord.getArchived()) {
                 medicalRecords.add(medicalRecord);
             }
@@ -220,13 +168,13 @@ public class MedicalRecordController {
     @GetMapping(value = "/searchAnimals", produces = "application/json")
     public @ResponseBody
     List<Animal> searchAnimals(@RequestParam(name = "ownerId", defaultValue = "") String id) {
-        return animalRepository.findByOwnerId(Long.parseLong(id));
+        return animalService.searchByOwnerId(Long.parseLong(id));
     }
 
     @GetMapping(value = "/searchOwner", produces = "application/json")
     public @ResponseBody
     Customer searchOwner(@RequestParam(name = "petId", defaultValue = "") String id) {
-        Animal animal = animalRepository.getOne(Long.parseLong(id));
-        return customerRepository.getOne(animal.getOwner().getId());
+        Animal animal = animalService.searchById(Long.parseLong(id));
+        return customerService.searchById(animal.getOwner().getId());
     }
 }
