@@ -37,6 +37,11 @@ public class EmployeeService {
         return employeeRepository.findByNameOrEmail(search);
     }
 
+    public Employee searchByEmail(String email) {
+        return employeeRepository.findByEmail(email)
+                .orElseThrow(() -> new EmployeeNotFoundException(email));
+    }
+
     public Employee insert(Employee employee) {
         String encryptedPassword = passwordEncoder.encode(employee.getPassword());
 

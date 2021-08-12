@@ -11,4 +11,7 @@ public class EmployeeNotFoundException extends EntityNotFoundException {
     public EmployeeNotFoundException(Long id) {
         super(String.format("Employee with ID %s not found", id));
     }
+    public EmployeeNotFoundException(String email) {
+        super(String.format("Employee with ID %s not found", email));
+    }
 }
