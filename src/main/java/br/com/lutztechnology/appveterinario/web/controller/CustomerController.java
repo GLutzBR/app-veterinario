@@ -53,43 +53,6 @@ public class CustomerController {
         return modelAndView;
     }
 
-    @PostMapping("/insert")
-    public ModelAndView insert(
-            @Valid Customer customer,
-            BindingResult result,
-            @RequestParam(value = "action") String action,
-            final RedirectAttributes attrs) {
-        ModelAndView modelAndView = new ModelAndView("redirect:/app/customers");
-
-        if (result.hasErrors()) {
-            modelAndView.setViewName("app/customers/form");
-            return modelAndView;
-        }
-
-        if (action.equals("saveAndAddPet")) {
-            attrs.addFlashAttribute("customer", customer);
-            modelAndView.setViewName("redirect:/app/animals/insert-with-owner");
-        }
-
-        try {
-            customerService.insert(customer);
-            attrs.addFlashAttribute(
-                    "alert",
-                    new AlertDTO(
-                            "Cliente cadastrado com sucesso!",
-                            "alert-success"));
-        } catch (Exception e) {
-            attrs.addFlashAttribute(
-                    "alert",
-                    new AlertDTO(
-                            "Cliente não pode ser cadastrado!",
-                            "alert-danger"));
-            modelAndView.setViewName("redirect:/app/customers");
-        }
-
-        return modelAndView;
-    }
-
     @GetMapping("/{id}/update")
     public ModelAndView update(@PathVariable Long id) {
         ModelAndView modelAndView = new ModelAndView("app/customers/form");
@@ -101,14 +64,13 @@ public class CustomerController {
         return modelAndView;
     }
 
-    @PostMapping("/{id}/update")
-    public ModelAndView update(
+    @PostMapping({"/insert", "/{id}/update"})
+    public ModelAndView save(
             @Valid Customer customer,
             BindingResult result,
-            @PathVariable Long id,
+            @PathVariable(required = false) Long id,
             @RequestParam(value = "action") String action,
             final RedirectAttributes attrs) {
-
         ModelAndView modelAndView = new ModelAndView("redirect:/app/customers");
 
         if (result.hasErrors()) {
@@ -116,38 +78,58 @@ public class CustomerController {
             return modelAndView;
         }
 
-        if (action.equals("saveAndUpdatePet")) {
+        if (action.equals("saveAndAddPet")) {
             attrs.addFlashAttribute("customer", customer);
-            if (customer.getPets().isEmpty()) {
-                modelAndView.setViewName("redirect:/app/animals/insert-with-owner");
-            } else {
-                modelAndView.setViewName("redirect:/app/animals/update-with-owner");
-            }
+            modelAndView.setViewName("redirect:/app/animals/insert");
         }
 
-        try {
-            customerService.update(customer, id);
-            attrs.addFlashAttribute(
-                    "alert",
-                    new AlertDTO(
-                            "Cliente atualizado com sucesso!",
-                            "alert-success"));
-        } catch (CustomerNotFoundException e) {
-            attrs.addFlashAttribute(
-                    "alert",
-                    new AlertDTO(
-                            "Cliente não pode ser atualizado!",
-                            "alert-danger"));
-            modelAndView.setViewName("redirect:/app/customers");
+        if (customer.getId() == null) {
+            try {
+                customerService.insert(customer);
+                attrs.addFlashAttribute(
+                        "alert",
+                        new AlertDTO(
+                                "Cliente cadastrado com sucesso!",
+                                "alert-success"));
+            } catch (Exception e) {
+                attrs.addFlashAttribute(
+                        "alert",
+                        new AlertDTO(
+                                "Cliente não pode ser cadastrado!",
+                                "alert-danger"));
+                modelAndView.setViewName("redirect:/app/customers");
+            }
+        } else {
+            try {
+                customerService.update(customer, id);
+                attrs.addFlashAttribute(
+                        "alert",
+                        new AlertDTO(
+                                "Cliente atualizado com sucesso!",
+                                "alert-success"));
+            } catch (CustomerNotFoundException e) {
+                attrs.addFlashAttribute(
+                        "alert",
+                        new AlertDTO(
+                                "Cliente não pode ser atualizado!",
+                                "alert-danger"));
+                modelAndView.setViewName("redirect:/app/customers");
+            }
         }
 
         return modelAndView;
     }
 
+    @GetMapping("/{id}/update-pet")
+    public String updatePet(@PathVariable Long id, RedirectAttributes attrs) {
+        attrs.addFlashAttribute("customer", customerService.searchById(id));
+        return "redirect:/app/animals/update-with-owner";
+    }
+
     @GetMapping("/{id}/delete")
     public String delete(@PathVariable Long id, RedirectAttributes attrs) {
         try {
-        customerService.deleteById(id);
+            customerService.deleteById(id);
             attrs.addFlashAttribute(
                     "alert",
                     new AlertDTO(
