@@ -1,7 +1,6 @@
 package br.com.lutztechnology.appveterinario.model;
 
 import br.com.lutztechnology.appveterinario.serialize.AnimalSerializer;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
