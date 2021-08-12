@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{layout :: layout (~{::title}, ~{::main}, _, _)}">
+
+<head>
+  <title>Editar Animais</title>
+</head>
+
+<body>
+
+<main>
+  <div class="row" th:if="${!form.animals.isEmpty()}">
+    <div class="col-sm-12">
+      <div class="card mb-2">
+        <form th:action="@{/app/animals/update}" method="post" th:object="${form}">
+          <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+          <div class="card-body">
+            <fieldset th:each="animal, itemStat : *{animals}">
+              <input type="hidden" th:field="*{animals[__${itemStat.index}__].id}">
+              <input type="hidden" th:field="*{animals[__${itemStat.index}__].owner}">
+
+              <div class="row">
+                <div class="col-md-4 col-sm-12">
+                  <div class="form-group">
+                    <label for="name" class="form-label">Nome:</label>
+                    <input type="text"
+                           class="form-control"
+                           id="name"
+                           placeholder="Paçoca"
+                           th:field="*{animals[__${itemStat.index}__].name}"
+                           required>
+                    <ul>
+                      <li class="text-danger" th:each="error : ${#fields.errors('animals[__${itemStat.index}__].name')}" th:text="${error}"></li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div class="col-md-4 col-sm-12">
+                  <div class="form-group">
+                    <label for="age" class="form-label">Data de nascimento:</label>
+                    <input type="date"
+                           class="form-control"
+                           id="age"
+                           placeholder="Digite o nome"
+                           th:field="*{animals[__${itemStat.index}__].age}"
+                           required>
+<!--                    <span class="error" th:errors="*{animals[__${itemStat.index}__].age}"></span>-->
+                    <ul>
+                      <li class="text-danger" th:each="error : ${#fields.errors('animals[__${itemStat.index}__].age')}" th:text="${error}"></li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div class="col-md-4 col-sm-12">
+                  <div class="form-group">
+                    <label for="breed" class="form-label">Raça:</label>
+                    <input type="text"
+                           class="form-control"
+                           id="breed"
+                           placeholder="Schnauzer"
+                           th:field="*{animals[__${itemStat.index}__].breed}"
+                           required>
+<!--                    <span class="error" th:errors="*{animals[__${itemStat.index}__].breed}"></span>-->
+                    <ul>
+                      <li class="text-danger" th:each="error : ${#fields.errors('animals[__${itemStat.index}__].breed')}" th:text="${error}"></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+
+            <div class="mb-1">
+              <a th:href="@{/app/animals}" class="btn btn-secondary">Cancelar</a>
+              <button type="submit" class="btn btn-success" th:value="update">Salvar</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="row" th:unless="${!form.animals.isEmpty()}">
+    <p>Voltar à <a href="javascript:history.back()">página anterior</a> para carregar dados do usuário</p>
+  </div>
+</main>
+
+</body>
+</html>
