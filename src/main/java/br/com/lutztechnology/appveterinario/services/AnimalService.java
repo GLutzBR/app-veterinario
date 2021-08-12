@@ -1,5 +1,6 @@
 package br.com.lutztechnology.appveterinario.services;
 
+import br.com.lutztechnology.appveterinario.dto.AnimalUpdateDTO;
 import br.com.lutztechnology.appveterinario.exceptions.AnimalHasMedicalRecordsException;
 import br.com.lutztechnology.appveterinario.exceptions.AnimalNotFoundException;
 import br.com.lutztechnology.appveterinario.model.Animal;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -48,12 +50,15 @@ public class AnimalService {
         return animalRepository.save(animal);
     }
 
-    public void updateAll(List<Animal> animals) {
-        for (Animal animal : animals) {
+    public void updateAll(AnimalUpdateDTO animals) {
+        List<Animal> animalList = new ArrayList<>();
+        for (Animal animal : animals.getAnimals()) {
+            // o método searchById serve para validar se o animal repassado pelo formulário existe no banco
             searchById(animal.getId());
+            animalList.add(animal);
         }
 
-        animalRepository.saveAll(animals);
+        animalRepository.saveAll(animalList);
     }
 
     public void deleteById(Long id) {

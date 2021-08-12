@@ -1,17 +1,15 @@
 <!DOCTYPE html>
 <html lang="pt-br"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="~{base/base :: baseHead}">
-  <title></title>
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{layout :: layout (~{::title}, ~{::main}, _, ~{::scripts})}">
+<head>
+  <title>Lista de Animais</title>
 </head>
 <body>
-<header th:replace="~{base/base :: navbar}"></header>
-
-<main class="container">
+<main>
   <div class="row">
     <div class="col-sm-12">
-      <h1 th:text="${title}"></h1>
       <form action="#" class="d-flex cold-md-12">
         <input type="text"
                class="form-control me-2"
@@ -31,6 +29,7 @@
       <table class="table" id="tbl-animals">
         <thead>
         <tr>
+          <th scope="col">ID</th>
           <th scope="col">Nome</th>
           <th scope="col">Idade</th>
           <th scope="col">Raça</th>
@@ -40,19 +39,30 @@
         </thead>
         <tbody>
         <tr th:each="animal : ${animals}">
-          <td>
-            <a th:href="@{/app/animals/{id} (id=${animal.id})}"
-               th:text="${animal.name}"></a>
-          </td>
-          <td th:text="${animal.age}"></td>
+          <td th:text="${animal.id}"></td>
+          <td th:text="${animal.name}"></td>
+          <td th:text="${animal.ageYears}"></td>
           <td th:text="${animal.breed}"></td>
-          <td th:text="${animal.owner.fullName}"></td>
+          <td th:text="${animal.owner.name}"></td>
           <td>
-            <a th:href="@{/app/animals/{id}/update (id=${animal.id})}"
-               class="btn btn-warning">Editar</a>
-            <a class="btn btn-danger"
-               th:href="@{/app/animals/{id}/delete (id=${animal.id})}"
-               onclick="return confirm('Tem certeza de que deseja excluir o animal?')">Excluir</a>
+            <div class="btn-group">
+              <a th:href="@{/app/animals/{id} (id=${animal.id})}"
+                 class="btn btn-primary" type="button"
+                 data-bs-toggle="tooltip" data-bs-placement="top" title="Visualizar">
+                <i class="fas fa-eye"></i>
+              </a>
+              <a th:href="@{/app/animals/{id}/update (id=${animal.id})}"
+                 class="btn btn-warning" type="button"
+                 data-bs-toggle="tooltip" data-bs-placement="top" title="Editar">
+                <i class="fas fa-edit"></i>
+              </a>
+              <a th:href="@{/app/animals/{id}/delete (id=${animal.id})}"
+                 onclick="return confirm('Tem certeza de que deseja excluir o animal?')"
+                 class="btn btn-danger" type="button"
+                 data-bs-toggle="tooltip" data-bs-placement="top" title="Excluir">
+                <i class="fas fa-trash"></i>
+              </a>
+            </div>
           </td>
         </tr>
         </tbody>
@@ -69,45 +79,62 @@
 
 </main>
 
-<footer th:replace="~{base/base :: copyright}"></footer>
-
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('#btn-search').click(function () {
-            const animalName = $('#txt-search').val();
-            $.ajax({
-                method: 'GET',
-                url: '/app/animals/search?name=' + animalName,
-                success: function (data) {
-                    $('#tbl-animals tbody > tr').remove();
-                    $.each(data, function (index, animal) {
-                        $('#tbl-animals tbody').append(
-                            '<tr>' +
-                            '  <td>' +
-                            '    <a href="/app/animals/' + animal.id + '">' + animal.name + '</a>' +
-                            '  </td>' +
-                            '  <td>' + animal.age + '</td>' +
-                            '  <td>' + animal.breed + '</td>' +
-                            '  <td>' + animal.owner.fullName + '</td>' +
-                            '  <td>' +
-                            '    <a href="/app/animals/' + animal.id + '/update"' +
-                            '       class="btn btn-warning">Editar</a>' +
-                            '    <a href="/app/animals/' + animal.id + '/delete"' +
-                            '       class="btn btn-danger"' +
-                            '       onclick="return confirm(\'Tem certeza de que deseja excluir o animal?\')">Excluir</a>' +
-                            '  </td>' +
-                            '</tr>'
-                        );
-                    })
-                },
-                error: function () {
-                    alert("Houve um erro na requisição!");
-                }
-            });
-            return false;
-        });
-    });
-</script>
+<th:block th:fragment="scripts">
+  <script type="text/javascript">
+      $(document).ready(function () {
+          $('#btn-search').click(function () {
+              const animalName = $('#txt-search').val();
+              $.ajax({
+                  method: 'GET',
+                  url: '/app/animals/search?name=' + animalName,
+                  success: function (data) {
+                      $('#tbl-animals tbody > tr').remove();
+                      $.each(data, function (index, animal) {
+                          $('#tbl-animals tbody').append(
+                              '<tr>' +
+                              '  <td>' + animal.id + '</td>' +
+                              '  <td>' +
+                              '    <a href="/app/animals/' + animal.id + '">' + animal.name + '</a>' +
+                              '  </td>' +
+                              '  <td>' + animal.age + '</td>' +
+                              '  <td>' + animal.breed + '</td>' +
+                              '  <td>' + animal.owner.name + '</td>' +
+                              '  <td>' +
+                              '    <a href="/app/animals/' + animal.id + '" class="btn btn-primary"' +
+                              '       type="button" data-bs-toggle="tooltip" data-bs-placement="top"' +
+                              '       title="Visualizar"><i class="fas fa-eye"></i></a>' +
+                              '    <a href="/app/animals/' + animal.id + '/update" class="btn btn-warning"' +
+                              '       type="button" data-bs-toggle="tooltip" data-bs-placement="top"' +
+                              '       title="Editar"><i class="fas fa-edit"></i></a>' +
+                              '    <a href="/app/animals/' + animal.id + '/delete"' +
+                              '       class="btn btn-danger" type="button"' +
+                              '       data-bs-toggle="tooltip" data-bs-placement="top" title="Excluir"' +
+                              '       onclick="return confirm(\'Tem certeza de que deseja excluir o animal?\')">' +
+                              '        <i class="fas fa-trash"></i></a>' +
+                              '  </td>' +
+                              '</tr>'
+                          );
+                      })
+                      let tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+                      let tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                          return new bootstrap.Tooltip(tooltipTriggerEl)
+                      })
+                  },
+                  error: function () {
+                      alert("Houve um erro na requisição!");
+                  }
+              });
+              return false;
+          });
+      });
+  </script>
+  <script>
+      let tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+      let tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+          return new bootstrap.Tooltip(tooltipTriggerEl)
+      })
+  </script>
+</th:block>
 
 </body>
 </html>

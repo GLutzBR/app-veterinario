@@ -1,6 +1,7 @@
 package br.com.lutztechnology.appveterinario.web.controller;
 
 import br.com.lutztechnology.appveterinario.dto.AlertDTO;
+import br.com.lutztechnology.appveterinario.dto.AnimalUpdateDTO;
 import br.com.lutztechnology.appveterinario.exceptions.AnimalNotFoundException;
 import br.com.lutztechnology.appveterinario.model.Animal;
 import br.com.lutztechnology.appveterinario.model.Customer;
@@ -30,7 +31,6 @@ public class AnimalController {
     public ModelAndView index() {
         ModelAndView modelAndView = new ModelAndView("app/animals/index");
 
-        modelAndView.addObject("title", "Pets");
         modelAndView.addObject("isAnimal", true);
         modelAndView.addObject("animals", animalService.searchAll());
 
@@ -41,7 +41,6 @@ public class AnimalController {
     public ModelAndView details(@PathVariable(name = "id") Long id) {
         ModelAndView modelAndView = new ModelAndView("app/animals/details");
 
-        modelAndView.addObject("title", "Detalhes do Pet");
         modelAndView.addObject("isAnimal", true);
         modelAndView.addObject("animal", animalService.searchById(id));
 
@@ -50,9 +49,8 @@ public class AnimalController {
 
     @GetMapping("/insert")
     public ModelAndView insert() {
-        ModelAndView modelAndView = new ModelAndView("app/animals/insert");
+        ModelAndView modelAndView = new ModelAndView("app/animals/form");
 
-        modelAndView.addObject("title", "Adicionar novo Pet");
         modelAndView.addObject("isAnimal", true);
         modelAndView.addObject("animal", new Animal());
         modelAndView.addObject("customers", customerService.searchAll());
@@ -60,56 +58,10 @@ public class AnimalController {
         return modelAndView;
     }
 
-    @GetMapping("/insert-with-owner")
-    public ModelAndView insert(@ModelAttribute(value = "customer") Customer owner) {
-        ModelAndView modelAndView = new ModelAndView("app/animals/insert-with-owner");
-
-        modelAndView.addObject("title", "Adicionar novo Pet");
-        modelAndView.addObject("isAnimal", true);
-        modelAndView.addObject("animal", new Animal());
-        modelAndView.addObject("owner", owner);
-
-        return modelAndView;
-    }
-
-
-    @PostMapping("/insert")
-    public ModelAndView insert(
-            @Valid Animal animal,
-            BindingResult result,
-            @RequestParam(value = "action") String action,
-            final RedirectAttributes attrs) {
-        ModelAndView modelAndView = new ModelAndView("redirect:/app/animals");
-
-        if (action.equals("saveAndAddPet")) {
-            attrs.addFlashAttribute("customer", animal.getOwner());
-            modelAndView.setViewName("redirect:/app/animals/insert-with-owner");
-        }
-
-        try {
-            animalService.insert(animal);
-            attrs.addFlashAttribute(
-                    "alert",
-                    new AlertDTO(
-                            "Pet cadastrado com sucesso!",
-                            "alert-success"));
-        } catch (Exception e) {
-            attrs.addFlashAttribute(
-                    "alert",
-                    new AlertDTO(
-                            "Pet não pode ser cadastrado!",
-                            "alert-danger"));
-            modelAndView.setViewName("redirect:/app/animals");
-        }
-
-        return modelAndView;
-    }
-
     @GetMapping("/{id}/update")
     public ModelAndView update(@PathVariable Long id) {
-        ModelAndView modelAndView = new ModelAndView("app/animals/update");
+        ModelAndView modelAndView = new ModelAndView("app/animals/form");
 
-        modelAndView.addObject("title", "Editar Pet");
         modelAndView.addObject("isAnimal", true);
         modelAndView.addObject("animal", animalService.searchById(id));
         modelAndView.addObject("customers", customerService.searchAll());
@@ -117,32 +69,57 @@ public class AnimalController {
         return modelAndView;
     }
 
-    @PostMapping("/{id}/update")
-    public ModelAndView update(
+    @PostMapping({"/insert", "/{id}/update"})
+    public ModelAndView save(
             @Valid Animal animal,
             BindingResult result,
-            @PathVariable Long id,
-            RedirectAttributes attrs) {
+            @PathVariable(required = false) Long id,
+            @RequestParam(value = "action") String action,
+            final RedirectAttributes attrs){
         ModelAndView modelAndView = new ModelAndView("redirect:/app/animals");
 
         if (result.hasErrors()) {
-            modelAndView.setViewName("app/animals/update");
+            modelAndView.setViewName("app/animals/form");
             return modelAndView;
         }
 
-        try {
-            animalService.update(animal, id);
-            attrs.addFlashAttribute(
-                    "alert",
-                    new AlertDTO(
-                            "Pet atualizado com sucesso!",
-                            "alert-danger"));
-        } catch (AnimalNotFoundException e) {
-            attrs.addFlashAttribute(
-                    "alert",
-                    new AlertDTO(
-                            "Pet não pode ser atualizado!",
-                            "alert-danger"));
+        if (action.equals("saveAndAddPet")) {
+            attrs.addFlashAttribute("customer", animal.getOwner());
+            modelAndView.setViewName("redirect:/app/animals/insert");
+        }
+
+        if (animal.getId() == null) {
+            try {
+                animalService.insert(animal);
+                attrs.addFlashAttribute(
+                        "alert",
+                        new AlertDTO(
+                                "Pet cadastrado com sucesso!",
+                                "alert-success"));
+            } catch (Exception e) {
+                attrs.addFlashAttribute(
+                        "alert",
+                        new AlertDTO(
+                                "Pet não pode ser cadastrado!",
+                                "alert-danger"));
+                modelAndView.setViewName("redirect:/app/animals");
+            }
+        } else {
+            try {
+                animalService.update(animal, id);
+                attrs.addFlashAttribute(
+                        "alert",
+                        new AlertDTO(
+                                "Pet atualizado com sucesso!",
+                                "alert-success"));
+            } catch (AnimalNotFoundException e) {
+                attrs.addFlashAttribute(
+                        "alert",
+                        new AlertDTO(
+                                "Pet não pode ser atualizado!",
+                                "alert-danger"));
+                modelAndView.setViewName("redirect:/app/animals");
+            }
         }
 
         return modelAndView;
@@ -150,11 +127,11 @@ public class AnimalController {
 
     @GetMapping("/update-with-owner")
     public ModelAndView update(@ModelAttribute(value = "customer") Customer owner) {
-        ModelAndView modelAndView = new ModelAndView("app/animals/update-with-owner");
+        ModelAndView modelAndView = new ModelAndView("app/animals/form-list-animals");
+        AnimalUpdateDTO animalUpdateDTO = new AnimalUpdateDTO(animalService.searchByOwnerId(owner.getId()));
 
-        modelAndView.addObject("title", "Editar Pets");
         modelAndView.addObject("isAnimal", true);
-        modelAndView.addObject("form", animalService.searchByOwnerId(owner.getId()));
+        modelAndView.addObject("form", animalUpdateDTO);
         modelAndView.addObject("customers", customerService.searchAll());
 
         return modelAndView;
@@ -162,29 +139,30 @@ public class AnimalController {
 
     @PostMapping("/update")
     public ModelAndView update(
-            @Valid List<Animal> animals,
+            @ModelAttribute(name = "animals") AnimalUpdateDTO animals,
             BindingResult result,
             RedirectAttributes attrs) {
         ModelAndView modelAndView = new ModelAndView("redirect:/app/animals");
 
         if (result.hasErrors()) {
-            modelAndView.setViewName("app/animals/update-with-owner");
+            modelAndView.setViewName("app/animals/form-list-animals");
             return modelAndView;
         }
+
         try {
             animalService.updateAll(animals);
             attrs.addFlashAttribute(
                     "alert",
                     new AlertDTO(
                             "Pets atualizados com sucesso!",
-                            "alert-danger"));
+                            "alert-success"));
         } catch (AnimalNotFoundException e) {
             attrs.addFlashAttribute(
                     "alert",
                     new AlertDTO(
                             "Pets não puderam ser atualizados!",
                             "alert-danger"));
-            modelAndView.setViewName("redirect:/app/customers");
+            modelAndView.setViewName("redirect:/app/animals");
         }
 
         return modelAndView;
@@ -200,7 +178,7 @@ public class AnimalController {
                     "alert",
                     new AlertDTO(
                             "Pet excluído com sucesso!",
-                            "alert-danger"));
+                            "alert-success"));
         } catch (Exception e) {
             attrs.addFlashAttribute(
                     "alert",
