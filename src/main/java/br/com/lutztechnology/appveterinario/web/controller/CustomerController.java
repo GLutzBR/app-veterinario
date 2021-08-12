@@ -126,6 +126,12 @@ public class CustomerController {
         return "redirect:/app/animals/update-with-owner";
     }
 
+    @GetMapping("/{id}/insert-pet")
+    public String insertPet(@PathVariable Long id, RedirectAttributes attrs) {
+        attrs.addFlashAttribute("customer", customerService.searchById(id));
+        return "redirect:/app/animals/insert";
+    }
+
     @GetMapping("/{id}/delete")
     public String delete(@PathVariable Long id, RedirectAttributes attrs) {
         try {
