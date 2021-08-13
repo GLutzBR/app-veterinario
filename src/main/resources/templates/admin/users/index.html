@@ -116,13 +116,15 @@
                           $('#tbl-employees tbody').append(
                               '<tr>' +
                               '  <td>' + employee.id + '</td>' +
-                              '  <td>' +
-                              '    <a href="/admin/users/' + employee.id + '">' + employee.email + '</a>' +
-                              '  </td>' +
+                              '  <td>' + employee.email + '</td>' +
                               '  <td>' + employee.name + '</td>' +
                               '  <td>' + active + '</td>' +
                               '  <td>' + employee.role.name + '</td>' +
                               '  <td>' +
+                              '    <div class="btn-group">' +
+                              '    <a href="/admin/users/' + employee.id + '" class="btn btn-primary"' +
+                              '       type="button" data-bs-toggle="tooltip" data-bs-placement="top"' +
+                              '       title="Visualizar"><i class="fas fa-eye"></i></a>' +
                               '    <a href="/admin/users/' + employee.id + '/update" class="btn btn-warning"' +
                               '       type="button" data-bs-toggle="tooltip" data-bs-placement="top"' +
                               '       title="Editar"><i class="fas fa-edit"></i></a>' +
@@ -132,6 +134,7 @@
                               '       title="' + title + '"' +
                               '       onclick="' + message + '">' +
                               '        <i class="fas ' + icon + '"></i></a>' +
+                              '    </div>' +
                               '  </td>' +
                               '</tr>'
                           );
