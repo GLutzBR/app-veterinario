@@ -4,7 +4,7 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       th:replace="~{layout :: layout (~{::title}, ~{::main}, _, ~{::scripts})}">
 <head>
-  <title>Lista de Cargos</title>
+  <title>Cargos</title>
 </head>
 <body>
 
@@ -40,17 +40,19 @@
           <td th:text="${role.id}"></td>
           <td th:text="${role.name}"></td>
           <td>
-            <a th:href="@{/admin/roles/{id}/update (id=${role.id})}"
-               class="btn btn-warning" type="button"
-               data-bs-toggle="tooltip" data-bs-placement="top" title="Editar">
-              <i class="fas fa-edit"></i>
-            </a>
-            <a th:href="@{/admin/roles/{id}/delete (id=${role.id})}"
-               class="btn btn-danger" type="button"
-               th:onclick="'return confirm(\'Tem certeza de que deseja excluir este cargo?\')'"
-               data-bs-toggle="tooltip" data-bs-placement="top" title="Excluir">
-              <i class="fas fa-trash"></i>
-            </a>
+            <div class="btn-group">
+              <a th:href="@{/admin/roles/{id}/update (id=${role.id})}"
+                 class="btn btn-warning" type="button"
+                 data-bs-toggle="tooltip" data-bs-placement="top" title="Editar">
+                <i class="fas fa-edit"></i>
+              </a>
+              <a th:href="@{/admin/roles/{id}/delete (id=${role.id})}"
+                 class="btn btn-danger" type="button"
+                 th:onclick="'return confirm(\'Tem certeza de que deseja excluir este cargo?\')'"
+                 data-bs-toggle="tooltip" data-bs-placement="top" title="Excluir">
+                <i class="fas fa-trash"></i>
+              </a>
+            </div>
           </td>
         </tr>
         </tbody>
@@ -67,46 +69,46 @@
 </main>
 
 <th:block th:fragment="scripts">
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $("#btn-search").click(function () {
-                const roleName = $("#txt-search").val();
-                $.ajax({
-                    method: 'GET',
-                    url: '/admin/roles/search?name=' + roleName,
-                    success: function (data) {
-                        $('#tbl-roles tbody > tr').remove();
-                        $.each(data, function (index, role) {
-                            $('#tbl-roles tbody').append(
-                                '<tr>' +
-                                '  <td>' + role.id + '</td>' +
-                                '  <td>' + role.name + '</td>' +
-                                '  <td>' +
-                                '    <a href="/admin/roles/' + role.id + '/update" class="btn btn-warning"' +
-                                '       type="button" data-bs-toggle="tooltip" data-bs-placement="top"' +
-                                '       title="Editar"><i class="fas fa-edit"></i></a>' +
-                                '    <a href="/admin/roles/' + role.id + '/delete" class="btn btn-danger"' +
-                                '       type="button" data-bs-toggle="tooltip" data-bs-placement="top"' +
-                                '       title="Excluir"' +
-                                '       onclick="return confirm(\'Tem certeza de que deseja excluir este cargo?\')">' +
-                                '        <i class="fas fa-trash"></i></a>' +
-                                '  </td>' +
-                                '</tr>'
-                            );
-                            let tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-                            let tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-                                return new bootstrap.Tooltip(tooltipTriggerEl)
-                            })
-                        })
-                    },
-                    error: function () {
-                        alert("Houve um erro na requisição!")
-                    }
-                });
-                return false;
-            });
-        });
-    </script>
+  <script type="text/javascript">
+      $(document).ready(function () {
+          $("#btn-search").click(function () {
+              const roleName = $("#txt-search").val();
+              $.ajax({
+                  method: 'GET',
+                  url: '/admin/roles/search?name=' + roleName,
+                  success: function (data) {
+                      $('#tbl-roles tbody > tr').remove();
+                      $.each(data, function (index, role) {
+                          $('#tbl-roles tbody').append(
+                              '<tr>' +
+                              '  <td>' + role.id + '</td>' +
+                              '  <td>' + role.name + '</td>' +
+                              '  <td>' +
+                              '    <a href="/admin/roles/' + role.id + '/update" class="btn btn-warning"' +
+                              '       type="button" data-bs-toggle="tooltip" data-bs-placement="top"' +
+                              '       title="Editar"><i class="fas fa-edit"></i></a>' +
+                              '    <a href="/admin/roles/' + role.id + '/delete" class="btn btn-danger"' +
+                              '       type="button" data-bs-toggle="tooltip" data-bs-placement="top"' +
+                              '       title="Excluir"' +
+                              '       onclick="return confirm(\'Tem certeza de que deseja excluir este cargo?\')">' +
+                              '        <i class="fas fa-trash"></i></a>' +
+                              '  </td>' +
+                              '</tr>'
+                          );
+                          let tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+                          let tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                              return new bootstrap.Tooltip(tooltipTriggerEl)
+                          })
+                      })
+                  },
+                  error: function () {
+                      alert("Houve um erro na requisição!")
+                  }
+              });
+              return false;
+          });
+      });
+  </script>
   <script>
       let tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
       let tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {

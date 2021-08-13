@@ -4,7 +4,7 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       th:replace="~{layout :: layout (~{::title}, ~{::main}, _, ~{::scripts})}">
 <head>
-  <title>Lista de Funcionários</title>
+  <title>Funcionários</title>
 </head>
 <body>
 
@@ -41,29 +41,34 @@
         <tbody>
         <tr th:each="employee : ${employees}">
           <td th:text="${employee.id}"></td>
-          <td>
-            <a th:href="@{/admin/users/{id} (id=${employee.id})}"
-               th:text="${employee.email}"></a>
-          </td>
+          <td th:text="${employee.email}"></td>
           <td th:text="${employee.name}"></td>
           <td th:text="${employee.active} ? 'Habilitado' : 'Desabilitado'"></td>
           <td th:text="${employee.role.name}">
           </td>
           <td>
-            <a th:href="@{/admin/users/{id}/update (id=${employee.id})}"
-               class="btn btn-warning" type="button"
-               data-bs-toggle="tooltip" data-bs-placement="top" title="Editar">
-              <i class="fas fa-edit"></i>
-            </a>
-            <a class="btn" th:classappend="${employee.active} ? 'btn-danger' : 'btn-success'"
-               type="button"
-               th:href="@{/admin/users/{id}/change-availability (id=${employee.id})}"
-               th:onclick="${employee.active} ?
+            <div class="btn-group">
+              <a th:href="@{/admin/users/{id} (id=${employee.id})}"
+                 class="btn btn-primary" type="button"
+                 data-bs-toggle="tooltip" data-bs-placement="top" title="Visualizar">
+                <i class="fas fa-eye"></i>
+              </a>
+              <a th:href="@{/admin/users/{id}/update (id=${employee.id})}"
+                 class="btn btn-warning" type="button"
+                 data-bs-toggle="tooltip" data-bs-placement="top" title="Editar">
+                <i class="fas fa-edit"></i>
+              </a>
+              <a class="btn" th:classappend="${employee.active} ? 'btn-danger' : 'btn-success'"
+                 type="button"
+                 th:href="@{/admin/users/{id}/change-availability (id=${employee.id})}"
+                 th:onclick="${employee.active} ?
                 'return confirm(\'Tem certeza de que deseja desabilitar o usuário?\')' :
                  'return confirm(\'Tem certeza de que deseja habilitar o usuário?\')'"
-               data-bs-toggle="tooltip" data-bs-placement="top" th:title="${employee.active} ? 'Desabilitar' : 'Habilitar'">
-              <i class="fas" th:classappend="${employee.active} ? 'fa-arrow-down' : 'fa-arrow-up'"></i>
-            </a>
+                 data-bs-toggle="tooltip" data-bs-placement="top"
+                 th:title="${employee.active} ? 'Desabilitar' : 'Habilitar'">
+                <i class="fas" th:classappend="${employee.active} ? 'fa-arrow-down' : 'fa-arrow-up'"></i>
+              </a>
+            </div>
           </td>
         </tr>
         </tbody>

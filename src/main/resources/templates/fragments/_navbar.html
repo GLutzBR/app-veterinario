@@ -22,15 +22,15 @@
             <ul class="dropdown-menu" aria-labelledby="medicalRecordNavbarDropdown">
               <li>
                 <a class="dropdown-item"
-                   href="/app/medical-records">Consultar atendimentos</a>
+                   href="/app/medical-records">Consultar Atendimentos</a>
               </li>
               <li>
                 <a class="dropdown-item"
-                   href="/app/medical-records/archived">Listar atendimentos arquivados</a>
+                   href="/app/medical-records?archived=true">Consultar Atendimentos Arquivados</a>
               </li>
               <li sec:authorize="hasAnyRole('ADMIN', 'VET')">
                 <a class="dropdown-item"
-                   href="/app/medical-records/insert">Iniciar novo atendimento</a>
+                   href="/app/medical-records/insert">Iniciar Novo Atendimento</a>
               </li>
             </ul>
           </li>
@@ -41,11 +41,11 @@
             <ul class="dropdown-menu" aria-labelledby="customerNavbarDropdown">
               <li>
                 <a class="dropdown-item"
-                   href="/app/customers">Consultar clientes</a>
+                   href="/app/customers">Consultar Clientes</a>
               </li>
               <li>
                 <a class="dropdown-item"
-                   href="/app/customers/insert">Adicionar novo cliente</a>
+                   href="/app/customers/insert">Adicionar novo Cliente</a>
               </li>
             </ul>
           </li>
@@ -71,7 +71,7 @@
             <ul class="dropdown-menu" aria-labelledby="adminNavbarDropdown">
               <li sec:authorize="hasRole('ADMIN')">
                 <a class="dropdown-item"
-                   href="/admin/roles">Níveis de Acesso</a>
+                   href="/admin/roles">Cargos</a>
               </li>
               <li>
                 <a class="dropdown-item"

@@ -4,7 +4,7 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       th:replace="~{layout :: layout (~{::title}, ~{::main}, _, ~{::scripts})}">
 <head>
-  <title>Prontuários</title>
+  <title>Prontuários [[${#request.getParameter('archived') == 'true'} ? 'Arquivados']]</title>
 </head>
 <body>
 
