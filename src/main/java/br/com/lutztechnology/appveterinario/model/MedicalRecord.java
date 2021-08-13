@@ -1,6 +1,8 @@
 package br.com.lutztechnology.appveterinario.model;
 
+import br.com.lutztechnology.appveterinario.serialize.MedicalRecordSerializer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -9,6 +11,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import java.time.LocalDate;
 
+@JsonSerialize(using = MedicalRecordSerializer.class)
 @Entity
 @Table(name = "medical_records")
 @NoArgsConstructor
@@ -30,19 +33,16 @@ public class MedicalRecord extends BaseEntity {
     @Column(nullable = false)
     private Boolean archived = false;
 
-    @JsonIgnore
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id_fk", nullable = false)
     private Customer customer;
 
-    @JsonIgnore
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "animal_id_fk", nullable = false)
     private Animal animal;
 
-    @JsonIgnore
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id_fk", nullable = false)

@@ -143,7 +143,7 @@ public class MedicalRecordController {
 
     @GetMapping(value = "/search", produces = "application/json")
     public @ResponseBody
-    List<MedicalRecord> search(@RequestParam(name = "patient") String patient) {
+    List<MedicalRecord> search(@RequestParam(name = "patient", defaultValue = "") String patient) {
         List<MedicalRecord> medicalRecords = new ArrayList<>();
         for (MedicalRecord medicalRecord : medicalRecordService.searchByAnimalName(patient)) {
             if (!medicalRecord.getArchived()) {
@@ -155,7 +155,7 @@ public class MedicalRecordController {
 
     @GetMapping(value = "/searchArchived", produces = "application/json")
     public @ResponseBody
-    List<MedicalRecord> searchArchived(@RequestParam(name = "patient") String patient) {
+    List<MedicalRecord> searchArchived(@RequestParam(name = "patient", defaultValue = "") String patient) {
         List<MedicalRecord> medicalRecords = new ArrayList<>();
         for (MedicalRecord medicalRecord : medicalRecordService.searchByAnimalName(patient)) {
             if (medicalRecord.getArchived()) {

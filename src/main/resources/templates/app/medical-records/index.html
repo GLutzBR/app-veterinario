@@ -9,6 +9,7 @@
 <body>
 
 <main>
+  <span sec:authentication="principal.authorities" hidden id="user_role"></span>
   <div class="row">
     <div class="col-sm-12">
       <form action="#" class="d-flex">
@@ -100,13 +101,12 @@
 </main>
 
 <th:block th:fragment="scripts">
-  <script type="text/javascript">
+  <script type="text/javascript" th:if="${#request.getParameter('archived') == null}">
       $(document).ready(function () {
           $('#btn-search').click(function () {
               const patientName = $('#txt-search').val();
               const role = $('span#user_role').text();
               let attrUser = '';
-              let attrVet = '';
               $.ajax({
                   method: 'GET',
                   url: '/app/medical-records/search?patient=' + patientName,
@@ -114,32 +114,97 @@
                       if (role.includes("ROLE_USER")) {
                           attrUser = ' disabled" aria-disabled="true" tabindex="-1';
                       }
-                      if (role.includes("ROLE_VET")) {
-                          attrVet = ' disabled" aria-disabled="true" tabindex="-1';
+                      $('#tbl-medicalRecords tbody > tr').remove();
+                      $.each(data, function (index, medicalRecord) {
+                          $('#tbl-medicalRecords tbody').append(
+                              '<tr>' +
+                              '  <td>' + medicalRecord.id + '</td>' +
+                              '  <td>' + medicalRecord.animal.name + '</td>' +
+                              '  <td>' + medicalRecord.veterinarian.name + '</td>' +
+                              '  <td>' + medicalRecord.serviceDate + '</td>' +
+                              '  <td>' +
+                              '    <div class="btn-group">' +
+                              '    <a href="/app/medical-records/' + medicalRecord.id + '"' +
+                              '       class="btn btn-primary" type="button"' +
+                              '       data-bs-toggle="tooltip" data-bs-placement="top" title="Visualizar">' +
+                              '        <i class="fas fa-eye"></i>' +
+                              '    </a>' +
+                              '    <a href="/app/medical-records/' + medicalRecord.id + '/update"' +
+                              '       class="btn btn-warning' + attrUser + '" type="button"' +
+                              '       data-bs-toggle="tooltip" data-bs-placement="top" title="Editar">' +
+                              '        <i class="fas fa-edit"></i>' +
+                              '    </a>' +
+                              '    <a href="/app/medical-records/' + medicalRecord.id + '/archive"' +
+                              '       onclick="return confirm(\'Tem certeza de que deseja arquivar este prontuário?\')"' +
+                              '       class="btn btn-danger' + attrUser + '" type="button"' +
+                              '       data-bs-toggle="tooltip" data-bs-placement="top" title="Arquivar">' +
+                              '       <i class="fas fa-arrow-down"></i>' +
+                              '    </a>' +
+                              '    </div>' +
+                              '  </td>' +
+                              '</tr>'
+                          );
+                      })
+                      let tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+                      let tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                          return new bootstrap.Tooltip(tooltipTriggerEl)
+                      })
+                  },
+                  error: function () {
+                      alert("Houve um erro na requisição!");
+                  }
+              });
+              return false;
+          });
+      });
+  </script>
+  <script type="text/javascript" th:if="${#request.getParameter('archived') == 'true'}">
+      $(document).ready(function () {
+          $('#btn-search').click(function () {
+              const patientName = $('#txt-search').val();
+              const role = $('span#user_role').text();
+              let attrUser = '';
+              $.ajax({
+                  method: 'GET',
+                  url: '/app/medical-records/searchArchived?patient=' + patientName,
+                  success: function (data) {
+                      if (role.includes("ROLE_USER")) {
+                          attrUser = ' disabled" aria-disabled="true" tabindex="-1';
                       }
                       $('#tbl-medicalRecords tbody > tr').remove();
                       $.each(data, function (index, medicalRecord) {
                           $('#tbl-medicalRecords tbody').append(
                               '<tr>' +
-                              '  <td>' +
-                              '    <a href="/app/medical-records/' + medicalRecord.id + '">' + medicalRecord.animal.name + '</a>' +
-                              '  </td>' +
-                              '  <td>' + medicalRecord.user.fullName + '</td>' +
+                              '  <td>' + medicalRecord.id + '</td>' +
+                              '  <td>' + medicalRecord.animal.name + '</td>' +
+                              '  <td>' + medicalRecord.veterinarian.name + '</td>' +
                               '  <td>' + medicalRecord.serviceDate + '</td>' +
                               '  <td>' +
+                              '    <div class="btn-group">' +
+                              '    <a href="/app/medical-records/' + medicalRecord.id + '"' +
+                              '       class="btn btn-primary" type="button"' +
+                              '       data-bs-toggle="tooltip" data-bs-placement="top" title="Visualizar">' +
+                              '        <i class="fas fa-eye"></i>' +
+                              '    </a>' +
                               '    <a href="/app/medical-records/' + medicalRecord.id + '/update"' +
-                              '       class="btn btn-warning' + attrUser + '">Editar</a>' +
+                              '       class="btn btn-warning' + attrUser + '" type="button"' +
+                              '       data-bs-toggle="tooltip" data-bs-placement="top" title="Editar">' +
+                              '        <i class="fas fa-edit"></i>' +
+                              '    </a>' +
                               '    <a href="/app/medical-records/' + medicalRecord.id + '/archive"' +
-                              '       class="btn btn-danger' + attrUser + '"' +
-                              '       onclick="return confirm(\'Tem certeza de que deseja arquivar este prontuário?\')">' +
-                              '       Arquivar</a>' +
-                              '    <a href="/app/medical-records/' + medicalRecord.id + '/delete"' +
-                              '       class="btn btn-dark' + attrUser + attrVet + '"' +
-                              '       onclick="return confirm(\'Tem certeza de que deseja excluir este prontuário?\')">' +
-                              '       Excluir</a>' +
+                              '       onclick="return confirm(\'Tem certeza de que deseja desarquivar este prontuário?\')"' +
+                              '       class="btn btn-success' + attrUser + '" type="button"' +
+                              '       data-bs-toggle="tooltip" data-bs-placement="top" title="Desarquivar">' +
+                              '       <i class="fas fa-arrow-up"></i>' +
+                              '    </a>' +
+                              '    </div>' +
                               '  </td>' +
                               '</tr>'
                           );
+                      })
+                      let tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+                      let tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                          return new bootstrap.Tooltip(tooltipTriggerEl)
                       })
                   },
                   error: function () {
