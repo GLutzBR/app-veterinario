@@ -1,5 +1,6 @@
 package br.com.lutztechnology.appveterinario.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -43,6 +44,7 @@ public abstract class Person extends BaseEntity {
     @Column(nullable = false, length = 15)
     private String phone;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     @NotNull
     @Past
     @Column(name = "birth_date", nullable = false)
