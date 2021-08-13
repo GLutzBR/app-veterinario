@@ -26,7 +26,8 @@ public class AnimalSerializer extends StdSerializer<Animal> {
         jsonGenerator.writeStartObject();
         jsonGenerator.writeNumberField("id", animal.getId());
         jsonGenerator.writeStringField("name", animal.getName());
-        jsonGenerator.writeNumberField("age", animal.getAgeYears());
+        jsonGenerator.writeObjectField("age", animal.getAge());
+        jsonGenerator.writeNumberField("ageYears", animal.getAgeYears());
         jsonGenerator.writeStringField("breed", animal.getBreed());
         jsonGenerator.writeObjectFieldStart("owner");
         jsonGenerator.writeNumberField("id", animal.getOwner().getId());
