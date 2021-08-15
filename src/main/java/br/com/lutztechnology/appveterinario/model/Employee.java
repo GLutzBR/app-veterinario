@@ -12,6 +12,7 @@ import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.List;
@@ -50,6 +51,10 @@ public class Employee extends Person {
     private State crmvState;
 
     @Size(max = 7)
+    @Pattern(
+            regexp = "^[0-9]{5}-[0-9]$",
+            message = "o telefone deve estar no formato (99) 99999-9999"
+    )
     @Column(length = 7)
     private String crmv;
 
