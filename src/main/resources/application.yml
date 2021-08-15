@@ -12,6 +12,8 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL57Dialect
     show-sql: true
+  messages:
+    basename: languages/messages
 
 # Spring Security
 

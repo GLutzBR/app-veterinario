@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="pt-br"
+<html th:lang="${#locale}"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       th:replace="~{layout :: layout (~{::title}, ~{::main}, _, _)}">
 <head>
-  <title>Prontuário</title>
+  <title>[[#{medicalRecord.details.title}]]</title>
 </head>
 <body>
 
@@ -12,34 +12,37 @@
   <div class="row">
     <div class="col-sm-12 mb-3">
       <div class="card" th:object="${medicalRecord}">
-        <h4 class="card-header" th:text="'Paciente - ' + *{animal.name}">Protocolo#</h4>
+        <h4 class="card-header" th:text="'Paciente - ' + *{animal.name}"></h4>
         <div class="card-body">
-          <h5 class="card-title">Dados do paciente</h5>
+          <h5 class="card-title" th:text="#{medicalRecord.details.card.patient.title}"></h5>
           <p class="card-text">
-            <b>Idade do paciente:</b> <span th:text="*{animal.ageYears}"></span>
+            <b th:text="#{medicalRecord.details.card.patient.age}"></b> <span th:text="*{animal.ageYears}"></span>
           </p>
           <p class="card-text">
-            <b>Dono:</b> <span th:text="*{animal.owner.name}"></span>
+            <b th:text="#{medicalRecord.details.card.patient.owner}"></b> <span th:text="*{animal.owner.name}"></span>
           </p>
         </div>
 
         <div class="card-body">
-          <h5 class="card-title">Dados do atendimento</h5>
+          <h5 class="card-title" th:text="#{medicalRecord.details.card.medicalRecord.title}"></h5>
           <p class="card-text">
-            <b>Data do atendimento:</b> <span th:text="*{serviceDate}"></span>
+            <b th:text="#{medicalRecord.details.card.medicalRecord.serviceDate}"></b> <span
+              th:text="*{serviceDate}"></span>
           </p>
           <p class="card-text">
-            <b>Médico Veterinário:</b> <span th:text="*{veterinarian.name}"></span>
+            <b th:text="#{medicalRecord.details.card.medicalRecord.veterinarian}"></b> <span
+              th:text="*{veterinarian.name}"></span>
           </p>
           <p class="card-text">
-            <b>Nota:</b> <span th:text="*{comments}"></span>
+            <b th:text="#{medicalRecord.details.card.medicalRecord.comments}"></b> <span th:text="*{comments}"></span>
           </p>
         </div>
       </div>
     </div>
     <div class="row mb-3">
       <div class="col-sm-12">
-        <a th:href="@{/app/medical-records}" class="btn btn-secondary">Voltar</a>
+        <a th:href="@{/app/medical-records}" class="btn btn-secondary"
+           th:text="#{button.back}"></a>
       </div>
     </div>
   </div>

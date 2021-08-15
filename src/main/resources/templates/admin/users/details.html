@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="pt-br"
+<html th:lang="${#locale}"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       th:replace="~{layout :: layout (~{::title}, ~{::main}, _, ~{::scripts})}">
 <head>
-  <title>Detalhes</title>
+  <title>[[#{employee.details.title}]]</title>
 </head>
 <body>
 
@@ -26,42 +26,42 @@
           </div>
           <div class="card card-primary">
             <div class="card-header">
-              <h3 class="card-title">Dados Pessoais</h3>
+              <h3 class="card-title" th:text="#{person.details.card.customer.title}"></h3>
             </div>
 
             <div class="card-body">
               <div sec:authorize="hasRole('ADMIN')">
-                <strong><i class="fas fa-calendar-alt mr-1"></i> Data de nascimento</strong>
+                <strong><i class="fas fa-calendar-alt mr-1"></i> [[#{person.details.card.customer.birthDate}]]</strong>
                 <p class="text-muted" th:text="${#temporals.format(employee.birthDate)}"></p>
 
-                <strong><i class="fas fa-book mr-1"></i> CPF</strong>
+                <strong><i class="fas fa-book mr-1"></i> [[#{person.details.card.customer.cpf}]]</strong>
                 <p class="text-muted" th:text="${employee.cpf}"></p>
               </div>
 
-              <strong><i class="fas fa-mobile mr-1"></i> Telefone</strong>
+              <strong><i class="fas fa-mobile mr-1"></i> [[#{person.details.card.customer.phone}]]</strong>
               <p class="text-muted" th:text="${employee.phone}"></p>
 
-              <strong><i class="fas fa-envelope mr-1"></i> E-mail</strong>
+              <strong><i class="fas fa-envelope mr-1"></i> [[#{person.details.card.customer.email}]]</strong>
               <p class="text-muted" id="email" th:text="${employee.email}"></p>
 
               <hr>
 
               <div sec:authorize="hasRole('ADMIN')">
-                <strong><i class="fas fa-map-marker-alt mr-1"></i> Endereço</strong>
+                <strong><i class="fas fa-map-marker-alt mr-1"></i> [[#{person.details.card.customer.address}]]</strong>
                 <p class="text-muted" th:text="${employee.address}"></p>
               </div>
             </div>
           </div>
           <div class="card card-primary" th:if="${employee.role.name == 'Veterinário'}">
             <div class="card-header">
-              <h3 class="card-title">Dados Veterinário</h3>
+              <h3 class="card-title" th:text="#{employee.details.card.veterinarian.title}"></h3>
             </div>
 
             <div class="card-body">
-              <strong><i class="fas fa-bookmark"></i> Especialidade</strong>
+              <strong><i class="fas fa-bookmark"></i> [[#{employee.details.card.veterinarian.specialty}]]</strong>
               <p class="text-muted" th:text="${employee.specialty}"></p>
 
-              <strong><i class="fas fa-check-square"></i> CRMV:</strong>
+              <strong><i class="fas fa-check-square"></i> [[#{employee.details.card.veterinarian.crmv}]]</strong>
               <p class="text-muted" th:text="${employee.crmvState} + '-' + ${employee.crmv}"></p>
             </div>
           </div>
@@ -70,7 +70,7 @@
         <div class="col-md-9">
           <div class="card">
             <div class="card-header">
-              <h5 class="card-title">Atendimentos</h5>
+              <h5 class="card-title" th:text="#{employee.details.card.medicalRecord.title}"></h5>
             </div>
 
             <div class="card-body">
@@ -81,7 +81,7 @@
                   <div class="timeline-item">
                     <span class="time">
                       <i class="far fa-clock"></i> <span
-                        th:text="${#temporals.format(medicalRecord.serviceDate)}"></span>
+                        th:text="${#temporals.format(medicalRecord.serviceDate, 'dd/MM/yyyy')}"></span>
                     </span>
 
                     <h3 class="timeline-header" th:text="${medicalRecord.animal.name}"></h3>
@@ -90,8 +90,7 @@
 
                     <div class="timeline-footer">
                       <a th:href="@{/app/medical-records/{id} (id=${medicalRecord.id})}"
-                         class="btn btn-primary btn-sm">
-                        Detalhes</a>
+                         class="btn btn-primary btn-sm" th:text="#{employee.details.card.medicalRecord.button}"></a>
                     </div>
                   </div>
 

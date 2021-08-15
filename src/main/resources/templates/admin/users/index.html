@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="pt-br"
+<html th:lang="${#locale}"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       th:replace="~{layout :: layout (~{::title}, ~{::main}, _, ~{::scripts})}">
 <head>
-  <title>Funcionários</title>
+  <title>[[#{employee.list.title}]]</title>
 </head>
 <body>
 
@@ -15,11 +15,11 @@
         <input type="text"
                class="form-control me-2"
                id="txt-search"
-               placeholder="Nome do usuário"
+               th:placeholder="#{employee.list.search.placeholder}"
                aria-label="Search">
         <button class="btn btn-outline-success"
                 id="btn-search"
-                type="submit">Pesquisar
+                type="submit" th:text="#{list.search.button}">
         </button>
       </form>
     </div>
@@ -31,11 +31,11 @@
         <thead>
         <tr>
           <th scope="col">ID</th>
-          <th scope="col">Login</th>
-          <th scope="col">Nome</th>
-          <th scope="col">Estado</th>
-          <th scope="col">Cargo</th>
-          <th scope="col">Ações</th>
+          <th scope="col" th:text="#{employee.list.table.col.login}"></th>
+          <th scope="col" th:text="#{employee.list.table.col.name}"></th>
+          <th scope="col" th:text="#{employee.list.table.col.state}"></th>
+          <th scope="col" th:text="#{employee.list.table.col.role}"></th>
+          <th scope="col" th:text="#{employee.list.table.col.actions}"></th>
         </tr>
         </thead>
         <tbody>
@@ -50,12 +50,12 @@
             <div class="btn-group">
               <a th:href="@{/admin/users/{id} (id=${employee.id})}"
                  class="btn btn-primary" type="button"
-                 data-bs-toggle="tooltip" data-bs-placement="top" title="Visualizar">
+                 data-bs-toggle="tooltip" data-bs-placement="top" th:title="list.table.col.actions.button.view">
                 <i class="fas fa-eye"></i>
               </a>
               <a th:href="@{/admin/users/{id}/update (id=${employee.id})}"
                  class="btn btn-warning" type="button"
-                 data-bs-toggle="tooltip" data-bs-placement="top" title="Editar">
+                 data-bs-toggle="tooltip" data-bs-placement="top" th:title="list.table.col.actions.button.edit">
                 <i class="fas fa-edit"></i>
               </a>
               <a class="btn" th:classappend="${employee.active} ? 'btn-danger' : 'btn-success'"
@@ -65,7 +65,7 @@
                 'return confirm(\'Tem certeza de que deseja desabilitar o usuário?\')' :
                  'return confirm(\'Tem certeza de que deseja habilitar o usuário?\')'"
                  data-bs-toggle="tooltip" data-bs-placement="top"
-                 th:title="${employee.active} ? 'Desabilitar' : 'Habilitar'">
+                 th:title="${employee.active} ? #{list.table.col.actions.button.disable} : #{list.table.col.actions.button.enable}">
                 <i class="fas" th:classappend="${employee.active} ? 'fa-arrow-down' : 'fa-arrow-up'"></i>
               </a>
             </div>
@@ -78,7 +78,7 @@
     <div class="row mb-3">
       <div class="col-sm-12">
         <a th:href="@{/admin/users/insert}"
-           class="btn btn-primary">Adicionar novo usuário</a>
+           class="btn btn-primary" th:text="#{employee.list.button.insert}"></a>
       </div>
     </div>
   </div>

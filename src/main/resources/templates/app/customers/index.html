@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="pt-br"
+<html th:lang="${#locale}"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       th:replace="~{layout :: layout (~{::title}, ~{::main}, _, ~{::scripts})}">
 <head>
-  <title>Clientes</title>
+  <title>[[#{customer.list.title}]]</title>
 </head>
 <body>
 
@@ -15,11 +15,11 @@
         <input type="text"
                class="form-control me-2"
                id="txt-search"
-               placeholder="Nome do cliente"
+               th:placeholder="#{customer.list.search.placeholder}"
                aria-label="Search">
         <button class="btn btn-outline-success"
                 id="btn-search"
-                type="submit">Pesquisar
+                type="submit" th:text="#{list.search.button}">
         </button>
       </form>
     </div>
@@ -31,10 +31,10 @@
         <thead>
         <tr>
           <th scope="col">ID</th>
-          <th scope="col">Nome</th>
-          <th scope="col">Data de Nascimento</th>
-          <th scope="col">Contato</th>
-          <th scope="col">Ações</th>
+          <th scope="col" th:text="#{customer.list.table.col.name}"></th>
+          <th scope="col" th:text="#{customer.list.table.col.birthDate}"></th>
+          <th scope="col" th:text="#{customer.list.table.col.contact}"></th>
+          <th scope="col" th:text="#{customer.list.table.col.actions}"></th>
         </tr>
         </thead>
         <tbody>
@@ -47,30 +47,35 @@
             <div class="btn-group">
               <a th:href="@{/app/customers/{id} (id=${customer.id})}"
                  class="btn btn-primary" type="button"
-                 data-bs-toggle="tooltip" data-bs-placement="top" title="Visualizar">
+                 data-bs-toggle="tooltip" data-bs-placement="top"
+                 th:title="#{list.table.col.actions.button.view}">
                 <i class="fas fa-eye"></i>
               </a>
               <a th:href="@{/app/customers/{id}/update (id=${customer.id})}"
                  class="btn btn-warning" type="button"
-                 data-bs-toggle="tooltip" data-bs-placement="top" title="Editar">
+                 data-bs-toggle="tooltip" data-bs-placement="top"
+                 th:title="#{list.table.col.actions.button.edit}">
                 <i class="fas fa-edit"></i>
               </a>
               <a th:href="@{/app/customers/{id}/delete (id=${customer.id})}"
                  onclick="return confirm('Tem certeza de que deseja excluir o cliente?')"
                  class="btn btn-danger" type="button"
-                 data-bs-toggle="tooltip" data-bs-placement="top" title="Excluir">
+                 data-bs-toggle="tooltip" data-bs-placement="top"
+                 th:title="#{list.table.col.actions.button.delete}">
                 <i class="fas fa-trash"></i>
               </a>
             </div>
             <div class="btn-group">
               <a th:href="@{/app/customers/{id}/insert-pet (id=${customer.id})}"
                  class="btn btn-success" type="button"
-                 data-bs-toggle="tooltip" data-bs-placement="top" title="Adicionar Pet">
+                 data-bs-toggle="tooltip" data-bs-placement="top"
+                 th:title="#{list.table.col.actions.button.addPet}">
                 <i class="fas fa-plus-circle"></i>
               </a>
               <a th:href="@{/app/customers/{id}/update-pet (id=${customer.id})}"
                  class="btn btn-warning" type="button"
-                 data-bs-toggle="tooltip" data-bs-placement="top" title="Editar Pets">
+                 data-bs-toggle="tooltip" data-bs-placement="top"
+                 th:title="#{list.table.col.actions.button.updatePet}">
                 <i class="fas fa-dog"></i>
               </a>
             </div>
@@ -84,7 +89,7 @@
   <div class="row mb-3">
     <div class="col-sm-12">
       <a th:href="@{/app/customers/insert}"
-         class="btn btn-primary">Adicionar novo cliente</a>
+         class="btn btn-primary" th:text="#{customer.list.button.addCustomer}"></a>
     </div>
   </div>
 

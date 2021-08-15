@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="pt-br"
+<html th:lang="${#locale}"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       th:fragment="layout (title, content, styles, scripts)">
@@ -8,7 +8,7 @@
   <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>App Veterinário | <th:block th:include="${title}"> Dashboard </th:block> </title>
+  <title>[[#{layout.title}]] | <th:block th:include="${title}"> Dashboard </th:block> </title>
 
   <!-- FontAwesome 5.10.0 -->
   <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"

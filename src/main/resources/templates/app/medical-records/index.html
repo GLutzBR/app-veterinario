@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="pt-br"
+<html th:lang="${#locale}"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       th:replace="~{layout :: layout (~{::title}, ~{::main}, _, ~{::scripts})}">
 <head>
-  <title>Prontuários [[${#request.getParameter('archived') == 'true'} ? 'Arquivados']]</title>
+  <title>[[#{medicalRecord.list.title}]] [[${#request.getParameter('archived') == 'true'} ? 'Arquivados']]</title>
 </head>
 <body>
 
@@ -16,11 +16,11 @@
         <input type="text"
                class="form-control me-2"
                id="txt-search"
-               placeholder="Paciente"
+               th:placeholder="#{medicalRecord.list.search.placeholder}"
                aria-label="Search">
         <button class="btn btn-outline-success"
                 id="btn-search"
-                type="submit">Pesquisar
+                type="submit" th:text="#{list.search.button}">
         </button>
       </form>
     </div>
@@ -32,10 +32,10 @@
         <thead>
         <tr>
           <th scope="col">ID</th>
-          <th scope="col">Paciente</th>
-          <th scope="col">Médico</th>
-          <th scope="col">Data do Atendimento</th>
-          <th scope="col">Ações</th>
+          <th scope="col" th:text="#{medicalRecord.list.table.col.patient}"></th>
+          <th scope="col" th:text="#{medicalRecord.list.table.col.veterinarian}"></th>
+          <th scope="col" th:text="#{medicalRecord.list.table.col.serviceDate}"></th>
+          <th scope="col" th:text="#{medicalRecord.list.table.col.actions}"></th>
         </tr>
         </thead>
         <tbody>
@@ -48,14 +48,16 @@
             <div class="btn-group">
               <a th:href="@{/app/medical-records/{id} (id=${medicalRecord.id})}"
                  class="btn btn-primary" type="button"
-                 data-bs-toggle="tooltip" data-bs-placement="top" title="Visualizar">
+                 data-bs-toggle="tooltip" data-bs-placement="top"
+                 th:title="#{list.table.col.actions.button.view}">
                 <i class="fas fa-eye"></i>
               </a>
               <a th:classappend="${#authorization.expression('hasRole(''USER'')')} ? 'disabled'"
                  th:attrappend="aria-disabled=${#authorization.expression('hasRole(''USER'')')},tabindex=${#authorization.expression('hasRole(''USER'',)')} ? '-1'"
                  th:href="@{/app/medical-records/{id}/update (id=${medicalRecord.id})}"
                  class="btn btn-warning" type="button"
-                 data-bs-toggle="tooltip" data-bs-placement="top" title="Editar">
+                 data-bs-toggle="tooltip" data-bs-placement="top"
+                 th:title="#{list.table.col.actions.button.edit}">
                 <i class="fas fa-edit"></i>
               </a>
               <a th:if="${#request.getParameter('archived') == null}"
@@ -64,16 +66,18 @@
                  th:href="@{/app/medical-records/{id}/archive (id=${medicalRecord.id})}"
                  onclick="return confirm('Tem certeza de que deseja arquivar este prontuário?')"
                  class="btn btn-danger" type="button"
-                 data-bs-toggle="tooltip" data-bs-placement="top" title="Arquivar">
+                 data-bs-toggle="tooltip" data-bs-placement="top"
+                 th:title="#{list.table.col.actions.button.archive}">
                 <i class="fas fa-arrow-down"></i>
               </a>
               <a th:if="${#request.getParameter('archived') == 'true'}"
                  th:classappend="${#authorization.expression('hasRole(''USER'')')} ? 'disabled'"
                  th:attrappend="aria-disabled=${#authorization.expression('hasRole(''USER'')')},tabindex=${#authorization.expression('hasRole(''USER'',)')} ? '-1'"
-                 th:href="@{/app/medical-records/{id}/archive (id=${medicalRecord.id})}"9
+                 th:href="@{/app/medical-records/{id}/archive (id=${medicalRecord.id})}" 9
                  onclick="return confirm('Tem certeza de que deseja desarquivar este prontuário?')"
                  class="btn btn-success" type="button"
-                 data-bs-toggle="tooltip" data-bs-placement="top" title="Desarquivar">
+                 data-bs-toggle="tooltip" data-bs-placement="top"
+                 th:title="#{list.table.col.actions.button.unarchived}">
                 <i class="fas fa-arrow-up"></i>
               </a>
             </div>
@@ -87,15 +91,17 @@
       <a th:classappend="${#authorization.expression('hasRole(''USER'')')} ? 'disabled'"
          th:attrappend="aria-disabled=${#authorization.expression('hasRole(''USER'')')},tabindex=${#authorization.expression('hasRole(''USER'',)')} ? '-1'"
          th:href="@{/app/medical-records/insert}"
-         class="btn btn-primary">Iniciar novo atendimento</a>
+         class="btn btn-primary" th:text="#{medicalRecord.list.button.startService}"></a>
     </div>
-    <div class="col-sm-6 d-flex container-fluid justify-content-end" th:if="${#request.getParameter('archived') == null}">
+    <div class="col-sm-6 d-flex container-fluid justify-content-end"
+         th:if="${#request.getParameter('archived') == null}">
       <a th:href="@{/app/medical-records?archived=true}"
-         class="btn btn-outline-info">Atendimentos arquivados</a>
+         class="btn btn-outline-info" th:text="#{medicalRecord.list.button.archived}"></a>
     </div>
-    <div class="col-sm-6 d-flex container-fluid justify-content-end" th:if="${#request.getParameter('archived') == 'true'}">
+    <div class="col-sm-6 d-flex container-fluid justify-content-end"
+         th:if="${#request.getParameter('archived') == 'true'}">
       <a th:href="@{/app/medical-records}"
-         class="btn btn-outline-info">Atendimentos ativos</a>
+         class="btn btn-outline-info" th:text="#{medicalRecord.list.button.active}"></a>
     </div>
   </div>
 </main>

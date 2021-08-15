@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="pt-br"
+<html th:lang="${#locale}"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       th:replace="~{layout :: layout (~{::title}, ~{::main}, _, ~{::scripts})}">
 <head>
-  <title>Animais</title>
+  <title>[[#{animal.list.title}]]</title>
 </head>
 <body>
 <main>
@@ -14,11 +14,11 @@
         <input type="text"
                class="form-control me-2"
                id="txt-search"
-               placeholder="Nome do pet"
+               th:placeholder="#{animal.list.search.placeholder}"
                aria-label="Search">
         <button class="btn btn-outline-success"
                 id="btn-search"
-                type="submit">Pesquisar
+                type="submit" th:text="#{list.search.button}">
         </button>
       </form>
     </div>
@@ -30,11 +30,11 @@
         <thead>
         <tr>
           <th scope="col">ID</th>
-          <th scope="col">Nome</th>
-          <th scope="col">Idade</th>
-          <th scope="col">Raça</th>
-          <th scope="col">Dono</th>
-          <th scope="col">Ações</th>
+          <th scope="col" th:text="#{animal.list.table.col.name}"></th>
+          <th scope="col" th:text="#{animal.list.table.col.age}"></th>
+          <th scope="col" th:text="#{animal.list.table.col.breed}"></th>
+          <th scope="col" th:text="#{animal.list.table.col.owner}"></th>
+          <th scope="col" th:text="#{animal.list.table.col.actions}"></th>
         </tr>
         </thead>
         <tbody>
@@ -48,18 +48,21 @@
             <div class="btn-group">
               <a th:href="@{/app/animals/{id} (id=${animal.id})}"
                  class="btn btn-primary" type="button"
-                 data-bs-toggle="tooltip" data-bs-placement="top" title="Visualizar">
+                 data-bs-toggle="tooltip" data-bs-placement="top"
+                 th:title="#{list.table.col.actions.button.view}">
                 <i class="fas fa-eye"></i>
               </a>
               <a th:href="@{/app/animals/{id}/update (id=${animal.id})}"
                  class="btn btn-warning" type="button"
-                 data-bs-toggle="tooltip" data-bs-placement="top" title="Editar">
+                 data-bs-toggle="tooltip" data-bs-placement="top"
+                 th:title="#{list.table.col.actions.button.edit}">
                 <i class="fas fa-edit"></i>
               </a>
               <a th:href="@{/app/animals/{id}/delete (id=${animal.id})}"
                  onclick="return confirm('Tem certeza de que deseja excluir o animal?')"
                  class="btn btn-danger" type="button"
-                 data-bs-toggle="tooltip" data-bs-placement="top" title="Excluir">
+                 data-bs-toggle="tooltip" data-bs-placement="top"
+                 th:title="#{list.table.col.actions.button.delete}">
                 <i class="fas fa-trash"></i>
               </a>
             </div>
@@ -73,7 +76,7 @@
   <div class="row mb-3">
     <div class="col-sm-12">
       <a th:href="@{/app/animals/insert}"
-         class="btn btn-primary">Adicionar novo animal</a>
+         class="btn btn-primary" th:text="#{animal.list.button.insert}"></a>
     </div>
   </div>
 

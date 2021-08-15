@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="pt-br"
+<html th:lang="${#locale}"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       th:replace="~{layout :: layout (~{::title}, ~{::main}, _, _)}">
 <head>
-  <title>Detalhes</title>
+  <title>[[#{animal.details.title}]]</title>
 </head>
 <body>
 <main>
@@ -14,23 +14,25 @@
         <h5 class="card-header" th:text="*{name}"></h5>
         <div class="card-body">
           <p class="card-text">
-            <b>Data de nascimento:</b> <span th:text="${#temporals.format(animal.age, 'dd/MM/yyyy')}"></span>
+            <b th:text="#{animal.details.card.animal.birthDate}"></b> <span
+              th:text="${#temporals.format(animal.age, 'dd/MM/yyyy')}"></span>
           </p>
           <p class="card-text">
-            <b>Idade:</b> <span th:text="*{ageYears}"></span>
+            <b th:text="#{animal.details.card.animal.age}"></b> <span th:text="*{ageYears}"></span>
           </p>
           <p class="card-text">
-            <b>Raça:</b> <span th:text="*{breed}"></span>
+            <b th:text="#{animal.details.card.animal.breed}"></b> <span th:text="*{breed}"></span>
           </p>
           <p class="card-text">
-            <b>Dono:</b> <a th:href="@{/app/customers/{id} (id=*{owner.id})}" th:text="*{owner.name}"></a>
+            <b th:text="#{animal.details.card.animal.owner}"></b> <a th:href="@{/app/customers/{id} (id=*{owner.id})}"
+                                                                     th:text="*{owner.name}"></a>
           </p>
         </div>
       </div>
     </div>
     <div class="row mb-3">
       <div class="col-sm-12">
-        <a th:href="@{/app/animals}" class="btn btn-secondary">Voltar</a>
+        <a th:href="@{/app/animals}" class="btn btn-secondary" th:text="#{button.back}"></a>
       </div>
     </div>
   </div>

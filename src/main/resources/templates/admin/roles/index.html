@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="pt-br"
+<html th:lang="${#locale}"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       th:replace="~{layout :: layout (~{::title}, ~{::main}, _, ~{::scripts})}">
 <head>
-  <title>Cargos</title>
+  <title>[[#{role.list.title}]]</title>
 </head>
 <body>
 
@@ -15,11 +15,11 @@
         <input type="text"
                class="form-control me-2"
                id="txt-search"
-               placeholder="Nome do nível de acesso"
+               th:placeholder="#{role.list.search.placeholder}"
                aria-label="Search">
         <button class="btn btn-outline-success"
                 id="btn-search"
-                type="submit">Pesquisar
+                type="submit" th:text="#{list.search.button}">
         </button>
       </form>
     </div>
@@ -31,8 +31,8 @@
         <thead>
         <tr>
           <th scope="col">ID</th>
-          <th scope="col">Cargo</th>
-          <th scope="col">Ações</th>
+          <th scope="col" th:text="#{role.list.table.col.roleName}"></th>
+          <th scope="col" th:text="#{role.list.table.col.actions}"></th>
         </tr>
         </thead>
         <tbody>
@@ -43,13 +43,13 @@
             <div class="btn-group">
               <a th:href="@{/admin/roles/{id}/update (id=${role.id})}"
                  class="btn btn-warning" type="button"
-                 data-bs-toggle="tooltip" data-bs-placement="top" title="Editar">
+                 data-bs-toggle="tooltip" data-bs-placement="top" th:title="#{list.table.col.actions.button.edit}">
                 <i class="fas fa-edit"></i>
               </a>
               <a th:href="@{/admin/roles/{id}/delete (id=${role.id})}"
                  class="btn btn-danger" type="button"
                  th:onclick="'return confirm(\'Tem certeza de que deseja excluir este cargo?\')'"
-                 data-bs-toggle="tooltip" data-bs-placement="top" title="Excluir">
+                 data-bs-toggle="tooltip" data-bs-placement="top" th:title="#{list.table.col.actions.button.delete}">
                 <i class="fas fa-trash"></i>
               </a>
             </div>
@@ -62,7 +62,7 @@
     <div class="row mb-3">
       <div class="col-sm-12">
         <a th:href="@{/admin/roles/insert}"
-           class="btn btn-primary">Adicionar novo cargo</a>
+           class="btn btn-primary" th:text="#{role.list.button.insert}"></a>
       </div>
     </div>
   </div>

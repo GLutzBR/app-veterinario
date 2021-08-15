@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br"
+<html th:lang="${#locale}"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       th:replace="~{layout :: layout (~{::title}, ~{::main}, _, _)}">
@@ -18,8 +18,8 @@
 
       <p>
         <span th:text="${cause}"></span> <br>
-        Você pode voltar para a <a href="javascript:history.back()">página anterior</a>
       </p>
+      <p>[[#{exception.return.text}]] <a href="javascript:history.back()" th:text="#{exception.return.link}"></a></p>
     </div>
   </div>
 </main>

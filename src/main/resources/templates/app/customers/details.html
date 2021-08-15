@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="pt-br"
+<html th:lang="${#locale}"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       th:replace="~{layout :: layout (~{::title}, ~{::main}, _, ~{::scripts})}">
 <head>
-  <title>Detalhes</title>
+  <title>[[#{customer.details.title}]]</title>
 </head>
 <body>
 
@@ -26,28 +26,30 @@
           </div>
           <div class="card card-primary">
             <div class="card-header">
-              <h3 class="card-title">Dados Pessoais</h3>
+              <h3 class="card-title" th:text="#{person.details.card.customer.title}"></h3>
             </div>
 
             <div class="card-body">
               <div sec:authorize="hasRole('ADMIN')">
-                <strong><i class="fas fa-calendar-alt mr-1"></i> Data de nascimento</strong>
-                <p class="text-muted" th:text="${#temporals.format(customer.birthDate)}"></p>
+                <strong><i class="fas fa-calendar-alt mr-1"></i>
+                  [[#{person.details.card.customer.birthDate}]]</strong>
+                <p class="text-muted" th:text="${#temporals.format(customer.birthDate, 'dd/MM/yyyy')}"></p>
 
-                <strong><i class="fas fa-book mr-1"></i> CPF</strong>
+                <strong><i class="fas fa-book mr-1"></i> [[#{person.details.card.customer.cpf}]]</strong>
                 <p class="text-muted" th:text="${customer.cpf}"></p>
               </div>
 
-              <strong><i class="fas fa-mobile mr-1"></i> Telefone</strong>
+              <strong><i class="fas fa-mobile mr-1"></i> [[#{person.details.card.customer.phone}]]</strong>
               <p class="text-muted" th:text="${customer.phone}"></p>
 
-              <strong><i class="fas fa-envelope mr-1"></i> E-mail</strong>
+              <strong><i class="fas fa-envelope mr-1"></i> [[#{person.details.card.customer.email}]]</strong>
               <p class="text-muted" id="email" th:text="${customer.email}"></p>
 
               <hr>
 
               <div sec:authorize="hasRole('ADMIN')">
-                <strong><i class="fas fa-map-marker-alt mr-1"></i> Endereço</strong>
+                <strong><i class="fas fa-map-marker-alt mr-1"></i>
+                  [[#{person.details.card.customer.address}]]</strong>
                 <p class="text-muted" th:text="${customer.address}"></p>
               </div>
             </div>
@@ -57,41 +59,43 @@
         <div class="col-md-9">
           <div class="card">
             <div class="card-header">
-              <h5 class="card-title">Pets</h5>
+              <h2 class="card-title" th:text="#{customer.details.card.pet.title}"></h2>
             </div>
 
             <div class="card-body" th:if="${!customer.pets.isEmpty()}">
               <div th:each="pet : ${customer.pets}">
-                <i class="fas fa-book-medical bg-primary"></i>
-
                 <div class="timeline-item">
+                  <h3 class="timeline-header" th:text="${pet.name}"></h3>
+
                     <span class="time">
                       <i class="far fa-calendar-alt mr-1"></i> <span
-                        th:text="${#temporals.format(pet.age)}"></span>
+                        th:text="${#temporals.format(pet.age, 'dd/MM/yyyy')}"></span>
                     </span>
-
-                  <h3 class="timeline-header" th:text="${pet.name}"></h3>
 
                   <div class="timeline-body" th:text="${pet.breed}"></div>
 
                   <div class="timeline-footer">
                     <a th:href="@{/app/animals/{id} (id=${pet.id})}"
-                       class="btn btn-primary btn-sm">
-                      Detalhes</a>
+                       class="btn btn-primary btn-sm mt-2 mb-2" th:text="#{customer.details.card.pet.button}"></a>
                   </div>
                 </div>
 
               </div>
             </div>
             <div class="card-body" th:unless="${!customer.pets.isEmpty()}">
-              <h5>Este cliente não possui pets cadastrados.</h5>
+              <h5 th:text="#{customer.details.card.pet.emptyList}"></h5>
             </div>
           </div>
-          <!--        </div>-->
         </div>
-
       </div>
     </div>
+    <div class="row mb-3">
+      <div class="col-sm-12">
+        <a th:href="@{/app/customers}" class="btn btn-secondary"
+           th:text="#{button.back}"></a>
+      </div>
+    </div>
+  </div>
 </main>
 
 <th:block th:fragment="scripts">

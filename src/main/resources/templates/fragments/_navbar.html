@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="pt-br"
+<html th:lang="${#locale}"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <header th:fragment="nav">
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container-fluid">
-      <a class="navbar-brand" href="/">App Veterinário</a>
+      <a class="navbar-brand" href="/" th:text="#{navbar.brand}"></a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
               aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -13,77 +13,83 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link" th:classappend="${isHome} ? 'active'" aria-current="page" href="/">Home</a>
+            <a class="nav-link" th:classappend="${isHome} ? 'active'" aria-current="page" href="/"
+               th:text="#{navbar.menu.home}"></a>
           </li>
 
           <li sec:authorize="isAuthenticated()" class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" id="medicalRecordNavbarDropdown" role="button" data-bs-toggle="dropdown"
-               aria-expanded="false" th:classappend="${isAtendimento} ? 'active'" href="#">Atendimento</a>
+               aria-expanded="false" th:classappend="${isAtendimento} ? 'active'" href="#"
+               th:text="#{navbar.menu.service}"></a>
             <ul class="dropdown-menu" aria-labelledby="medicalRecordNavbarDropdown">
               <li>
                 <a class="dropdown-item"
-                   href="/app/medical-records">Consultar Atendimentos</a>
+                   href="/app/medical-records" th:text="#{navbar.menu.service.list.active}"></a>
               </li>
               <li>
                 <a class="dropdown-item"
-                   href="/app/medical-records?archived=true">Consultar Atendimentos Arquivados</a>
+                   href="/app/medical-records?archived=true" th:text="#{navbar.menu.service.list.archived}"></a>
               </li>
               <li sec:authorize="hasAnyRole('ADMIN', 'VET')">
                 <a class="dropdown-item"
-                   href="/app/medical-records/insert">Iniciar Novo Atendimento</a>
+                   href="/app/medical-records/insert" th:text="#{navbar.menu.service.start}"></a>
               </li>
             </ul>
           </li>
 
           <li sec:authorize="isAuthenticated()" class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" id="customerNavbarDropdown" role="button" data-bs-toggle="dropdown"
-               aria-expanded="false" th:classappend="${isCustomer} ? 'active'" href="#">Clientes</a>
+               aria-expanded="false" th:classappend="${isCustomer} ? 'active'" href="#"
+               th:text="#{navbar.menu.customer}"></a>
             <ul class="dropdown-menu" aria-labelledby="customerNavbarDropdown">
               <li>
                 <a class="dropdown-item"
-                   href="/app/customers">Consultar Clientes</a>
+                   href="/app/customers" th:text="#{navbar.menu.customer.list}"></a>
               </li>
               <li>
                 <a class="dropdown-item"
-                   href="/app/customers/insert">Adicionar novo Cliente</a>
+                   href="/app/customers/insert" th:text="#{navbar.menu.customer.insert}"></a>
               </li>
             </ul>
           </li>
 
           <li sec:authorize="isAuthenticated()" class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" id="animalNavbarDropdown" role="button" data-bs-toggle="dropdown"
-               aria-expanded="false" th:classappend="${isAnimal} ? 'active'" href="#">Animais</a>
+               aria-expanded="false" th:classappend="${isAnimal} ? 'active'" href="#"
+               th:text="#{navbar.menu.animals}"></a>
             <ul class="dropdown-menu" aria-labelledby="animalNavbarDropdown">
               <li>
                 <a class="dropdown-item"
-                   href="/app/animals">Consultar Pets</a>
+                   href="/app/animals" th:text="#{navbar.menu.animals.list}"></a>
               </li>
               <li>
                 <a class="dropdown-item"
-                   href="/app/animals/insert">Adicionar novo Pet</a>
+                   href="/app/animals/insert" th:text="#{navbar.menu.animals.insert}"></a>
               </li>
             </ul>
           </li>
 
           <li sec:authorize="hasAnyRole('ADMIN', 'USER')" class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" id="adminNavbarDropdown" role="button" data-bs-toggle="dropdown"
-               aria-expanded="false" th:classappend="${isAdmin} ? 'active'" href="#">Administração</a>
+               aria-expanded="false" th:classappend="${isAdmin} ? 'active'" href="#" th:text="#{navbar.menu.admin}"></a>
             <ul class="dropdown-menu" aria-labelledby="adminNavbarDropdown">
               <li sec:authorize="hasRole('ADMIN')">
                 <a class="dropdown-item"
-                   href="/admin/roles">Cargos</a>
+                   href="/admin/roles" th:text="#{navbar.menu.admin.roles}"></a>
               </li>
               <li>
                 <a class="dropdown-item"
-                   href="/admin/users">Usuários</a>
+                   href="/admin/users" th:text="#{navbar.menu.admin.employees}"></a>
               </li>
             </ul>
           </li>
         </ul>
         <div class="d-flex container-fluid justify-content-end">
-          <a sec:authorize="isAnonymous()" href="/login" class="btn btn-primary me-2">Login</a>
+          <a sec:authorize="isAnonymous()" href="/login" class="btn btn-primary me-2"
+             th:text="#{navbar.button.login}"></a>
           <form class="form-inline" form-method="post" th:action="@{/logout}">
-            <button sec:authorize="isAuthenticated()" class="btn btn-outline-danger" type="submit">Logout</button>
+            <button sec:authorize="isAuthenticated()" class="btn btn-outline-danger" type="submit"
+                    th:text="#{navbar.button.logout}"></button>
           </form>
         </div>
       </div>

@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="pt-br"
+<html th:lang="${#locale}"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       th:replace="~{layout :: layout (~{::title}, ~{::main}, _, _)}">
 
 <head>
-  <title>[[${role.id == null ? 'Cadastrar' : 'Editar'}]] Cargo</title>
+  <title>[[${role.id == null ? 'Cadastrar' : 'Editar'}]] [[#{role.form.title}]]</title>
 </head>
 
 <body>
@@ -24,8 +24,8 @@
             <div class="row">
               <div class="col-sm-12">
                 <div class="form-group">
-                  <label for="name">Nome:</label>
-                  <input class="form-control" id="name" placeholder="Veterinário"
+                  <label for="name" th:text="#{role.form.name}"></label>
+                  <input class="form-control" id="name" th:placeholder="#{role.form.name.placeholder}"
                          type="text" th:field="*{name}">
                   <ul>
                     <li class="text-danger" th:each="error: ${#fields.errors('name')}"
@@ -34,11 +34,12 @@
                 </div>
               </div>
             </div>
+            <div class="mb-1">
+              <a th:href="@{/admin/roles}" class="btn btn-secondary" th:text="#{form.button.cancel}"></a>
+              <button type="submit" class="btn btn-primary" th:text="#{form.button.save}"></button>
+            </div>
           </div>
 
-          <div class="card-footer">
-            <button class="btn btn-primary" type="submit">Salvar</button>
-          </div>
         </form>
       </div>
     </div>

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="pt-br"
+<html th:lang="${#locale}"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       th:replace="~{layout :: layout (~{::title}, ~{::main}, _, ~{::scripts})}">
 <head>
-  <title>Atendimento</title>
+  <title>[[#{medicalRecord.form.title}]]</title>
 </head>
 <body>
 
@@ -17,7 +17,7 @@
 
           <div class="card-body">
             <fieldset>
-              <legend>Prontuário</legend>
+              <legend th:text="#{medicalRecord.form.legend}"></legend>
               <input type="hidden" th:field="*{id}">
               <select hidden th:field="*{veterinarian}">
                 <option th:value="${veterinarian}" selected></option>
@@ -26,12 +26,12 @@
               <div class="row">
                 <div class="col-md-6 col-sm-12">
                   <div class="form-group">
-                    <label for="owner" class="form-label">Dono do Pet:</label>
+                    <label for="owner" class="form-label" th:text="#{medicalRecord.form.owner}"></label>
                     <select id="owner"
                             th:field="*{customer}"
                             class="form-select"
                             aria-label=".form-select">
-                      <option value="" selected>Selecione o Dono do Pet</option>
+                      <option value="" selected th:text="#{medicalRecord.form.owner.default}"></option>
                       <option th:each="cstmr : ${customers}"
                               th:value="${cstmr.id}"
                               th:text="${cstmr.name}"></option>
@@ -45,13 +45,13 @@
 
                 <div class="col-md-6 col-sm-12">
                   <div class="form-group">
-                    <label for="pet" class="form-label">Pet:</label>
+                    <label for="pet" class="form-label" th:text="#{medicalRecord.form.pet}"></label>
                     <select class="form-select col-md-6"
                             aria-label=".form-select"
                             id="pet"
                             th:field="*{animal}"
                             required>
-                      <option value="" selected>Selecione o Pet</option>
+                      <option value="" selected th:text="#{medicalRecord.form.pet.default}"></option>
                       <option class="petsList"
                               th:each="pet : ${animals}"
                               th:value="${pet.id}"
@@ -68,7 +68,7 @@
               <div class="row">
                 <div class="col-md-6 col-sm-12">
                   <div class="form-group">
-                    <label for="serviceDate" class="form-label">Data do atendimento:</label>
+                    <label for="serviceDate" class="form-label" th:text="#{medicalRecord.form.serviceDate}"></label>
                     <input type="date"
                            class="form-control"
                            id="serviceDate"
@@ -85,11 +85,11 @@
               <div class="row">
                 <div class="col-md-12">
                   <div class="form-group">
-                    <label for="comments" class="form-label">Nota:</label>
+                    <label for="comments" class="form-label" th:text="#{medicalRecord.form.comments}"></label>
                     <textarea class="form-control"
                               id="comments"
                               rows="4"
-                              placeholder="Notas sobre o atendimento"
+                              th:placeholder="#{medicalRecord.form.comments.placeholder}"
                               th:field="*{comments}"
                               required></textarea>
                     <ul>
@@ -103,8 +103,9 @@
             </fieldset>
           </div>
           <div class="card-footer">
-            <a th:href="@{/app/medical-records}" class="btn btn-secondary">Cancelar</a>
-            <button type="submit" class="btn btn-success">Salvar</button>
+            <a th:href="@{/app/medical-records}" class="btn btn-secondary"
+               th:text="#{form.button.cancel}"></a>
+            <button type="submit" class="btn btn-success" th:text="#{form.button.save}"></button>
           </div>
         </form>
       </div>
