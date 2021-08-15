@@ -34,3 +34,4 @@ build/
 
 ### Arquivos Locais ###
 app-veterinario.p12
+.env

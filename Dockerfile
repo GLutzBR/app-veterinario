@@ -13,10 +13,10 @@ WORKDIR /src
 
 RUN mvn -DskipTests=true install -f pom.xml
 
-RUN cp ./target/appVeterinario-0.0.1-SNAPSHOT.jar /app
+RUN cp ./target/appVeterinario-2.0.0.war /app
 
 WORKDIR /app
 
 RUN rm -Rf /src
 
-ENTRYPOINT ["java", "-jar", "./appVeterinario-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java", "-jar", "./appVeterinario-2.0.0.war"]

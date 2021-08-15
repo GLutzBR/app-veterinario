@@ -1,75 +1,52 @@
 <!DOCTYPE html>
-<html lang="pt-br"
+<html th:lang="${#locale}"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="~{base/base :: baseHead}">
-  <title></title>
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{layout :: layout (~{::title}, ~{::main}, _, _)}">
+<head>
+  <title>[[#{medicalRecord.details.title}]]</title>
 </head>
 <body>
-<header th:replace="~{base/base :: navbar}"></header>
 
-<main class="container">
+<main>
   <div class="row">
-    <div class="col-sm-12">
-      <h1 th:text="${title}"></h1>
-    </div>
-  </div>
-
-  <div class="row g-3">
-    <div class="col-sm-12">
+    <div class="col-sm-12 mb-3">
       <div class="card" th:object="${medicalRecord}">
-        <div class="card-header" th:text="'Paciente - ' + *{animal.name}">Protocolo#</div>
+        <h4 class="card-header" th:text="'Paciente - ' + *{animal.name}"></h4>
         <div class="card-body">
-          <h5 class="card-title">Dados do paciente</h5>
+          <h5 class="card-title" th:text="#{medicalRecord.details.card.patient.title}"></h5>
           <p class="card-text">
-            <b>Idade do paciente:</b> <span th:text="*{animal.age}"></span>
+            <b th:text="#{medicalRecord.details.card.patient.age}"></b> <span th:text="*{animal.ageYears}"></span>
           </p>
           <p class="card-text">
-            <b>Dono:</b> <span th:text="*{animal.owner.fullName}"></span>
+            <b th:text="#{medicalRecord.details.card.patient.owner}"></b> <span th:text="*{animal.owner.name}"></span>
           </p>
         </div>
 
         <div class="card-body">
-          <h5 class="card-title">Dados do atendimento</h5>
+          <h5 class="card-title" th:text="#{medicalRecord.details.card.medicalRecord.title}"></h5>
           <p class="card-text">
-            <b>Data do atendimento:</b> <span th:text="*{serviceDate}"></span>
+            <b th:text="#{medicalRecord.details.card.medicalRecord.serviceDate}"></b> <span
+              th:text="*{serviceDate}"></span>
           </p>
           <p class="card-text">
-            <b>Médico Veterinário:</b> <span th:text="*{user.firstName} + ' ' + *{user.lastName}"></span>
+            <b th:text="#{medicalRecord.details.card.medicalRecord.veterinarian}"></b> <span
+              th:text="*{veterinarian.name}"></span>
           </p>
           <p class="card-text">
-            <b>Nota:</b> <span th:text="*{comments}"></span>
+            <b th:text="#{medicalRecord.details.card.medicalRecord.comments}"></b> <span th:text="*{comments}"></span>
           </p>
-        </div>
-
-        <div class="card-body">
-          <a th:classappend="${#authorization.expression('hasRole(''USER'')')} ? 'disabled'"
-             th:attrappend="aria-disabled=${#authorization.expression('hasRole(''USER'')')},tabindex=${#authorization.expression('hasRole(''USER'',)')} ? '-1'"
-             th:href="@{/app/medical-records/{id}/update (id=${medicalRecord.id})}"
-             class="btn btn-warning">Editar</a>
-          <a th:classappend="${#authorization.expression('hasRole(''USER'')')} ? 'disabled'"
-             th:attrappend="aria-disabled=${#authorization.expression('hasRole(''USER'')')},tabindex=${#authorization.expression('hasRole(''USER'',)')} ? '-1'"
-             th:href="@{/app/medical-records/{id}/archive (id=${medicalRecord.id})}"
-             th:text="*{archived} ? 'Desarquivar' : 'Arquivar'"
-             th:onclick="*{archived} ?
-              'return confirm(''Tem certeza de que deseja desarquivar este prontuário?'')' :
-              'return confirm(''Tem certeza de que deseja arquivar este prontuário?'')'"
-             class="btn btn-danger">Arquivar</a>
-          <a th:classappend="${#authorization.expression('hasAnyRole(''USER'', ''VET'')')} ? 'disabled'"
-             th:attrappend="aria-disabled=${#authorization.expression('hasAnyRole(''USER'', ''VET'')')},tabindex=${#authorization.expression('hasAnyRole(''USER'', ''VET'')')} ? '-1'"
-             th:href="@{/app/medical-records/{id}/delete (id=${medicalRecord.id})}"
-             onclick="return confirm('Tem certeza de que deseja excluir este prontuário?')"
-             class="btn btn-dark">Excluir</a>
         </div>
       </div>
     </div>
-    <div class="col-sm-1">
-      <a th:href="@{/app/medical-records}" class="btn btn-secondary mb-2">Voltar</a>
+    <div class="row mb-3">
+      <div class="col-sm-12">
+        <a th:href="@{/app/medical-records}" class="btn btn-secondary"
+           th:text="#{button.back}"></a>
+      </div>
     </div>
   </div>
 </main>
-
-<footer th:replace="~{base/base :: copyright}"></footer>
 
 </body>
 </html>

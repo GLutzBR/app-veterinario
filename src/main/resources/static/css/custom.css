@@ -5,7 +5,7 @@ body {
     flex-direction: column;
 }
 
-main {
+section {
     flex: 1;
 }
 
@@ -13,4 +13,8 @@ select[readonly] {
     background: #eee;
     pointer-events: none;
     touch-action: none;
+}
+
+.mt-6 {
+    margin-top: 4rem !important;
 }

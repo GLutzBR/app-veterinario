@@ -1,22 +1,27 @@
 <!DOCTYPE html>
-<html lang="pt-br"
+<html th:lang="${#locale}"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="~{base/base :: baseHead}">
-  <title></title>
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{layout :: layout (~{::title}, ~{::main}, ~{::styles}, _)}">
+<head>
+  <title>[[#{login.title}]]</title>
+  <th:block th:fragment="styles">
+    <link th:rel="stylesheet" th:href="@{/css/login.css}"/>
+  </th:block>
 </head>
 <body>
-<header th:replace="~{base/base :: navbar}"></header>
 
-<main class="container">
+<main>
   <div class="login-box">
     <div class="card">
       <div class="card-header">
-        <i class="fas fa-user"></i> Please Login
+        <i class="fas fa-user"></i>
       </div>
       <div class="card-block login-block">
         <form name="f" th:action="@{/login}" method="post">
           <fieldset>
+
+            <!-- TODO: alterar mensagens de erro -->
             <!-- Thymeleaf + Spring Security error display -->
             <div th:if="${param.error}" class="alert alert-danger">
               Usuário ou senha inválidos.
@@ -28,25 +33,25 @@
 
             <!-- Login Controls -->
             <div class="mb-3">
-              <label for="username">Usuário:</label>
+              <label for="username" th:text="#{login.form.username}"></label>
               <input type="text" class="form-control" id="username" name="username"
                      placeholder="Usuário">
             </div>
 
             <div class="mb-3">
-              <label for="password">Senha:</label>
+              <label for="password" th:text="#{login.form.password}"></label>
               <input type="password" class="form-control" id="password" name="password"
                      placeholder="Senha">
             </div>
 
             <div class="mb-3">
               <input type="checkbox" class="form-check-input" id="remember-me" name="remember-me">
-              <label class="form-check-label" for="remember-me">Manter-me conectado</label>
+              <label class="form-check-label" for="remember-me" th:text="#{login.form.rememberMe}"></label>
             </div>
 
             <!-- Login Button -->
             <div class="form-actions login-actions">
-              <button type="submit" class="btn btn-success">Log in</button>
+              <button type="submit" class="btn btn-success" th:text="#{login.form.button}"></button>
             </div>
           </fieldset>
         </form>
@@ -54,8 +59,6 @@
     </div>
   </div>
 </main>
-
-<footer th:replace="~{base/base :: copyright}"></footer>
 
 </body>
 </html>

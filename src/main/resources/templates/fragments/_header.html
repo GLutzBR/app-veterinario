@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html th:lang="${#locale}"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<div th:fragment="content-header (title)" class="header">
+  <div class="container-fluid mt-6">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="m-0" th:include="${title}">Dashboard</h1>
+      </div>
+    </div>
+  </div>
+</div>
+
+</html>

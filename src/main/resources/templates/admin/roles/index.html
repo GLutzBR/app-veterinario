@@ -1,26 +1,25 @@
 <!DOCTYPE html>
-<html lang="pt-br"
+<html th:lang="${#locale}"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="~{base/base :: baseHead}">
-  <title></title>
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{layout :: layout (~{::title}, ~{::main}, _, ~{::scripts})}">
+<head>
+  <title>[[#{role.list.title}]]</title>
 </head>
 <body>
-<header th:replace="~{base/base :: navbar}"></header>
 
 <main class="container">
   <div class="row">
     <div class="col-sm-12">
-      <h1 th:text="${title}"></h1>
       <form action="#" class="d-flex cold-md-12">
         <input type="text"
                class="form-control me-2"
                id="txt-search"
-               placeholder="Nome do nível de acesso"
+               th:placeholder="#{role.list.search.placeholder}"
                aria-label="Search">
         <button class="btn btn-outline-success"
                 id="btn-search"
-                type="submit">Pesquisar
+                type="submit" th:text="#{list.search.button}">
         </button>
       </form>
     </div>
@@ -31,54 +30,95 @@
       <table class="table" id="tbl-roles">
         <thead>
         <tr>
-          <th scope="col">Tipo</th>
-          <th scope="col">Nome</th>
+          <th scope="col">ID</th>
+          <th scope="col" th:text="#{role.list.table.col.roleName}"></th>
+          <th scope="col" th:text="#{role.list.table.col.actions}"></th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="role : ${roles}">
-          <td>
-            <a th:href="@{/admin/roles/{id} (id=${role.id})}"
-               th:text="${role.type}"></a>
-          </td>
+          <td th:text="${role.id}"></td>
           <td th:text="${role.name}"></td>
+          <td>
+            <div class="btn-group">
+              <a th:href="@{/admin/roles/{id}/update (id=${role.id})}"
+                 class="btn btn-warning" type="button"
+                 data-bs-toggle="tooltip" data-bs-placement="top" th:title="#{list.table.col.actions.button.edit}">
+                <i class="fas fa-edit"></i>
+              </a>
+              <a th:href="@{/admin/roles/{id}/delete (id=${role.id})}"
+                 class="btn btn-danger" type="button"
+                 th:onclick="'return confirm(\'Tem certeza de que deseja excluir este cargo?\')'"
+                 data-bs-toggle="tooltip" data-bs-placement="top" th:title="#{list.table.col.actions.button.delete}">
+                <i class="fas fa-trash"></i>
+              </a>
+            </div>
+          </td>
         </tr>
         </tbody>
       </table>
     </div>
+
+    <div class="row mb-3">
+      <div class="col-sm-12">
+        <a th:href="@{/admin/roles/insert}"
+           class="btn btn-primary" th:text="#{role.list.button.insert}"></a>
+      </div>
+    </div>
   </div>
 </main>
 
-<footer th:replace="~{base/base :: copyright}"></footer>
-
-<script type="text/javascript">
-  $(document).ready(function () {
-      $("#btn-search").click(function () {
-          const roleName = $("#txt-search").val();
-          $.ajax({
-              method: 'GET',
-              url: '/admin/roles/search?name=' + roleName,
-              success: function (data) {
-                  $('#tbl-roles tbody > tr').remove();
-                  $.each(data, function (index, role) {
-                      $('#tbl-roles tbody').append(
-                          '<tr>' +
-                          '  <td>' +
-                          '    <a href="/admin/roles/' + role.id + '">' + role.type + '</a>' +
-                          '  </td>' +
-                          '  <td>' + role.name + '</td>' +
-                          '</tr>'
-                      );
-                  })
-              },
-              error: function () {
-                  alert("Houve um erro na requisição!")
-              }
+<th:block th:fragment="scripts">
+  <script type="text/javascript">
+      $(document).ready(function () {
+          $("#btn-search").click(function () {
+              const roleName = $("#txt-search").val();
+              $.ajax({
+                  method: 'GET',
+                  url: '/admin/roles/search?name=' + roleName,
+                  success: function (data) {
+                      $('#tbl-roles tbody > tr').remove();
+                      $.each(data, function (index, role) {
+                          $('#tbl-roles tbody').append(
+                              '<tr>' +
+                              '  <td>' + role.id + '</td>' +
+                              '  <td>' + role.name + '</td>' +
+                              '  <td>' +
+                              '    <div class="btn-group">' +
+                              '    <a href="/admin/roles/' + role.id + '/update" class="btn btn-warning"' +
+                              '       type="button" data-bs-toggle="tooltip" data-bs-placement="top"' +
+                              '       title="Editar"><i class="fas fa-edit"></i></a>' +
+                              '    <a href="/admin/roles/' + role.id + '/delete" class="btn btn-danger"' +
+                              '       type="button" data-bs-toggle="tooltip" data-bs-placement="top"' +
+                              '       title="Excluir"' +
+                              '       onclick="return confirm(\'Tem certeza de que deseja excluir este cargo?\')">' +
+                              '        <i class="fas fa-trash"></i></a>' +
+                              '    </div>' +
+                              '  </td>' +
+                              '</tr>'
+                          );
+                          let tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+                          let tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                              return new bootstrap.Tooltip(tooltipTriggerEl)
+                          })
+                      })
+                  },
+                  error: function () {
+                      alert("Houve um erro na requisição!")
+                  }
+              });
+              return false;
           });
-          return false;
       });
-  });
-</script>
+  </script>
+  <script>
+      let tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+      let tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+          return new bootstrap.Tooltip(tooltipTriggerEl)
+      })
+  </script>
+</th:block>
 
 </body>
 </html>
+<!--TODO: add botão de edição e exclusão-->

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html th:lang="${#locale}"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{layout :: layout (~{::title}, ~{::main}, _, ~{::scripts})}">
+<head>
+  <title>[[#{medicalRecord.form.title}]]</title>
+</head>
+<body>
+
+<main>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card mb-2">
+        <form th:object="${medicalRecord}" method="post">
+          <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+
+          <div class="card-body">
+            <fieldset>
+              <legend th:text="#{medicalRecord.form.legend}"></legend>
+              <input type="hidden" th:field="*{id}">
+              <select hidden th:field="*{veterinarian}">
+                <option th:value="${veterinarian}" selected></option>
+              </select>
+
+              <div class="row">
+                <div class="col-md-6 col-sm-12">
+                  <div class="form-group">
+                    <label for="owner" class="form-label" th:text="#{medicalRecord.form.owner}"></label>
+                    <select id="owner"
+                            th:field="*{customer}"
+                            class="form-select"
+                            aria-label=".form-select">
+                      <option value="" selected th:text="#{medicalRecord.form.owner.default}"></option>
+                      <option th:each="cstmr : ${customers}"
+                              th:value="${cstmr.id}"
+                              th:text="${cstmr.name}"></option>
+                    </select>
+                    <ul>
+                      <li class="text-danger" th:each="error : ${#fields.errors('customer')}"
+                          th:text="${error}"></li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div class="col-md-6 col-sm-12">
+                  <div class="form-group">
+                    <label for="pet" class="form-label" th:text="#{medicalRecord.form.pet}"></label>
+                    <select class="form-select col-md-6"
+                            aria-label=".form-select"
+                            id="pet"
+                            th:field="*{animal}"
+                            required>
+                      <option value="" selected th:text="#{medicalRecord.form.pet.default}"></option>
+                      <option class="petsList"
+                              th:each="pet : ${animals}"
+                              th:value="${pet.id}"
+                              th:text="${pet.name}"></option>
+                    </select>
+                    <ul>
+                      <li class="text-danger" th:each="error : ${#fields.errors('animal')}"
+                          th:text="${error}"></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 col-sm-12">
+                  <div class="form-group">
+                    <label for="serviceDate" class="form-label" th:text="#{medicalRecord.form.serviceDate}"></label>
+                    <input type="date"
+                           class="form-control"
+                           id="serviceDate"
+                           th:field="*{serviceDate}"
+                           required>
+                    <ul>
+                      <li class="text-danger" th:each="error : ${#fields.errors('serviceDate')}"
+                          th:text="${error}"></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="comments" class="form-label" th:text="#{medicalRecord.form.comments}"></label>
+                    <textarea class="form-control"
+                              id="comments"
+                              rows="4"
+                              th:placeholder="#{medicalRecord.form.comments.placeholder}"
+                              th:field="*{comments}"
+                              required></textarea>
+                    <ul>
+                      <li class="text-danger" th:each="error : ${#fields.errors('comments')}"
+                          th:text="${error}"></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+            </fieldset>
+          </div>
+          <div class="card-footer">
+            <a th:href="@{/app/medical-records}" class="btn btn-secondary"
+               th:text="#{form.button.cancel}"></a>
+            <button type="submit" class="btn btn-success" th:text="#{form.button.save}"></button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</main>
+
+<th:block th:fragment="scripts">
+  <script type="text/javascript">
+      $(document).ready(function () {
+          $('#serviceDate').attr({
+              value: new Date().toISOString().substring(0, 10),
+              max: new Date().toISOString().substring(0, 10)
+          });
+          $('#owner').change(function () {
+              const ownerSelected = $(this).val();
+              $.ajax({
+                  method: 'GET',
+                  url: '/app/medical-records/searchAnimals?ownerId=' + ownerSelected,
+                  success: function (data) {
+                      $('#pet option.petsList').remove();
+                      $.each(data, function (index, pet) {
+                          $('#pet').append(
+                              '<option class="petsList" ' + 'value="' + pet.id + '"' + '>' +
+                              pet.name +
+                              '</option>'
+                          )
+                      })
+                  },
+                  error: function () {
+                      if (ownerSelected !== '') {
+                          alert("Houve um erro na requisição!");
+                      }
+                  }
+              });
+              return false;
+          });
+      });
+  </script>
+</th:block>
+
+</body>
+</html>
