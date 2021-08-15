@@ -6,8 +6,11 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 
 public class AnimalSerializer extends StdSerializer<Animal> {
+
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public AnimalSerializer() {
         this(null);
@@ -26,7 +29,7 @@ public class AnimalSerializer extends StdSerializer<Animal> {
         jsonGenerator.writeStartObject();
         jsonGenerator.writeNumberField("id", animal.getId());
         jsonGenerator.writeStringField("name", animal.getName());
-        jsonGenerator.writeObjectField("age", animal.getAge());
+        jsonGenerator.writeStringField("age", formatter.format(animal.getAge()));
         jsonGenerator.writeNumberField("ageYears", animal.getAgeYears());
         jsonGenerator.writeStringField("breed", animal.getBreed());
         jsonGenerator.writeObjectFieldStart("owner");

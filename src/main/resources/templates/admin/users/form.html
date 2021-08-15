@@ -5,7 +5,7 @@
       th:replace="~{layout :: layout (~{::title}, ~{::main}, _, ~{::scripts})}">
 
 <head>
-  <title>[[${user.id == null ? 'Cadastrar' : 'Editar'}]] [[#{employee.form.title}]]</title>
+  <title>[[${employee.id == null ? 'Cadastrar' : 'Editar'}]] [[#{employee.form.title}]]</title>
 </head>
 
 <body>
@@ -118,7 +118,7 @@
               </div>
             </fieldset>
 
-            <fieldset class="form-vet form-hidden" style="display: none">
+            <fieldset class="form-vet form-hidden" th:style="*{role.name != 'Veterinário'} ? 'display: none'">
               <legend th:text="#{employee.form.legend.veterinarianData}"></legend>
 
               <div class="row">
@@ -194,7 +194,7 @@
   <script type="text/javascript">
       $(document).ready(function () {
           $('#role').change(function () {
-              let selection = $('#role').val();
+              let selection = $('select#role').val();
 
               function resetForm($form) {
                   $form.find('input:text').val('');

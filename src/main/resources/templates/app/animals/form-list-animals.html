@@ -85,7 +85,13 @@
     </div>
   </div>
   <div class="row" th:unless="${!form.animals.isEmpty()}">
-    <p>Voltar à <a href="javascript:history.back()">página anterior</a> para carregar dados do usuário</p>
+    <h2 class="text-danger" th:text="#{animal.form.updateMultiple.error.title}"></h2>
+    <div class="col-sm-12">
+      <p class="text-black-50" th:text="#{animal.form.updateMultiple.error.message}"></p>
+    </div>
+    <div class="col-sm-12">
+      <a href="javascript:history.back()" th:text="#{animal.form.updateMultiple.error.link}"></a>
+    </div>
   </div>
 </main>
 

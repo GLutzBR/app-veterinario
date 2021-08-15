@@ -1,8 +1,6 @@
 package br.com.lutztechnology.appveterinario.model;
 
 import br.com.lutztechnology.appveterinario.serialize.MedicalRecordSerializer;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -21,7 +19,6 @@ import java.time.LocalDate;
 @Getter @Setter
 public class MedicalRecord extends BaseEntity {
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     @NotNull
     @PastOrPresent
     @Column(nullable = false, name = "service_date")

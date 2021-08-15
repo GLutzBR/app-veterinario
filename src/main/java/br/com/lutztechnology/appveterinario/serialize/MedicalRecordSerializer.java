@@ -6,8 +6,11 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 
 public class MedicalRecordSerializer extends StdSerializer<MedicalRecord> {
+
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public MedicalRecordSerializer() {
         this(null);
@@ -26,7 +29,7 @@ public class MedicalRecordSerializer extends StdSerializer<MedicalRecord> {
 
         jsonGenerator.writeStartObject();
         jsonGenerator.writeNumberField("id", medicalRecord.getId());
-        jsonGenerator.writeObjectField("serviceDate", medicalRecord.getServiceDate());
+        jsonGenerator.writeStringField("serviceDate", formatter.format(medicalRecord.getServiceDate()));
 
         jsonGenerator.writeObjectFieldStart("animal");
         jsonGenerator.writeNumberField("id", medicalRecord.getAnimal().getId());
