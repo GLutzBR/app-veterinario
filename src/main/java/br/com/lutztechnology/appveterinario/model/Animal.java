@@ -1,6 +1,7 @@
 package br.com.lutztechnology.appveterinario.model;
 
 import br.com.lutztechnology.appveterinario.serialize.AnimalSerializer;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.*;
@@ -29,6 +30,7 @@ public class Animal extends BaseEntity {
     @Column(nullable = false, length = 50)
     private String name;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     @PastOrPresent
     @Column(nullable = false)
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
