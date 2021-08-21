@@ -1,4 +1,4 @@
-package br.com.lutztechnology.appveterinario.api;
+package br.com.lutztechnology.appveterinario.api.dto;
 
 import lombok.Getter;
 import lombok.Setter;
