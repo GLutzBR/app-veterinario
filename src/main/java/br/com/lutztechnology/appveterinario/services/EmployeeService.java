@@ -1,6 +1,10 @@
 package br.com.lutztechnology.appveterinario.services;
 
+import br.com.lutztechnology.appveterinario.api.dto.EmployeeDTO;
+import br.com.lutztechnology.appveterinario.api.mappers.AddressMapper;
+import br.com.lutztechnology.appveterinario.api.mappers.EmployeeMapper;
 import br.com.lutztechnology.appveterinario.exceptions.EmployeeNotFoundException;
+import br.com.lutztechnology.appveterinario.model.Address;
 import br.com.lutztechnology.appveterinario.model.Employee;
 import br.com.lutztechnology.appveterinario.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +20,12 @@ public class EmployeeService {
 
     @Autowired
     private EmployeeRepository employeeRepository;
+
+    @Autowired
+    private EmployeeMapper employeeMapper;
+
+    @Autowired
+    private AddressMapper addressMapper;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -50,10 +60,30 @@ public class EmployeeService {
         return employeeRepository.save(employee);
     }
 
+    public Employee insert(EmployeeDTO employeeDTO) {
+        Employee employee = employeeMapper.convertToEntity(employeeDTO);
+
+        Address address = addressMapper.convertToEntity(employeeDTO.getAddress());
+        employee.setAddress(address);
+
+        return employeeRepository.save(employee);
+    }
+
     public Employee update(Employee employee, Long id) {
         Employee employeeFound = searchById(id);
 
         employee.setPassword(employeeFound.getPassword());
+
+        return employeeRepository.save(employee);
+    }
+
+    public Employee update(EmployeeDTO employeeDTO, Long id) {
+        searchById(id);
+
+        Employee employee = employeeMapper.convertToEntity(employeeDTO);
+
+        Address address = addressMapper.convertToEntity(employeeDTO.getAddress());
+        employee.setAddress(address);
 
         return employeeRepository.save(employee);
     }

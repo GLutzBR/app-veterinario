@@ -1,6 +1,6 @@
 package br.com.lutztechnology.appveterinario.services;
 
-import br.com.lutztechnology.appveterinario.api.RoleDTO;
+import br.com.lutztechnology.appveterinario.api.dto.RoleDTO;
 import br.com.lutztechnology.appveterinario.api.mappers.RoleMapper;
 import br.com.lutztechnology.appveterinario.exceptions.AppRoleNotFoundException;
 import br.com.lutztechnology.appveterinario.exceptions.RoleHasEmployeesException;

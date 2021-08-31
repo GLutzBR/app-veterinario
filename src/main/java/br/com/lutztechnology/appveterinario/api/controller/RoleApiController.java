@@ -1,6 +1,6 @@
 package br.com.lutztechnology.appveterinario.api.controller;
 
-import br.com.lutztechnology.appveterinario.api.RoleDTO;
+import br.com.lutztechnology.appveterinario.api.dto.RoleDTO;
 import br.com.lutztechnology.appveterinario.api.hateoas.RoleAssembler;
 import br.com.lutztechnology.appveterinario.model.Role;
 import br.com.lutztechnology.appveterinario.services.RoleService;

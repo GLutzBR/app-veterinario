@@ -1,6 +1,6 @@
 package br.com.lutztechnology.appveterinario.api.mappers;
 
-import br.com.lutztechnology.appveterinario.api.RoleDTO;
+import br.com.lutztechnology.appveterinario.api.dto.RoleDTO;
 import br.com.lutztechnology.appveterinario.model.Role;
 import org.springframework.stereotype.Component;
 
