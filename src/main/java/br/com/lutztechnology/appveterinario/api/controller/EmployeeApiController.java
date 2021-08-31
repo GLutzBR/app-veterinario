@@ -11,7 +11,6 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -56,6 +55,13 @@ public class EmployeeApiController {
             @RequestBody @Valid EmployeeDTO employeeDTO,
             @PathVariable Long id) {
         Employee employee = employeeService.update(employeeDTO, id);
+
+        return employeeAssembler.toModel(employee);
+    }
+
+    @PutMapping("/{id}/change-availability")
+    public EntityModel<Employee> changeAvailability(@PathVariable Long id) {
+        Employee employee = employeeService.changeAvailability(id);
 
         return employeeAssembler.toModel(employee);
     }
