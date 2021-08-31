@@ -22,6 +22,7 @@ import java.util.List;
 @Getter @Setter
 public class Employee extends Person {
 
+    @JsonIgnore
     @Size(min = 5, max = 255)
     @Column(nullable = false)
     private String password;

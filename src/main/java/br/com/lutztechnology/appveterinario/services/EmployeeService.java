@@ -78,7 +78,12 @@ public class EmployeeService {
     }
 
     public Employee update(EmployeeDTO employeeDTO, Long id) {
-        searchById(id);
+        Employee employeeFound = searchById(id);
+
+        // TODO: não receber a senha e tratar no front
+        if (employeeDTO.getPassword() == null) {
+            employeeDTO.setPassword(employeeFound.getPassword());
+        }
 
         Employee employee = employeeMapper.convertToEntity(employeeDTO);
 
