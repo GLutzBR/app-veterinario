@@ -5,6 +5,7 @@ import br.com.lutztechnology.appveterinario.api.mappers.AddressMapper;
 import br.com.lutztechnology.appveterinario.api.mappers.CustomerMapper;
 import br.com.lutztechnology.appveterinario.exceptions.CustomerHasMedicalRecord;
 import br.com.lutztechnology.appveterinario.exceptions.CustomerNotFoundException;
+import br.com.lutztechnology.appveterinario.model.Address;
 import br.com.lutztechnology.appveterinario.model.Customer;
 import br.com.lutztechnology.appveterinario.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,9 +62,18 @@ public class CustomerService {
     }
 
     public Customer update(CustomerDTO customerDTO, Long id) {
-        searchById(id);
+        Customer customer = searchById(id);
+        Address address;
 
-        Customer customer = customerMapper.convertToEntity(customerDTO);
+        if (customerDTO.getAddress() == null) {
+            address = customer.getAddress();
+        } else {
+            address = addressMapper.convertToEntity(customerDTO.getAddress());
+            address.setId(customer.getAddress().getId());
+        }
+
+        customer = customerMapper.convertToEntity(customerDTO);
+        customer.setAddress(address);
         customer.setId(id);
 
         return customerRepository.save(customer);
