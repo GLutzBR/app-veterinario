@@ -17,17 +17,42 @@ public class RootApiController {
     public RootModel root() {
         RootModel rootModel = new RootModel();
 
-        Link rolesLink = linkTo(methodOn(RoleApiController.class).searchAll(null))
+        Link rolesListLink = linkTo(methodOn(RoleApiController.class).searchAll(null))
                 .withRel("roles")
                 .withType("GET")
                 .withTitle("List roles");
 
-        Link insertLink = linkTo(methodOn(RoleApiController.class).insert(null))
+        Link roleInsertLink = linkTo(methodOn(RoleApiController.class).insert(null))
                 .withRel("roles")
                 .withType("POST")
                 .withTitle("Insert new role");
 
-        rootModel.add(rolesLink, insertLink);
+        Link employeesListLink = linkTo(methodOn(EmployeeApiController.class).searchAll(null))
+                .withRel("employees")
+                .withType("GET")
+                .withTitle("List employees");
+
+        Link employeeInsertLink = linkTo(methodOn(EmployeeApiController.class).insert(null))
+                .withRel("employees")
+                .withType("POST")
+                .withTitle("Insert new employee");
+
+        Link customersListLink = linkTo(methodOn(CustomerApiController.class).searchAll(null))
+                .withRel("customers")
+                .withType("GET")
+                .withTitle("List customers");
+
+        Link customerInsertLink = linkTo(methodOn(CustomerApiController.class).insert(null))
+                .withRel("customers")
+                .withType("POST")
+                .withTitle("Insert new customer");
+
+        rootModel.add(rolesListLink,
+                roleInsertLink,
+                employeesListLink,
+                employeeInsertLink,
+                customersListLink,
+                customerInsertLink);
 
         return rootModel;
     }
