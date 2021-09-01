@@ -62,6 +62,7 @@ public class EmployeeService {
 
     public Employee insert(EmployeeDTO employeeDTO) {
         Employee employee = employeeMapper.convertToEntity(employeeDTO);
+        employee.setPassword(passwordEncoder.encode(employee.getPassword()));
 
         Address address = addressMapper.convertToEntity(employeeDTO.getAddress());
         employee.setAddress(address);
@@ -83,6 +84,8 @@ public class EmployeeService {
         // TODO: não receber a senha e tratar no front
         if (employeeDTO.getPassword() == null) {
             employeeDTO.setPassword(employeeFound.getPassword());
+        } else {
+            employeeDTO.setPassword(passwordEncoder.encode(employeeDTO.getPassword()));
         }
 
         Employee employee = employeeMapper.convertToEntity(employeeDTO);

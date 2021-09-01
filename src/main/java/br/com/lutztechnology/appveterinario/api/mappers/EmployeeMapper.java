@@ -5,14 +5,10 @@ import br.com.lutztechnology.appveterinario.enums.State;
 import br.com.lutztechnology.appveterinario.model.Employee;
 import br.com.lutztechnology.appveterinario.services.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
 public class EmployeeMapper {
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private RoleService roleService;
@@ -22,7 +18,6 @@ public class EmployeeMapper {
 
 
         employee.setEmail(employeeDTO.getEmail());
-        employee.setPassword(passwordEncoder.encode(employeeDTO.getPassword()));
         employee.setName(employeeDTO.getName());
         employee.setCpf(employeeDTO.getCpf());
         employee.setPhone(employeeDTO.getPhone());
