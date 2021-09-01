@@ -62,6 +62,7 @@ public class RoleService {
         searchById(id);
 
         Role role = roleMapper.convertToEntity(roleDTO);
+        role.setId(id);
 
         return roleRepository.save(role);
     }

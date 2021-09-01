@@ -43,18 +43,14 @@ public class Employee extends Person {
     private Boolean active = true;
 
     // TODO: validar se valores vazios estão sendo salvos como nulos
-//    @Size(min = 5, max = 30)
     @Size(max = 30)
     @Column(length = 30)
     private String specialty;
 
-//    @Size(min = 2, max = 2)
-//    @Size(max = 2)
     // TODO: buscar como fazer validação deste campo
     @Enumerated(EnumType.STRING)
     private State crmvState;
 
-//    @Size(min = 7, max = 7)
     @Size(max = 7)
     @Column(length = 7)
     private String crmv;

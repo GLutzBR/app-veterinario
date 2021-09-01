@@ -79,19 +79,27 @@ public class EmployeeService {
     }
 
     public Employee update(EmployeeDTO employeeDTO, Long id) {
-        Employee employeeFound = searchById(id);
+        Employee employee = searchById(id);
+        Address address;
 
         // TODO: não receber a senha e tratar no front
         if (employeeDTO.getPassword() == null) {
-            employeeDTO.setPassword(employeeFound.getPassword());
+            employeeDTO.setPassword(employee.getPassword());
         } else {
             employeeDTO.setPassword(passwordEncoder.encode(employeeDTO.getPassword()));
         }
 
-        Employee employee = employeeMapper.convertToEntity(employeeDTO);
+        if (employeeDTO.getAddress() == null) {
+            address = employee.getAddress();
+        } else {
+            address = addressMapper.convertToEntity(employeeDTO.getAddress());
+            address.setId(employee.getAddress().getId());
+        }
 
-        Address address = addressMapper.convertToEntity(employeeDTO.getAddress());
+        employee = employeeMapper.convertToEntity(employeeDTO);
+
         employee.setAddress(address);
+        employee.setId(id);
 
         return employeeRepository.save(employee);
     }

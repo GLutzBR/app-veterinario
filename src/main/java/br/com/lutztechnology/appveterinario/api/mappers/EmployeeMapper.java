@@ -18,6 +18,7 @@ public class EmployeeMapper {
 
 
         employee.setEmail(employeeDTO.getEmail());
+        employee.setPassword(employeeDTO.getPassword());
         employee.setName(employeeDTO.getName());
         employee.setCpf(employeeDTO.getCpf());
         employee.setPhone(employeeDTO.getPhone());
