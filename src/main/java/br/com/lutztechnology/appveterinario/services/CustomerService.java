@@ -1,5 +1,8 @@
 package br.com.lutztechnology.appveterinario.services;
 
+import br.com.lutztechnology.appveterinario.api.dto.CustomerDTO;
+import br.com.lutztechnology.appveterinario.api.mappers.AddressMapper;
+import br.com.lutztechnology.appveterinario.api.mappers.CustomerMapper;
 import br.com.lutztechnology.appveterinario.exceptions.CustomerHasMedicalRecord;
 import br.com.lutztechnology.appveterinario.exceptions.CustomerNotFoundException;
 import br.com.lutztechnology.appveterinario.model.Customer;
@@ -16,6 +19,12 @@ public class CustomerService {
 
     @Autowired
     private CustomerRepository customerRepository;
+
+    @Autowired
+    private CustomerMapper customerMapper;
+
+    @Autowired
+    private AddressMapper addressMapper;
 
     public List<Customer> searchAll() {
         return customerRepository.findAll();
@@ -38,8 +47,24 @@ public class CustomerService {
         return customerRepository.save(customer);
     }
 
+    public Customer insert(CustomerDTO customerDTO) {
+        Customer customer = customerMapper.convertToEntity(customerDTO);
+        customer.setAddress(addressMapper.convertToEntity(customerDTO.getAddress()));
+
+        return customerRepository.save(customer);
+    }
+
     public Customer update(Customer customer, Long id) {
         searchById(id);
+
+        return customerRepository.save(customer);
+    }
+
+    public Customer update(CustomerDTO customerDTO, Long id) {
+        searchById(id);
+
+        Customer customer = customerMapper.convertToEntity(customerDTO);
+        customer.setId(id);
 
         return customerRepository.save(customer);
     }
