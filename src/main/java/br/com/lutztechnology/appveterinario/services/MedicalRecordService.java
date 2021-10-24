@@ -1,8 +1,9 @@
 package br.com.lutztechnology.appveterinario.services;
 
+import br.com.lutztechnology.appveterinario.api.dto.MedicalRecordDTO;
+import br.com.lutztechnology.appveterinario.api.mappers.MedicalRecordMapper;
 import br.com.lutztechnology.appveterinario.exceptions.MedicalRecordNotFoundException;
 import br.com.lutztechnology.appveterinario.model.MedicalRecord;
-import br.com.lutztechnology.appveterinario.repository.EmployeeRepository;
 import br.com.lutztechnology.appveterinario.repository.MedicalRecordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,7 +20,7 @@ public class MedicalRecordService {
     private MedicalRecordRepository medicalRecordRepository;
 
     @Autowired
-    private EmployeeRepository employeeRepository;
+    private MedicalRecordMapper medicalRecordMapper;
 
     public List<MedicalRecord> searchAll() {
         return medicalRecordRepository
@@ -51,6 +52,11 @@ public class MedicalRecordService {
     }
 
     public MedicalRecord insert(MedicalRecord medicalRecord) {
+        return medicalRecordRepository.save(medicalRecord);
+    }
+
+    public MedicalRecord insert(MedicalRecordDTO medicalRecordDTO) {
+        MedicalRecord medicalRecord = medicalRecordMapper.convertToEntity(medicalRecordDTO);
         return medicalRecordRepository.save(medicalRecord);
     }
 
