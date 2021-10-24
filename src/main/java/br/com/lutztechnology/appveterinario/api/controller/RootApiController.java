@@ -57,6 +57,16 @@ public class RootApiController {
                 .withType("POST")
                 .withTitle("Insert animals");
 
+        Link medicalRecordListLink = linkTo(methodOn(MedicalRecordApiController.class).searchAll(null))
+                .withRel("medicalRecords")
+                .withType("GET")
+                .withTitle("List medical records");
+
+        Link medicalRecordInsertLink = linkTo(methodOn(MedicalRecordApiController.class).insert(null))
+                .withRel("medicalRecords")
+                .withType("POST")
+                .withTitle("Insert medical records");
+
         rootModel.add(rolesListLink,
                 roleInsertLink,
                 employeesListLink,
@@ -64,7 +74,9 @@ public class RootApiController {
                 customersListLink,
                 customerInsertLink,
                 animalListLink,
-                animalInsertLink
+                animalInsertLink,
+                medicalRecordListLink,
+                medicalRecordInsertLink
         );
 
         return rootModel;

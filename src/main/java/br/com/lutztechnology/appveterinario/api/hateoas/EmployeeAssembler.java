@@ -22,7 +22,17 @@ public class EmployeeAssembler implements SimpleRepresentationModelAssembler<Emp
                 .withType("GET")
                 .withTitle("Employee details");
 
-        resource.add(selfLink);
+        Link updateLink = linkTo(methodOn(EmployeeApiController.class).update(null, id))
+                .withSelfRel()
+                .withType("PUT")
+                .withTitle("Update employee");
+
+        Link archiveLink = linkTo(methodOn(EmployeeApiController.class).changeAvailability(id))
+                .withSelfRel()
+                .withType("PUT")
+                .withTitle("Disable/Enable employee user");
+
+        resource.add(selfLink, updateLink, archiveLink);
     }
 
     @Override
