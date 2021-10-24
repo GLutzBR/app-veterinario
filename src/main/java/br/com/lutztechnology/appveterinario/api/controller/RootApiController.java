@@ -47,12 +47,25 @@ public class RootApiController {
                 .withType("POST")
                 .withTitle("Insert new customer");
 
+        Link animalListLink = linkTo(methodOn(AnimalApiController.class).searchAll(null))
+                .withRel("animals")
+                .withType("GET")
+                .withTitle("List animals");
+
+        Link animalInsertLink = linkTo(methodOn(AnimalApiController.class).insert(null))
+                .withRel("animals")
+                .withType("POST")
+                .withTitle("Insert animals");
+
         rootModel.add(rolesListLink,
                 roleInsertLink,
                 employeesListLink,
                 employeeInsertLink,
                 customersListLink,
-                customerInsertLink);
+                customerInsertLink,
+                animalListLink,
+                animalInsertLink
+        );
 
         return rootModel;
     }

@@ -1,5 +1,7 @@
 package br.com.lutztechnology.appveterinario.services;
 
+import br.com.lutztechnology.appveterinario.api.dto.AnimalDTO;
+import br.com.lutztechnology.appveterinario.api.mappers.AnimalMapper;
 import br.com.lutztechnology.appveterinario.dto.AnimalUpdateDTO;
 import br.com.lutztechnology.appveterinario.exceptions.AnimalHasMedicalRecordsException;
 import br.com.lutztechnology.appveterinario.exceptions.AnimalNotFoundException;
@@ -18,6 +20,9 @@ public class AnimalService {
 
     @Autowired
     private AnimalRepository animalRepository;
+
+    @Autowired
+    private AnimalMapper animalMapper;
 
     public List<Animal> searchAll() {
         return animalRepository.findAll();
@@ -44,8 +49,22 @@ public class AnimalService {
         return animalRepository.save(animal);
     }
 
+    public Animal insert(AnimalDTO animalDTO) {
+        Animal animal = animalMapper.convertToEntity(animalDTO);
+        return animalRepository.save(animal);
+    }
+
     public Animal update(Animal animal, Long id) {
         searchById(id);
+
+        return animalRepository.save(animal);
+    }
+
+    public Animal update(AnimalDTO animalDTO, Long id) {
+        searchById(id);
+
+        Animal animal = animalMapper.convertToEntity(animalDTO);
+        animal.setId(id);
 
         return animalRepository.save(animal);
     }
