@@ -22,8 +22,9 @@ import java.util.List;
 @Getter @Setter
 public class Employee extends Person {
 
+    @JsonIgnore
     @Size(min = 5, max = 255)
-    @Column(nullable = false, length = 255)
+    @Column(nullable = false)
     private String password;
 
     @NotNull
@@ -41,11 +42,12 @@ public class Employee extends Person {
     @Column(nullable = false)
     private Boolean active = true;
 
+    // TODO: validar se valores vazios estão sendo salvos como nulos
     @Size(max = 30)
     @Column(length = 30)
     private String specialty;
 
-    @Column(length = 2)
+    // TODO: buscar como fazer validação deste campo
     @Enumerated(EnumType.STRING)
     private State crmvState;
 

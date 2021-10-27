@@ -1,5 +1,7 @@
 package br.com.lutztechnology.appveterinario.services;
 
+import br.com.lutztechnology.appveterinario.api.dto.RoleDTO;
+import br.com.lutztechnology.appveterinario.api.mappers.RoleMapper;
 import br.com.lutztechnology.appveterinario.exceptions.AppRoleNotFoundException;
 import br.com.lutztechnology.appveterinario.exceptions.RoleHasEmployeesException;
 import br.com.lutztechnology.appveterinario.model.Role;
@@ -17,6 +19,9 @@ public class RoleService {
 
     @Autowired
     private RoleRepository roleRepository;
+
+    @Autowired
+    private RoleMapper roleMapper;
 
     @Autowired
     private EmployeeRepository employeeRepository;
@@ -42,8 +47,22 @@ public class RoleService {
         return roleRepository.save(role);
     }
 
+    public Role insert(RoleDTO roleDTO) {
+        Role role = roleMapper.convertToEntity(roleDTO);
+        return roleRepository.save(role);
+    }
+
     public Role update(Role role, Long id) {
         searchById(id);
+
+        return roleRepository.save(role);
+    }
+
+    public Role update(RoleDTO roleDTO, Long id) {
+        searchById(id);
+
+        Role role = roleMapper.convertToEntity(roleDTO);
+        role.setId(id);
 
         return roleRepository.save(role);
     }

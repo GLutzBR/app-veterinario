@@ -52,13 +52,5 @@ public class WebSecurityConfigurerAdapterImpl extends WebSecurityConfigurerAdapt
 
         http.rememberMe()
                 .key("chaveUnicaDeTeste");
-//                .userDetailsService(appUserDetailsService)
-//                .tokenValiditySeconds(1800)
-//                .and()
-//                .requiresChannel()
-//                .anyRequest()
-//                .requiresSecure()
-//                .and()
-//                .cors();
     }
 }

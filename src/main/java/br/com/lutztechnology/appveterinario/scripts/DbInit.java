@@ -41,22 +41,21 @@ public class DbInit implements CommandLineRunner {
 
             // insert default user
             Employee admin = new Employee(
-                    "glutzm@gmail.com",
-                    "Gustavo Matos",
-                    "046.343.021-28",
-                    "(11) 97393-6293",
-                    LocalDate.parse("1992-08-08"),
+                    "admin@app.com",
+                    "Admin",
+                    "627.345.927-46",
+                    "(33) 98579-0675",
+                    LocalDate.parse("1992-01-01"),
                     Address.builder()
-                            .state(State.SP)
-                            .city("São Paulo")
-                            .district("Jardim Ubirajara")
-                            .publicPlace("Rua Zike Tuma")
-                            .number("224")
-                            .cep("04458-000")
-                            .complement("Casa 44")
+                            .state(State.MG)
+                            .city("Governador Valadares")
+                            .district("Vila Isa")
+                            .publicPlace("Rua Eder da Silveira")
+                            .number("982")
+                            .cep("35043-250")
                             .build(),
                     passwordEncoder.encode("12345"),
-                    LocalDate.parse("2020-10-29"),
+                    LocalDate.parse("2020-01-01"),
                     null,
                     true,
                     "Cardiologista",
