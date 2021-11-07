@@ -1,7 +1,7 @@
-# Teste com Spring Boot + Thymeleaf 
+# Projeto Full-Stack Spring Boot + Thymeleaf 
 
-Aplicação compacta de gestão de clínica veterinária desenvolvida para testar o uso do Framework Spring Boot,
-em conjunto com Spring Security, Spring Data e Thymeleaf.
+Aplicação compacta de gestão de clínica veterinária desenvolvida para praticar o uso do Ecosistema Spring,
+mais especificamente Spring Boot, Spring Web MVC, Spring Security, Spring Data JPA e Thymeleaf.
 
 A inspiração da aplicação veio de um exercício do curso
 [Java - Criação de aplicações web com Spring MVC](https://www.treinaweb.com.br/curso/java-avancado-spring-mvc-completo),
