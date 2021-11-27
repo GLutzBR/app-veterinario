@@ -1,8 +1,7 @@
 package br.com.lutztechnology.appveterinario.model;
 
-//import br.com.lutztechnology.appveterinario.serialize.AnimalSerializer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-//import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -15,8 +14,6 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
 
-// TODO: refazer serialização
-//@JsonSerialize(using = AnimalSerializer.class)
 @Entity
 @Table(name = "animals")
 @NoArgsConstructor
@@ -41,10 +38,9 @@ public class Animal extends BaseEntity {
     @Column(nullable = false, length = 20)
     private String breed;
 
-    @JsonIgnore
     @Valid
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "owner_id_fk", nullable = false)
     private Customer owner;
 
@@ -52,6 +48,7 @@ public class Animal extends BaseEntity {
     @OneToMany(mappedBy = "animal", fetch = FetchType.LAZY)
     private List<MedicalRecord> medicalRecords;
 
+    @JsonProperty("ageYears")
     public int getAgeYears() {
         if (this.age != null) {
             return Period.between(age, LocalDate.now()).getYears();
