@@ -6,7 +6,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
-@Api(tags = "Raiz", description = "Raiz do projeto")
+@Api(tags = "Raiz", description = "Raiz Controller")
 public interface RootApiControllerDoc {
 
     @ApiOperation(value = "Listar os principais endpoints do projeto")
