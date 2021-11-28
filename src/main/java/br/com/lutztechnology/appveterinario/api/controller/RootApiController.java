@@ -1,5 +1,6 @@
 package br.com.lutztechnology.appveterinario.api.controller;
 
+import br.com.lutztechnology.appveterinario.api.docs.RootApiControllerDoc;
 import br.com.lutztechnology.appveterinario.api.hateoas.RootModel;
 import org.springframework.hateoas.Link;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,7 +12,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/api/v1")
-public class RootApiController {
+public class RootApiController implements RootApiControllerDoc {
 
     @GetMapping
     public RootModel root() {
