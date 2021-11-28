@@ -22,9 +22,9 @@ public class MedicalRecordAssembler implements SimpleRepresentationModelAssemble
                 .withType("GET")
                 .withTitle("Medical Record details");
 
-        Link archiveLink = linkTo(methodOn(MedicalRecordApiController.class).insert(null))
+        Link archiveLink = linkTo(methodOn(MedicalRecordApiController.class).archive(id))
                 .withSelfRel()
-                .withType("PUT")
+                .withType("PATCH")
                 .withTitle("Archive medical record");
 
         resource.add(selfLink, archiveLink);
