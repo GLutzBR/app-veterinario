@@ -1,5 +1,6 @@
 package br.com.lutztechnology.appveterinario.api.controller;
 
+import br.com.lutztechnology.appveterinario.api.docs.CustomerApiControllerDoc;
 import br.com.lutztechnology.appveterinario.api.dto.CustomerDTO;
 import br.com.lutztechnology.appveterinario.api.hateoas.CustomerAssembler;
 import br.com.lutztechnology.appveterinario.model.Customer;
@@ -18,7 +19,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/customers")
-public class CustomerApiController {
+public class CustomerApiController implements CustomerApiControllerDoc {
 
     @Autowired
     private CustomerService customerService;

@@ -1,5 +1,6 @@
 package br.com.lutztechnology.appveterinario.api.controller;
 
+import br.com.lutztechnology.appveterinario.api.docs.RoleApiControllerDoc;
 import br.com.lutztechnology.appveterinario.api.dto.RoleDTO;
 import br.com.lutztechnology.appveterinario.api.hateoas.RoleAssembler;
 import br.com.lutztechnology.appveterinario.model.Role;
@@ -18,7 +19,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/roles")
-public class RoleApiController {
+public class RoleApiController implements RoleApiControllerDoc {
 
     @Autowired
     private RoleService roleService;

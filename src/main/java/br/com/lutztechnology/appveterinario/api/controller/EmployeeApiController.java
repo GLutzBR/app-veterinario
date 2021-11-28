@@ -1,5 +1,6 @@
 package br.com.lutztechnology.appveterinario.api.controller;
 
+import br.com.lutztechnology.appveterinario.api.docs.EmployeeApiControllerDoc;
 import br.com.lutztechnology.appveterinario.api.dto.EmployeeDTO;
 import br.com.lutztechnology.appveterinario.api.hateoas.EmployeeAssembler;
 import br.com.lutztechnology.appveterinario.model.Employee;
@@ -17,7 +18,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/users")
-public class EmployeeApiController {
+public class EmployeeApiController implements EmployeeApiControllerDoc {
 
     @Autowired
     private EmployeeService employeeService;
@@ -59,7 +60,7 @@ public class EmployeeApiController {
         return employeeAssembler.toModel(employee);
     }
 
-    @PutMapping("/{id}/change-availability")
+    @PatchMapping("/{id}/change-availability")
     public EntityModel<Employee> changeAvailability(@PathVariable Long id) {
         Employee employee = employeeService.changeAvailability(id);
 

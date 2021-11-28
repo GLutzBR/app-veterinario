@@ -1,5 +1,6 @@
 package br.com.lutztechnology.appveterinario.api.controller;
 
+import br.com.lutztechnology.appveterinario.api.docs.AnimalApiControllerDoc;
 import br.com.lutztechnology.appveterinario.api.dto.AnimalDTO;
 import br.com.lutztechnology.appveterinario.api.hateoas.AnimalAssembler;
 import br.com.lutztechnology.appveterinario.model.Animal;
@@ -18,7 +19,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/animals")
-public class AnimalApiController {
+public class AnimalApiController implements AnimalApiControllerDoc {
 
     @Autowired
     private AnimalService animalService;
