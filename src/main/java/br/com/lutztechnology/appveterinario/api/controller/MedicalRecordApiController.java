@@ -1,5 +1,6 @@
 package br.com.lutztechnology.appveterinario.api.controller;
 
+import br.com.lutztechnology.appveterinario.api.docs.MedicalRecordApiControllerDoc;
 import br.com.lutztechnology.appveterinario.api.dto.MedicalRecordDTO;
 import br.com.lutztechnology.appveterinario.api.hateoas.MedicalRecordAssembler;
 import br.com.lutztechnology.appveterinario.model.MedicalRecord;
@@ -17,7 +18,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/medical-records")
-public class MedicalRecordApiController {
+public class MedicalRecordApiController implements MedicalRecordApiControllerDoc {
 
     @Autowired
     private MedicalRecordService medicalRecordService;
@@ -50,7 +51,7 @@ public class MedicalRecordApiController {
         return medicalRecordAssembler.toModel(medicalRecord);
     }
 
-    @PutMapping("/{id}/archive")
+    @PatchMapping("/{id}")
     public EntityModel<MedicalRecord> archive(@PathVariable Long id) {
         MedicalRecord medicalRecord = medicalRecordService.archive(id);
 
